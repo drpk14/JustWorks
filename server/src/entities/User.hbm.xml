@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25-oct-2022 14:37:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entities.User" table="user" catalog="justworks" optimistic-lock="version">
+        <id name="dni" type="string">
+            <column name="dni" length="9" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="15" />
+        </property>
+        <property name="surname" type="string">
+            <column name="surname" length="30" />
+        </property>
+        <property name="email" type="string">
+            <column name="eMail" length="50" />
+        </property>
+        <property name="user" type="string">
+            <column name="user" length="15" unique="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="15" />
+        </property>
+    </class>
+</hibernate-mapping>
