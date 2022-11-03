@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainBusinessmanController">
+   <top>
+      <HBox alignment="TOP_CENTER" spacing="3.0" style="-fx-background-color: #81e4f7;" BorderPane.alignment="CENTER">
+         <children>
+            <MFXButton fx:id="ofertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Oferts">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </MFXButton>
+            <MFXButton fx:id="myOfertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Oferts" />
+         </children>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

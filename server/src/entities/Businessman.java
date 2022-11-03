@@ -35,9 +35,7 @@ public class Businessman  implements java.io.Serializable {
     public void setUser(User user) {
         this.user = user;
     } 
-
-
-
+ 
 }
 
 

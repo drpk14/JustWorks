@@ -7,7 +7,9 @@ package dao;
 
 import entities.User;
 import entities.Worker;
+import java.util.List;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.NewHibernateUtil;
@@ -32,5 +34,29 @@ public class WorkerDao {
         }finally {
             session.close();
         }  
+    }
+    
+    public static boolean checkIfWorker(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        User returnedUser = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM Worker W JOIN W.user U WHERE U.dni = :dni");
+            query.setString("dni", user.getDni());
+            
+            List<Object[]> users = query.list();
+            if(users.size() > 0)
+                return true;
+                        
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
     }
 }

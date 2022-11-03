@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllOfertsController">
+   <children>
+      <MFXTextField fx:id="textField" layoutX="15.0" layoutY="10.0" prefHeight="50.0" prefWidth="661.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
+      <MFXButton fx:id="searchButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="686.0" layoutY="-1.0" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <graphic>
+            <FontAwesomeIconView caretBias="false" glyphName="SEARCH" selectionFill="BLACK" size="40" stroke="BLACK" textAlignment="RIGHT" />
+         </graphic>
+      </MFXButton>
+      <MFXLegacyListView fx:id="listView" depthLevel="LEVEL0" layoutX="15.0" layoutY="77.0" prefHeight="578.0" prefWidth="720.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="WHITE" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

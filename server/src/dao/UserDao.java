@@ -59,6 +59,30 @@ public class UserDao {
         return false;
     }
     
+    public static User getUser(String user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        User returnedUser = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM User"); 
+            List<User> users = query.list();
+            for(User actualUser: users){
+                if(actualUser.getUser().equals(user)){
+                    returnedUser = actualUser;
+                }
+            } 
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return returnedUser;
+    }
+    
     public static void addUser(User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;  

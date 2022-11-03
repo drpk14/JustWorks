@@ -25,12 +25,6 @@
         </property>
         <property name="contractType" type="string">
             <column name="contractType" length="10" />
-        </property>
-        <set name="labelOferts" table="label_ofert" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ofertId" />
-            </key>
-            <one-to-many class="entities.LabelOfert" />
-        </set>
+        </property> 
     </class>
 </hibernate-mapping>

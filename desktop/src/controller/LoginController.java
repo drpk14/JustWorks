@@ -57,11 +57,20 @@ public class LoginController implements Initializable {
         if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){
             JustWorkApp.out.println("L:"+this.loginTextField.getText()+":"+this.loginPasswordField.getText());
             String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-            if(entradaDividida[1].equals("C"))
-                JOptionPane.showMessageDialog(null,"LOGIN CORRECTO");
-            else
+            if(entradaDividida[1].equals("C")){
+                Parent root = null;
+                if(entradaDividida[2].equals("B")){
+                    root = FXMLLoader.load(getClass().getResource("../view/MainBusinessman.fxml"));
+                }else if(entradaDividida[2].equals("W")){
+                    root = FXMLLoader.load(getClass().getResource("../view/MainWorker.fxml"));
+                }else if(entradaDividida[2].equals("A")){
+                    root = FXMLLoader.load(getClass().getResource("../view/MainAdmin.fxml"));
+                }
+                    
+                JustWorkApp.changeScene(root);
+            }else{
                 textError.setVisible(true);
-            
+            }
         }
     }
 

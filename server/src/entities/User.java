@@ -77,6 +77,11 @@ public class User  implements java.io.Serializable {
         this.password = password;
     } 
 
+    @Override
+    public String toString(){
+        return this.getName()+" "+this.getSurname();
+    }
+    
 }
 
 

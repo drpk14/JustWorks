@@ -2,10 +2,14 @@ package server;
 
 
     
-import dao.BusinessmanDao;
+import dao.BusinessmanDao; 
+import static dao.BusinessmanDao.checkIfBusinessman;
+import dao.OfertDao;
 import dao.UserDao; 
-import dao.WorkerDao;
+import dao.WorkerDao; 
+import static dao.WorkerDao.checkIfWorker;
 import entities.Businessman;
+import entities.Ofert;
 import entities.User;
 import entities.Worker;
 import server.Server.ServerThread;  
@@ -14,13 +18,13 @@ import static server.States.*;
 
 enum States
 {
-    LOGIN , SINGUP
+    LOGIN , SINGUP , MENU
 }
 
 public class Protocol {
   
     private States state = LOGIN;
-     
+    public static User myUser; 
     
     private ServerThread hilo; 
 
@@ -50,7 +54,16 @@ public class Protocol {
             if(processedInput[0].equals("L")){ 
                 output+="L:";
                 if(UserDao.checkUserPassword(processedInput[1], processedInput[2])){ 
-                    output+="C";
+                    myUser = UserDao.getUser(processedInput[1]);
+                    output+="C:";
+                    if(checkIfBusinessman(myUser)){
+                    output+="B";
+                    }else if(checkIfWorker(myUser)){
+                    output+="W";
+                    }else{
+                    output+="A";
+                    }
+                    state = MENU;
                 }else{ 
                     output+="I";
                 }
@@ -83,6 +96,28 @@ public class Protocol {
                 output+="L:";
                 state = LOGIN;
             } 
+        }else if(state == MENU){
+            if(processedInput[0].equals("AO")){  
+                output+="O";
+                for(Ofert actualOfert: OfertDao.getAllOferts(myUser)){
+                    output+=":";
+                    output+=actualOfert.getId()+":";
+                    output+=actualOfert.getName()+":";
+                    output+=actualOfert.getBusinessman().getUser().toString()+":"; 
+                    output+=actualOfert.getSalary()+":";
+                    output+=actualOfert.getUbication()+"";  
+                }
+            }else if(processedInput[0].equals("MO")){  
+                output+="MO";
+                for(Ofert actualOfert: OfertDao.getMyOferts(myUser)){
+                    output+=":";
+                    output+=actualOfert.getId()+":";
+                    output+=actualOfert.getName()+":";
+                    output+=actualOfert.getBusinessman().getUser().toString()+":"; 
+                    output+=actualOfert.getSalary()+":";
+                    output+=actualOfert.getUbication()+"";  
+                }
+            }
         } 
         
         return output;
