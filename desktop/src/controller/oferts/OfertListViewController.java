@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package controller;
+package controller.oferts;
   
+import Entities.Ofert;
 import java.net.URL; 
 import java.util.ResourceBundle; 
 import javafx.fxml.FXML; 
-import javafx.fxml.Initializable; 
-import javafx.scene.control.ListView;
+import javafx.fxml.Initializable;  
 import javafx.scene.text.Text;  
 
 /**
@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
  *
  * @author david
  */
-public class OfertController implements Initializable {
+public class OfertListViewController implements Initializable {
     int id = 0;
     @FXML
     private Text nameText;
@@ -37,11 +37,11 @@ public class OfertController implements Initializable {
         
     }   
     
-    public void configurateDate(int id,String name,String businessman, String Salary, String ubication){
-        this.id = id;
-        nameText.setText(name);
-        businessmanText.setText(businessman);
-        salaryText.setText(Salary);
-        ubicationText.setText(ubication);
+    public void configurateDate(Ofert ofert){
+        this.id = ofert.getId();
+        nameText.setText(ofert.getName());
+        businessmanText.setText(ofert.getUser());
+        salaryText.setText(String.valueOf(ofert.getSalary()));
+        ubicationText.setText(ofert.getUbication());
     }
 } 

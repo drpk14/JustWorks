@@ -38,7 +38,7 @@ public class JustWorkApp extends Application{
     private static Stage stage;
 
     public static PrintWriter out;
-    public static BufferedReader in ;
+    public static BufferedReader in;
     
     public static void initializeConnection(){
         InputStream is;

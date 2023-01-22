@@ -19,7 +19,7 @@ public class UserDao {
             Query query = session.createQuery("FROM User"); 
             List<User> users = query.list();
             for(User actualUser: users){
-                if(actualUser.getUser().equals(user)){
+                if(actualUser.getUser().equals(user)){ 
                     if(actualUser.getPassword().equals(password)){
                         return true;
                     }

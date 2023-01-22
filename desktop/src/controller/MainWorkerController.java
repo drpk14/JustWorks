@@ -5,7 +5,7 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 
- 
+
 import io.github.palexdev.materialfx.controls.MFXButton; 
 import java.io.IOException;
 import java.net.URL; 
@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;  
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;  
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -25,17 +26,20 @@ import javafx.scene.layout.Pane;
 public class MainWorkerController implements Initializable {
 
     @FXML
-    private MFXButton ofertsButton;
-    @FXML
-    private MFXButton myProfileButton;
+    private MFXButton ofertsButton; 
     @FXML
     private BorderPane mainPane;
-
+    
+    @FXML
+    private Text informationText; 
+    
     /**
      * Initializes the controller class.
-     */ 
+     */   
+     
     
-    private void setMainPane(String paneName){
+    
+    public void setMainPane(String paneName,String information) {
         try {
             Pane view = null;
             URL fileUrl = getClass().getResource(paneName);
@@ -45,10 +49,12 @@ public class MainWorkerController implements Initializable {
 
             view =FXMLLoader.load(fileUrl);
             mainPane.setCenter(view);
+            informationText.setText(information);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
     }    
@@ -57,9 +63,13 @@ public class MainWorkerController implements Initializable {
     @FXML
     private void changeMainPane(ActionEvent event) {
         if(event.getSource() == ofertsButton){  
-            this.setMainPane("../view/AllOferts.fxml");
-        }else if(event.getSource() == myProfileButton){
-                
+            this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
         }
+        
+    }
+
+    @FXML
+    private void exit(ActionEvent event) {
+        System.exit(0);
     }
 } 

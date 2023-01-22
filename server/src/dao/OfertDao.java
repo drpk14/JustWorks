@@ -28,7 +28,7 @@ public class OfertDao {
         try{
             tx = session.beginTransaction();
             Query query = null;
-            if(checkIfBusinessman(user)){
+            if(checkIfBusinessman(user) != null){
                 query = session.createQuery("FROM Ofert O JOIN O.businessman B JOIN B.user U WHERE U.dni != :dni"); 
                 query.setString("dni", user.getDni());
             }else{
@@ -72,5 +72,80 @@ public class OfertDao {
             session.close();
         }  
         return oferts;
+    }
+    
+    public static Ofert getOfertDetails(Integer Id){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        Ofert ofert = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+            query = session.createQuery("FROM Ofert O JOIN O.businessman B JOIN B.user U WHERE O.id = :id"); 
+            query.setString("id", String.valueOf(Id));
+             
+            Object[] consult = (Object[]) query.list().get(0);
+            ofert = (Ofert) consult[0];
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return ofert;
+    }
+
+    public static void addOfert(Ofert ofert) {
+     
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.save(ofert);
+            tx.commit();
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback();
+                e.printStackTrace();
+        }finally {
+            session.close();
+        }   
+     
+    }
+    
+    public static void updateOfert(Ofert ofert) {
+     
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.update(ofert);
+            tx.commit();
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback();
+                e.printStackTrace();
+        }finally {
+            session.close();
+        }    
+    }
+    
+    public static void deleteOfert(Ofert ofert) {
+     
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.delete(ofert);
+            tx.commit();
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback();
+                e.printStackTrace();
+        }finally {
+            session.close();
+        }    
     }
 }

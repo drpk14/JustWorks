@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.OfertViewerController">
+   <children>
+      <Text layoutX="20.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="20.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="20.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ubication:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="20.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salary:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="20.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contract type:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="20.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Businessman:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="nameTextField" layoutX="280.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="descriptionTextArea" editable="false" layoutX="280.0" layoutY="180.0" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <Text fx:id="businessmanTextField" layoutX="280.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="ubicationTextField" layoutX="280.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="salaryTextField" layoutX="280.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="contractTypeTextField" layoutX="280.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="511.0" onAction="#exitWindow" text="Exit">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
+   </children>
+</AnchorPane>

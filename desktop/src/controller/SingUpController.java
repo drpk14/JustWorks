@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.text.Text; 
+import util.SHA;
 import view.JustWorkApp; 
 import util.ValidadorDNI;
 
@@ -109,7 +110,7 @@ public class SingUpController implements Initializable {
             output+=textFieldSurname.getText()+":";
             output+=textFieldEMail.getText()+":";
             output+=textFieldUser.getText()+":";
-            output+=textFieldPassword.getText()+":";
+            output+=SHA.generate512(textFieldPassword.getText())+":";
             if(radioButtonBusinessMan.isSelected())
                 output+="BusinessMan";
             if(radioButtonWorker.isSelected())

@@ -36,19 +36,19 @@ public class BusinessmanDao {
         }  
     }
     
-    public static boolean checkIfBusinessman(User user){
+    public static Businessman checkIfBusinessman(User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null; 
-        User returnedUser = null;
         try{
             tx = session.beginTransaction();
             Query query = session.createQuery("FROM Businessman B JOIN B.user U WHERE U.dni = :dni");
             query.setString("dni", user.getDni());
             
             List<Object[]> users = query.list();
-            if(users.size() > 0)
-                return true;
-                        
+            if(users.size() > 0){
+               Object[] object = users.get(0);
+               return (Businessman) object[0];
+            }
             tx.commit(); 
             
         }catch (HibernateException e) { 
@@ -57,6 +57,6 @@ public class BusinessmanDao {
         }finally {
             session.close();
         }  
-        return false;
+        return null;
     }
 }

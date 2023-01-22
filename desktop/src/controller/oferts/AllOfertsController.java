@@ -1,4 +1,4 @@
-package controller;
+package controller.oferts;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -6,22 +6,15 @@ package controller;
  */
 
    
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
+import Entities.Ofert;
+import io.github.palexdev.materialfx.controls.MFXButton; 
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
 import java.io.IOException;
 import java.net.URL; 
-import java.util.ResourceBundle; 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable; 
-import javafx.scene.control.ListCell;
-import javafx.scene.input.MouseEvent;  
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import java.util.ResourceBundle;  
+import javafx.fxml.FXML; 
+import javafx.fxml.Initializable;  
 import util.OfertCell;
 import view.JustWorkApp;
 
@@ -37,7 +30,7 @@ public class AllOfertsController implements Initializable {
     @FXML
     private MFXButton searchButton;
     @FXML
-    private MFXLegacyListView<String[]> listView;
+    private MFXLegacyListView<Ofert> listView;
  
     /**
      * Initializes the controller class.
@@ -47,27 +40,21 @@ public class AllOfertsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
             initializeData();
-            listView.setCellFactory(param -> new OfertCell()); 
-        
+            listView.setCellFactory(param -> new OfertCell());  
     }
     
     private void initializeData(){
         
         try {
-            JustWorkApp.out.println("AO:");
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":"); 
-            
-            for(int i= 1;i<entradaDividida.length;i=i+5){
-                String[] newOfert = {entradaDividida[i],entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4]};
+            JustWorkApp.out.println("AllO:");
+            String[] entradaDividida = JustWorkApp.in.readLine().split(":");  
+            for(int i= 1;i<entradaDividida.length;i=i+7){
+                Ofert newOfert = new Ofert(Integer.parseInt(entradaDividida[i]),entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4],Integer.parseInt(entradaDividida[i+5]),entradaDividida[i+6]);
                 listView.getItems().add(newOfert);
                 System.out.println("Se ha añadido la oferta");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
-        
-        
-    }
-    
-    
+        } 
+    } 
 } 
