@@ -16,8 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent; 
-import javafx.scene.text.Text; 
-import util.SHA;
+import javafx.scene.text.Text;  
 import view.JustWorkApp; 
 import util.ValidadorDNI;
 
@@ -92,10 +91,10 @@ public class SingUpController implements Initializable {
 
     @FXML
     private void backLogIn(MouseEvent event) throws IOException { 
+        JustWorkApp.sendMessage("L:"); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         
-        JustWorkApp.out.println("L:");
-        String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-        if(entradaDividida[0].equals("L")){
+        if(processedInput[0].equals("L")){
             Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml")); 
             JustWorkApp.changeScene(root);
         } 
@@ -110,15 +109,15 @@ public class SingUpController implements Initializable {
             output+=textFieldSurname.getText()+":";
             output+=textFieldEMail.getText()+":";
             output+=textFieldUser.getText()+":";
-            output+=SHA.generate512(textFieldPassword.getText())+":";
+            output+=textFieldPassword.getText()+":";
             if(radioButtonBusinessMan.isSelected())
                 output+="BusinessMan";
             if(radioButtonWorker.isSelected())
                 output+="Worker";
-                        
-            JustWorkApp.out.println(output);
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-            if(entradaDividida[1].equals("C")){
+                      
+            JustWorkApp.sendMessage(output); 
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");  
+            if(processedInput[1].equals("C")){
                 Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml")); 
                 JustWorkApp.changeScene(root);
             }else{

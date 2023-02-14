@@ -41,6 +41,11 @@
                         </MFXButton>
                      </children>
                   </HBox>
+                  <MFXButton fx:id="profileButton" contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#changeMainPane" prefHeight="51.0" prefWidth="60.0" style="-fx-background-color: #81e4f7;" text=" " textAlignment="RIGHT">
+                     <graphic>
+                        <FontAwesomeIconView caretBias="false" fill="WHITE" glyphName="USER" selectionEnd="1" size="30" stroke="BLACK" textAlignment="RIGHT" />
+                     </graphic>
+                  </MFXButton>
                   <MFXButton contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#exit" prefHeight="51.0" prefWidth="60.0" style="-fx-background-color: #81e4f7;" text=" " textAlignment="RIGHT">
                      <graphic>
                         <FontAwesomeIconView caretBias="false" glyphName="CLOSE" selectionFill="BLACK" size="30" stroke="BLACK" textAlignment="RIGHT" />

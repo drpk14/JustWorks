@@ -34,30 +34,7 @@ public class UserDao {
             session.close();
         } 
         return false;
-    }
-    
-    public static boolean checkUserIsIn(String user){
-        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
-        Transaction tx = null; 
-        try{
-            tx = session.beginTransaction();
-            Query query = session.createQuery("FROM User"); 
-            List<User> users = query.list();
-            for(User actualUser: users){
-                if(actualUser.getUser().equals(user)){
-                    return true; 
-                }
-            } 
-            tx.commit(); 
-            return false;
-        }catch (HibernateException e) { 
-            if (tx!=null) tx.rollback(); 
-            e.printStackTrace();
-        }finally {
-            session.close();
-        } 
-        return false;
-    }
+    } 
     
     public static User getUser(String user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
@@ -98,4 +75,93 @@ public class UserDao {
             session.close();
         }   
     }
+    
+    public static boolean checkIfDniExits(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM User U WHERE U.dni = :dni");  
+            query.setString("dni",user.getDni());
+             
+            List<Object> consult =  query.list(); 
+            if(consult.size() > 0){
+                return true;
+            }
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }
+    
+    public static boolean checkIfUsernameExits(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();  
+            Query query = session.createQuery("FROM User U WHERE U.user = :user AND U.dni != :dni");  
+            query.setString("user",user.getUser());
+            query.setString("dni",user.getDni());
+             
+            List<Object> consult =  query.list(); 
+            if(consult.size() > 0){
+                return true;
+            }
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }
+    
+    public static boolean checkIfeMailExits(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM User U WHERE U.email = :email AND U.dni != :dni");  
+            query.setString("email",user.getEmail());
+            query.setString("dni",user.getDni());
+             
+            List<Object> consult =  query.list(); 
+            if(consult.size() > 0){
+                return true;
+            }
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }
+
+    public static void updateUser(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.update(user);
+            tx.commit();
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback();
+                e.printStackTrace();
+        }finally {
+            session.close();
+        }   
+    }
+    
+    
 }

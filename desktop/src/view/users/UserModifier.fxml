@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.users.UserModifierController">
+   <children>
+      <Text layoutX="14.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="18.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Surname:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="email:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="280.0" layoutY="568.0" onAction="#exitWindow" text="Exit">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
+      <MFXTextField fx:id="dniTextField" floatMode="DISABLED" layoutX="274.0" layoutY="107.0" prefHeight="30.0" prefWidth="375.0" textLimit="9" />
+      <MFXTextField fx:id="surnameTextField" floatMode="DISABLED" layoutX="274.0" layoutY="227.0" prefHeight="30.0" prefWidth="375.0" textLimit="30" />
+      <MFXTextField fx:id="emailTextField" floatMode="DISABLED" layoutX="274.0" layoutY="287.0" prefHeight="30.0" prefWidth="375.0" textLimit="50" />
+      <MFXTextField fx:id="userTextField" floatMode="DISABLED" layoutX="265.0" layoutY="346.0" prefHeight="30.0" prefWidth="375.0" textLimit="15" />
+      <MFXButton fx:id="confirmActionButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="568.0" onAction="#confirmAction" text="Modify">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
+      <Text layoutX="14.0" layoutY="432.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <MFXTextField fx:id="nameTextField" floatMode="DISABLED" layoutX="274.0" layoutY="167.0" prefHeight="30.0" prefWidth="375.0" textLimit="15" />
+      <MFXPasswordField fx:id="passwordTextField" floatMode="BORDER" layoutX="274.0" layoutY="398.0" prefHeight="50.0" prefWidth="375.0" textLimit="30" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.labels.LabelsSelectionController">
+   <children>
+      <MFXLegacyListView fx:id="selectionListView" layoutX="29.0" layoutY="21.0" prefHeight="608.0" prefWidth="278.0" />
+      <Text layoutX="375.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Labels:" wrappingWidth="294.93670654296875">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="selectedLabelsText" layoutX="359.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.53668212890625">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="522.0" layoutY="514.0" onAction="#saveLabels" text="Save Labels">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="394.0" layoutY="514.0" onAction="#exitLabelPane" text="Exit">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton> 
+   </children>
+</AnchorPane>

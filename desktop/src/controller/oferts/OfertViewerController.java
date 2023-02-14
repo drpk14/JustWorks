@@ -9,12 +9,11 @@ import controller.MainBusinessmanController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle; 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;  
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
@@ -41,44 +40,47 @@ public class OfertViewerController implements Initializable {
     private Text contractTypeTextField;
     @FXML
     private MFXButton exitButton; 
-    
-    //private MainBusinessmanController bController; 
+    @FXML
+    private Text labelTextField;
+     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
-        
-        /*try{    
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("../../view/MainBusinessman.fxml"));
-            loader.load(); 
-            bController = loader.getController();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MyOfertsController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+         
     }
     
-    private void initializeData(){
-        try {
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");  
-            for(int i= 1;i<entradaDividida.length;i=i+7){
-                Ofert newOfert = new Ofert(Integer.parseInt(entradaDividida[i]),entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4],Integer.parseInt(entradaDividida[i+5]),entradaDividida[i+6]);
-                
-                nameTextField.setText(newOfert.getName());
-                descriptionTextArea.setText(newOfert.getDescription());
-                businessmanTextField.setText(newOfert.getUser());
-                ubicationTextField.setText(newOfert.getUbication());
-                salaryTextField.setText(String.valueOf(newOfert.getSalary()));
-                contractTypeTextField.setText(newOfert.getContractType());
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    private void initializeData(){  
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");  
+        for(int i= 1;i<processedInput.length;i=i+8){
+            Ofert newOffer = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
+
+                nameTextField.setText(newOffer.getName());
+                descriptionTextArea.setText(newOffer.getDescription()); 
+                ubicationTextField.setText(newOffer.getUbication());
+                salaryTextField.setText(String.valueOf(newOffer.getSalary()));
+                contractTypeTextField.setText(newOffer.getContractType());
+                String[] labels = processedInput[8].split(",");
+                String labelsString = "";
+                if(labels.length >= 2){
+                    List labelsList = new ArrayList();
+                    for(int j = 1;j<labels.length;j++){
+                        labelsList.add(labels[j]);
+
+                        labelsString += labels[j];
+                        if(i != labels.length-1){
+                            labelsString += " , ";
+                        } 
+                    }
+                    newOffer.setLabelsList(labelsList);
+                    labelTextField.setText(labelsString);
+                           
+                } 
+        } 
     } 
 
     @FXML
     private void exitWindow(ActionEvent event) { 
         MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
-    }
+    } 
 }

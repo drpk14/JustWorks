@@ -1,5 +1,5 @@
 package entities;
-// Generated 25-oct-2022 14:37:38 by Hibernate Tools 4.3.1
+// Generated 14-feb-2023 11:28:17 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,14 +13,20 @@ public class Label  implements java.io.Serializable {
 
      private Integer id;
      private String name;
-     private Set labelOferts = new HashSet(0);
+     private Set alerts = new HashSet(0);
+     private Set notifications = new HashSet(0);
+     private Set labelOffers = new HashSet(0);
+     private Set labelKnowledges = new HashSet(0);
 
     public Label() {
     }
 
-    public Label(String name, Set labelOferts) {
+    public Label(String name, Set alerts, Set notifications, Set labelOffers, Set labelKnowledges) {
        this.name = name;
-       this.labelOferts = labelOferts;
+       this.alerts = alerts;
+       this.notifications = notifications;
+       this.labelOffers = labelOffers;
+       this.labelKnowledges = labelKnowledges;
     }
    
     public Integer getId() {
@@ -37,12 +43,33 @@ public class Label  implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public Set getLabelOferts() {
-        return this.labelOferts;
+    public Set getAlerts() {
+        return this.alerts;
     }
     
-    public void setLabelOferts(Set labelOferts) {
-        this.labelOferts = labelOferts;
+    public void setAlerts(Set alerts) {
+        this.alerts = alerts;
+    }
+    public Set getNotifications() {
+        return this.notifications;
+    }
+    
+    public void setNotifications(Set notifications) {
+        this.notifications = notifications;
+    }
+    public Set getLabelOffers() {
+        return this.labelOffers;
+    }
+    
+    public void setLabelOffers(Set labelOffers) {
+        this.labelOffers = labelOffers;
+    }
+    public Set getLabelKnowledges() {
+        return this.labelKnowledges;
+    }
+    
+    public void setLabelKnowledges(Set labelKnowledges) {
+        this.labelKnowledges = labelKnowledges;
     }
 
 

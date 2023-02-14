@@ -45,13 +45,19 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/justworks?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
-    <property name="hibernate.show_sql">true</property>
-    <mapping resource="entities/LabelOfert.hbm.xml"/>
-    <mapping resource="entities/Label.hbm.xml"/>
+    <mapping resource="entities/WorkExperience.hbm.xml"/>
+    <mapping resource="entities/Notification.hbm.xml"/>
+    <mapping resource="entities/Knowledge.hbm.xml"/>
+    <mapping resource="entities/Message.hbm.xml"/>
+    <mapping resource="entities/Offer.hbm.xml"/>
+    <mapping resource="entities/Candidature.hbm.xml"/>
     <mapping resource="entities/Businessman.hbm.xml"/>
-    <mapping resource="entities/Worker.hbm.xml"/>
     <mapping resource="entities/User.hbm.xml"/>
-    <mapping resource="entities/Ofert.hbm.xml"/>
+    <mapping resource="entities/LabelOffer.hbm.xml"/>
+    <mapping resource="entities/Qualification.hbm.xml"/>
+    <mapping resource="entities/Worker.hbm.xml"/>
+    <mapping resource="entities/Label.hbm.xml"/>
+    <mapping resource="entities/LabelKnowledge.hbm.xml"/>
+    <mapping resource="entities/Alert.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

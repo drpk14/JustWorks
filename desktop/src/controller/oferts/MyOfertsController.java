@@ -14,11 +14,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent; 
-import javafx.fxml.FXML; 
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;  
 import javafx.fxml.Initializable; 
 import javax.swing.JOptionPane;
-import util.OfertCell;
+import cells.OfertCell;
+import java.util.ArrayList; 
+import java.util.List; 
 import view.JustWorkApp;
 
 /**
@@ -64,45 +65,47 @@ public class MyOfertsController implements Initializable {
             
     } 
     
-    private void initializeData(){
-        
-        try {
-            JustWorkApp.out.println("MyO:");
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");   
-            for(int i= 1;i<entradaDividida.length;i=i+7){
-                Ofert newOfert = new Ofert(Integer.parseInt(entradaDividida[i]),entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4],Integer.parseInt(entradaDividida[i+5]),entradaDividida[i+6]);
-                listView.getItems().add(newOfert);
-                
-            } 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }  
+    private void initializeData(){ 
+         
+        JustWorkApp.sendMessage("MyO:"); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
+        for(int i= 1;i<processedInput.length;i=i+8){
+            Ofert newOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
+            String[] labels = processedInput[i+7].split(",");
+            List labelsList = new ArrayList(0);
+            if(labels.length >= 2){
+                for(int j = 1;j<labels.length;j++){
+                    labelsList.add(labels[j]);
+                }
+                newOfert.setLabelsList(labelsList);
+            }
+            listView.getItems().add(newOfert); 
+        }
+         
     }
     
     @FXML
     private void manageButtonsActions(ActionEvent event){
         if(event.getSource() == addButton){
-            JustWorkApp.out.println("AddO:");  
+            JustWorkApp.sendMessage("AddO:");   
             MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Add Ofert");
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == seeButton){   
-                    JustWorkApp.out.println("ODet:"+listView.getSelectionModel().getSelectedItem().getId());  
+                    JustWorkApp.sendMessage("ODet:"+listView.getSelectionModel().getSelectedItem().getId());  
+                    
                     MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml","My Oferts > Ofert Viewer");
+                    
                 }else if(event.getSource() == modifyButton){
-                    JustWorkApp.out.println("ModO:"+listView.getSelectionModel().getSelectedItem().getId());  
+                    JustWorkApp.sendMessage("ModO:"+listView.getSelectionModel().getSelectedItem().getId());  
                     MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Modify Ofert");
                 }else if(event.getSource() == deleteButton){ 
-                    JustWorkApp.out.println("DelO:"+listView.getSelectionModel().getSelectedItem().getId());   
-                    
-                    try {
-                        String[] processedInput = JustWorkApp.in.readLine().split(":");
-                        if(processedInput[1].equals("C")){
-                            MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(MyOfertsController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    JustWorkApp.sendMessage("DelO:"+listView.getSelectionModel().getSelectedItem().getId());   
+                     
+                    String[] processedInput = JustWorkApp.recieveMessage().split(":");
+                    if(processedInput[1].equals("C")){
+                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                    } 
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Necesitas seleccionar algún elemento de la lista");

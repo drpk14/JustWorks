@@ -15,8 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent; 
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent; 
-import javafx.scene.text.Text; 
-import util.SHA;
+import javafx.scene.text.Text;  
 import view.JustWorkApp;
 
 /**
@@ -49,16 +48,17 @@ public class LoginController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException { 
-        if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){
-            JustWorkApp.out.println("L:"+this.loginTextField.getText()+":"+SHA.generate512(this.loginPasswordField.getText()));
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-            if(entradaDividida[1].equals("C")){
+        if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){ 
+            
+            JustWorkApp.sendMessage("L:"+this.loginTextField.getText()+":"+this.loginPasswordField.getText());
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");
+            if(processedInput[1].equals("C")){
                 Parent root = null;
-                if(entradaDividida[2].equals("B")){
+                if(processedInput[2].equals("B")){
                     root = FXMLLoader.load(getClass().getResource("../view/MainBusinessman.fxml"));
-                }else if(entradaDividida[2].equals("W")){
+                }else if(processedInput[2].equals("W")){
                     root = FXMLLoader.load(getClass().getResource("../view/MainWorker.fxml"));
-                }else if(entradaDividida[2].equals("A")){
+                }else if(processedInput[2].equals("A")){
                     root = FXMLLoader.load(getClass().getResource("../view/MainAdmin.fxml"));
                 }
                     
@@ -71,9 +71,10 @@ public class LoginController implements Initializable {
 
     @FXML
     private void changeToSingUp(ActionEvent event) throws IOException {
-        JustWorkApp.out.println("R:");
-        String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-        if(entradaDividida[0].equals("R")){
+        JustWorkApp.sendMessage("R:");
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        
+        if(processedInput[0].equals("R")){
             Parent root = FXMLLoader.load(getClass().getResource("../view/SingUp.fxml")); 
             JustWorkApp.changeScene(root);
         }

@@ -34,12 +34,12 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <TextArea fx:id="descriptionTextArea" layoutX="280.0" layoutY="116.0" onKeyPressed="#checkLength" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
+      <TextArea fx:id="descriptionTextArea" layoutX="280.0" layoutY="116.0" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>
       </TextArea>
-      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="280.0" layoutY="511.0" onAction="#exitWindow" text="Exit">
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="280.0" layoutY="568.0" onAction="#exitWindow" text="Exit">
          <font>
             <Font size="20.0" />
          </font>
@@ -48,10 +48,20 @@
       <MFXTextField fx:id="ubicationTextField" floatMode="DISABLED" layoutX="280.0" layoutY="250.0" prefHeight="30.0" prefWidth="375.0" textLimit="25" />
       <MFXTextField fx:id="salaryTextField" floatMode="DISABLED" layoutX="280.0" layoutY="319.0" prefHeight="30.0" prefWidth="375.0" textLimit="5" />
       <MFXTextField fx:id="contractTypeTextField" floatMode="DISABLED" layoutX="280.0" layoutY="396.0" prefHeight="30.0" prefWidth="375.0" textLimit="10" />
-      <MFXButton fx:id="confirmActionButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="511.0" onAction="#confirmAction" text="Action">
+      <MFXButton fx:id="confirmActionButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="568.0" onAction="#confirmAction" text="Action">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
+      <MFXButton fx:id="changeLabelButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="357.0" layoutY="463.0" onAction="#changeToLabelPane" text="Change Labels">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </MFXButton>
+      <Text layoutX="20.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

@@ -1,4 +1,4 @@
-package util;
+package cells;
 
 import Entities.Ofert;
 import controller.oferts.OfertListViewController;

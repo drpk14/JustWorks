@@ -5,7 +5,11 @@
 package controller.oferts;
   
 import Entities.Ofert;
+import java.lang.reflect.Array;
 import java.net.URL; 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle; 
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;  
@@ -26,6 +30,8 @@ public class OfertListViewController implements Initializable {
     private Text salaryText;
     @FXML
     private Text ubicationText;
+    @FXML
+    private Text labelsText;
  
 
     /**
@@ -43,5 +49,19 @@ public class OfertListViewController implements Initializable {
         businessmanText.setText(ofert.getUser());
         salaryText.setText(String.valueOf(ofert.getSalary()));
         ubicationText.setText(ofert.getUbication());
+        String labelsString = "";
+        
+        
+        List labelsList = ofert.getLabelsList(); 
+        
+        for(int i = 0;i<labelsList.size();i++){
+            labelsString += labelsList.get(i);
+            if(i != labelsList.size()-1){
+                labelsString += " / ";
+            }
+            
+        }
+        
+        labelsText.setText(labelsString);
     }
 } 

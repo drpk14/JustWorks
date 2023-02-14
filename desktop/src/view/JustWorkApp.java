@@ -3,27 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Properties;
+package view; 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.event.EventHandler;
+import static javafx.application.Application.launch; 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import util.CommunicationThread;
+import util.SharedCollection;
 
 /**
  *
@@ -35,43 +25,7 @@ public class JustWorkApp extends Application{
     private static double xOffset=0.0;
     private static double yOffset=0.0; 
     private static Scene scene;
-    private static Stage stage;
-
-    public static PrintWriter out;
-    public static BufferedReader in;
-    
-    public static void initializeConnection(){
-        InputStream is;
-        Properties prop = new Properties();
-        try {
-            is = new FileInputStream("configuracion.ini");
-            prop.load(is);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        String hostServerName = prop.getProperty("host");
-        int servicePort = Integer.valueOf(prop.getProperty("puerto"));
-
-        Socket echoSocket = null; 
-
-        try {
-            echoSocket = new Socket(hostServerName, servicePort);
-
-            out = new PrintWriter(echoSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-            
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: " + hostServerName);
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + hostServerName);
-            System.exit(1);
-        } 
-    
-    }
+    private static Stage stage; 
     
     public static void changeScene(Parent root) {
         scene = new Scene(root); 
@@ -91,8 +45,9 @@ public class JustWorkApp extends Application{
     }
      
     @Override
-    public void start(Stage stage) throws Exception {
-        initializeConnection();
+    public void start(Stage stage) throws Exception { 
+        CommunicationThread.getInstance().start();
+        //initializeConnection();
         JustWorkApp.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));   
         stage.initStyle(StageStyle.UNDECORATED);
@@ -103,4 +58,28 @@ public class JustWorkApp extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+    
+    public static void sendMessage(String message){ 
+        SharedCollection.getInstance().addMessage(message); 
+    }
+    
+    public static String recieveMessage(){ 
+        
+        String response = "";
+        synchronized (SharedCollection.getInstance()) {
+            try {
+                if(SharedCollection.getInstance().isResponsesEmpty())
+                    SharedCollection.getInstance().wait();
+                
+                
+                response = SharedCollection.getInstance().recieveResponse();
+            
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } 
+        } 
+        return response;
+    }
+    
+    
 }

@@ -46,6 +46,8 @@ public class MainBusinessmanController implements Initializable {
     public static MainBusinessmanController getInstance() {
         return instance;
     }
+    @FXML
+    private MFXButton profileButton;
 
     public void setMainPane(String paneName, String information) {
         try {
@@ -58,10 +60,14 @@ public class MainBusinessmanController implements Initializable {
             
             view =FXMLLoader.load(fileUrl);
             mainPane.setCenter(view);
-            informationText.setText(information);
+            this.changeInformation(information);
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+    
+    public void changeInformation(String informationString){
+        informationText.setText(informationString);
     }
     
     @Override
@@ -76,6 +82,8 @@ public class MainBusinessmanController implements Initializable {
             this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
         }else if(event.getSource() == myOfertsButton){
             this.setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+        }else if(event.getSource() == profileButton){
+            this.setMainPane("../view/users/UserViewer.fxml", "My Profile");
         }
     }
 

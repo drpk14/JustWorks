@@ -9,13 +9,14 @@ package controller.oferts;
 import Entities.Ofert;
 import io.github.palexdev.materialfx.controls.MFXButton; 
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
-import java.io.IOException;
+import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView; 
 import java.net.URL; 
 import java.util.ResourceBundle;  
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;  
-import util.OfertCell;
+import cells.OfertCell;
+import java.util.ArrayList; 
+import java.util.List; 
 import view.JustWorkApp;
 
 /**
@@ -45,16 +46,20 @@ public class AllOfertsController implements Initializable {
     
     private void initializeData(){
         
-        try {
-            JustWorkApp.out.println("AllO:");
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");  
-            for(int i= 1;i<entradaDividida.length;i=i+7){
-                Ofert newOfert = new Ofert(Integer.parseInt(entradaDividida[i]),entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4],Integer.parseInt(entradaDividida[i+5]),entradaDividida[i+6]);
-                listView.getItems().add(newOfert);
-                System.out.println("Se ha añadido la oferta");
+        JustWorkApp.sendMessage("AllO:"); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        for(int i= 1;i<processedInput.length;i=i+8){
+            Ofert newOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
+            String[] labels = processedInput[i+7].split(",");
+            List labelsList = new ArrayList(0);
+            if(labels.length >= 2){
+                for(int j = 1;j<labels.length;j++){
+                    labelsList.add(labels[j]);
+                }
+                newOfert.setLabelsList(labelsList);
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } 
+            listView.getItems().add(newOfert); 
+        }
+        
     } 
 } 

@@ -1,6 +1,9 @@
  
 package Entities;
  
+import java.util.List;
+import java.util.Set;
+
 public class Ofert {
     private int Id;
     private String User;
@@ -9,6 +12,17 @@ public class Ofert {
     private String ubication;
     private int salary;
     private String contractType; 
+    private List labelsList;
+
+    public Ofert(int Id, String User, String Name, String description, String ubication, int salary, String contractType) {
+        this.Id = Id;
+        this.User = User;
+        this.Name = Name;
+        this.description = description;
+        this.ubication = ubication;
+        this.salary = salary;
+        this.contractType = contractType; 
+    }
 
     public int getId() {
         return Id;
@@ -66,15 +80,13 @@ public class Ofert {
         this.contractType = contractType;
     }
 
-    public Ofert(int Id, String User, String Name, String description, String ubication, int salary, String contractType) {
-        this.Id = Id;
-        this.User = User;
-        this.Name = Name;
-        this.description = description;
-        this.ubication = ubication;
-        this.salary = salary;
-        this.contractType = contractType;
-    }   
+    public List getLabelsList() {
+        return labelsList;
+    }
+
+    public void setLabelsList(List labelsList) {
+        this.labelsList = labelsList;
+    }
     
-     
+    
 }

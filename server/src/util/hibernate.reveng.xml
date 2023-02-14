@@ -41,10 +41,18 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="justworks"/>
-  <table-filter match-name="worker"/>
+  <table-filter match-name="qualification"/>
   <table-filter match-name="businessman"/>
-  <table-filter match-name="ofert"/>
-  <table-filter match-name="label"/>
-  <table-filter match-name="label_ofert"/>
+  <table-filter match-name="label_offer"/>
+  <table-filter match-name="worker"/>
+  <table-filter match-name="offer"/>
+  <table-filter match-name="alert"/>
+  <table-filter match-name="notification"/>
+  <table-filter match-name="work_experience"/>
   <table-filter match-name="user"/>
+  <table-filter match-name="knowledge"/>
+  <table-filter match-name="label_knowledge"/>
+  <table-filter match-name="message"/>
+  <table-filter match-name="candidature"/>
+  <table-filter match-name="label"/>
 </hibernate-reverse-engineering>

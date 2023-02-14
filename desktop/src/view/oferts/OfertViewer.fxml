@@ -68,10 +68,20 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="511.0" onAction="#exitWindow" text="Exit">
+      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="344.0" layoutY="563.0" onAction="#exitWindow" text="Exit">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
+      <Text layoutX="20.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="labelTextField" layoutX="280.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

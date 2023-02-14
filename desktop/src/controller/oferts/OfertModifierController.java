@@ -7,18 +7,16 @@ package controller.oferts;
 import Entities.Ofert;
 import controller.MainBusinessmanController; 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.io.IOException;
+import io.github.palexdev.materialfx.controls.MFXTextField; 
 import java.net.URL;
-import java.util.ResourceBundle;  
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;   
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyEvent; 
+import javafx.fxml.FXML; 
+import javafx.fxml.Initializable; 
+import javafx.scene.control.TextArea;  
+import javafx.scene.text.Text;
 import javax.swing.JOptionPane;
 import view.JustWorkApp;
 
@@ -42,46 +40,30 @@ public class OfertModifierController implements Initializable {
     @FXML
     private MFXButton confirmActionButton; 
     
-    private Ofert modifyOfert = null;
-    
-    //private MainBusinessmanController bController; 
+    private Ofert modifyOfert = null;  
+    private Text labelsInfo;
+    @FXML
+    private MFXButton changeLabelButton;
+     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
-        
-        /*try{    
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("../../view/MainBusinessman.fxml"));
-            loader.load(); 
-            bController = loader.getController();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MyOfertsController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+         
          
     }
     
-    private void initializeData(){
-        try {
-            String[] entradaDividida = JustWorkApp.in.readLine().split(":");  
-            if(entradaDividida[0].equals("ModO")){
-                confirmActionButton.setText("Modify");
-                for(int i= 1;i<entradaDividida.length;i=i+7){
-                    modifyOfert = new Ofert(Integer.parseInt(entradaDividida[i]),entradaDividida[i+1],entradaDividida[i+2],entradaDividida[i+3],entradaDividida[i+4],Integer.parseInt(entradaDividida[i+5]),entradaDividida[i+6]);
-
-                    nameTextField.setText(modifyOfert.getName());
-                    descriptionTextArea.setText(modifyOfert.getDescription()); 
-                    ubicationTextField.setText(modifyOfert.getUbication());
-                    salaryTextField.setText(String.valueOf(modifyOfert.getSalary()));
-                    contractTypeTextField.setText(modifyOfert.getContractType());
-                }
-            }else{
-                confirmActionButton.setText("Add");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    private void initializeData(){ 
+            
+             
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        if(processedInput[0].equals("ModO")){
+            changeLabelButton.setDisable(true);
+            confirmActionButton.setText("Modify");
+            
+        }else{
+            confirmActionButton.setText("Add");
+        }   
     } 
 
     @FXML
@@ -97,57 +79,46 @@ public class OfertModifierController implements Initializable {
                 !descriptionTextArea.getText().equals(modifyOfert.getDescription()) ||
                 !ubicationTextField.getText().equals(modifyOfert.getUbication()) ||
                 !salaryTextField.getText().equals(modifyOfert.getSalary()) ||
-                !contractTypeTextField.getText().equals(modifyOfert.getContractType())){
+                !contractTypeTextField.getText().equals(modifyOfert.getContractType())){ 
+                
+                     
+                    JustWorkApp.sendMessage("ModO:"+
+                            modifyOfert.getId()+":"
+                            +nameTextField.getText()+":"
+                            +descriptionTextArea.getText()+":"
+                            +ubicationTextField.getText()+":"
+                            +salaryTextField.getText()+":"
+                            +contractTypeTextField.getText()); 
                     
-                    try {
-                        JustWorkApp.out.println("ModO:"+
-                                modifyOfert.getId()+":"
-                                +nameTextField.getText()+":"
-                                +descriptionTextArea.getText()+":"
-                                +ubicationTextField.getText()+":"
-                                +salaryTextField.getText()+":"
-                                +contractTypeTextField.getText());
-                        
-                        String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-                        if(entradaDividida[1].equals("C")){
-                            MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    String[] processedInput = JustWorkApp.recieveMessage().split(":");
+                    if(processedInput[1].equals("C")){
+                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                    } else if(processedInput[1].equals("I")){
+                        JOptionPane.showMessageDialog(null, processedInput[2]);
                     }
-                    
                 }else{
                     JOptionPane.showMessageDialog(null, "You must modify at least one textfield");
                 }
             }
         }else if(confirmActionButton.getText().equals("Add")){
-            if(checkUserInput() == true){
-                try {
-                    JustWorkApp.out.println("AddO:"
-                                            +nameTextField.getText()+":"
-                                            +descriptionTextArea.getText()+":"
-                                            +ubicationTextField.getText()+":"
-                                            +salaryTextField.getText()+":"
-                                            +contractTypeTextField.getText()+":");
-                    
-                    String[] entradaDividida = JustWorkApp.in.readLine().split(":");
-                    if(entradaDividida[1].equals("C")){
-                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } 
+            if(checkUserInput() == true){  
+                JustWorkApp.sendMessage("AddO:"
+                                        +nameTextField.getText()+":"
+                                        +descriptionTextArea.getText()+":"
+                                        +ubicationTextField.getText()+":"
+                                        +salaryTextField.getText()+":"
+                                        +contractTypeTextField.getText()+":");
+
+                String[] processedInput = JustWorkApp.recieveMessage().split(":");
+                if(processedInput[1].equals("C")){
+                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                } else if(processedInput[1].equals("I")){
+                    JOptionPane.showMessageDialog(null, processedInput[2]);
+                }
             }   
         }
     }
-
-    @FXML
-    private void checkLength(KeyEvent event) {
-        /*if(descriptionTextArea.getText().length()>30){
-            descriptionTextArea.setText(descriptionTextArea.getText(0, descriptionTextArea.getText().length()-1));
-        }*/
-    }
-    
+ 
     
     private boolean checkUserInput(){
     
@@ -166,8 +137,7 @@ public class OfertModifierController implements Initializable {
         }else if(contractTypeTextField.getText().contains(":")){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain :");
             return false;
-        }
-        
+        } 
         try{
             Integer.valueOf(salaryTextField.getText());
         }catch(NumberFormatException ex){
@@ -177,4 +147,40 @@ public class OfertModifierController implements Initializable {
             
         return true;
     }
+
+    @FXML
+    private void changeToLabelPane(ActionEvent event) {
+        JustWorkApp.sendMessage("L:AddO");           
+        MainBusinessmanController.getInstance().setMainPane("../view/labels/labelsSelection.fxml", "Add Offer > Select Labels"); 
+        
+        
+    }
+ 
+     private void addInfo(String[] processedInput){
+         for(int i= 1;i<processedInput.length;i=i+8){
+                modifyOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
+
+                nameTextField.setText(modifyOfert.getName());
+                descriptionTextArea.setText(modifyOfert.getDescription()); 
+                ubicationTextField.setText(modifyOfert.getUbication());
+                salaryTextField.setText(String.valueOf(modifyOfert.getSalary()));
+                contractTypeTextField.setText(modifyOfert.getContractType());
+                String[] labels = processedInput[8].split(",");
+                String labelsString = "";
+                if(labels.length >= 2){
+                    List labelsList = new ArrayList();
+                    for(int j = 1;j<labels.length;j++){
+                        labelsList.add(labels[j]);
+
+                        labelsString += labels[j];
+                        if(i != labels.length-1){
+                            labelsString += " , ";
+                        } 
+                    }
+                    labelsInfo.setText(labelsString);
+                    modifyOfert.setLabelsList(labelsList);
+
+                }
+            }
+     }
 }

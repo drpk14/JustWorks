@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-oct-2022 14:37:38 by Hibernate Tools 4.3.1 -->
+<!-- Generated 14-feb-2023 11:28:18 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entities.Label" table="label" catalog="justworks" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
@@ -11,11 +11,29 @@
         <property name="name" type="string">
             <column name="name" length="15" />
         </property>
-        <set name="labelOferts" table="label_ofert" inverse="true" lazy="true" fetch="select">
+        <set name="alerts" table="alert" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="labelId" />
             </key>
-            <one-to-many class="entities.LabelOfert" />
+            <one-to-many class="entities.Alert" />
+        </set>
+        <set name="notifications" table="notification" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="labelId" />
+            </key>
+            <one-to-many class="entities.Notification" />
+        </set>
+        <set name="labelOffers" table="label_offer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="labelId" />
+            </key>
+            <one-to-many class="entities.LabelOffer" />
+        </set>
+        <set name="labelKnowledges" table="label_knowledge" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="labelId" />
+            </key>
+            <one-to-many class="entities.LabelKnowledge" />
         </set>
     </class>
 </hibernate-mapping>

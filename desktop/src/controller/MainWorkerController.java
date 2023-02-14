@@ -33,13 +33,21 @@ public class MainWorkerController implements Initializable {
     @FXML
     private Text informationText; 
     
+    @FXML
+    private MFXButton profileButton;
+    
+    private static MainWorkerController instance;
+    
     /**
      * Initializes the controller class.
      */   
      
     
+    public static MainWorkerController getInstance() {
+        return instance;
+    }
     
-    public void setMainPane(String paneName,String information) {
+    public void setMainPane(String paneName, String information) {
         try {
             Pane view = null;
             URL fileUrl = getClass().getResource(paneName);
@@ -47,16 +55,22 @@ public class MainWorkerController implements Initializable {
             if(fileUrl == null)
                 throw new java.io.FileNotFoundException("FXML not found");
 
+            
             view =FXMLLoader.load(fileUrl);
             mainPane.setCenter(view);
-            informationText.setText(information);
+            this.changeInformation(information);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
     
+    public void changeInformation(String informationString){
+        informationText.setText(informationString);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
+        instance = this;
     }    
  
     
@@ -64,6 +78,8 @@ public class MainWorkerController implements Initializable {
     private void changeMainPane(ActionEvent event) {
         if(event.getSource() == ofertsButton){  
             this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
+        }else if(event.getSource() == profileButton){
+            this.setMainPane("../view/users/UserViewer.fxml", "My Profile");
         }
         
     }

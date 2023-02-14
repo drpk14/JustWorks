@@ -1,5 +1,5 @@
 package entities;
-// Generated 25-oct-2022 14:37:38 by Hibernate Tools 4.3.1
+// Generated 14-feb-2023 11:28:17 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -35,7 +35,9 @@ public class Businessman  implements java.io.Serializable {
     public void setUser(User user) {
         this.user = user;
     } 
- 
+
+
+
 }
 
 

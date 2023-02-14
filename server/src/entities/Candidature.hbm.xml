@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14-feb-2023 11:28:18 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entities.Candidature" table="candidature" catalog="justworks" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="offer" class="entities.Offer" fetch="select">
+            <column name="offerID" />
+        </many-to-one>
+        <property name="realizationDate" type="date">
+            <column name="realizationDate" length="10" />
+        </property>
+        <set name="messages" table="message" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="candidatureID" />
+            </key>
+            <one-to-many class="entities.Message" />
+        </set>
+    </class>
+</hibernate-mapping>

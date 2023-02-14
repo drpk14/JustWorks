@@ -1,5 +1,5 @@
-package entities; 
-// Generated 25-oct-2022 14:37:38 by Hibernate Tools 4.3.1
+package entities;
+// Generated 14-feb-2023 11:28:17 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import java.util.Set;
 public class User  implements java.io.Serializable {
 
 
+     private Integer id;
      private String dni;
      private String name;
      private String surname;
@@ -21,11 +22,7 @@ public class User  implements java.io.Serializable {
     public User() {
     }
 
-	
-    public User(String dni) {
-        this.dni = dni;
-    }
-    public User(String dni, String name, String surname, String email, String user, String password) {
+    public User(String dni, String name, String surname, String email, String user, String password ) {
        this.dni = dni;
        this.name = name;
        this.surname = surname;
@@ -34,6 +31,13 @@ public class User  implements java.io.Serializable {
        this.password = password; 
     }
    
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public String getDni() {
         return this.dni;
     }
@@ -77,11 +81,9 @@ public class User  implements java.io.Serializable {
         this.password = password;
     } 
 
-    @Override
-    public String toString(){
-        return this.getName()+" "+this.getSurname();
-    }
-    
+
+
+
 }
 
 
