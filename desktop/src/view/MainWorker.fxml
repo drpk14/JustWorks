@@ -34,8 +34,18 @@
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
+                        <MFXButton fx:id="alertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Alerts">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </MFXButton>
                      </children>
                   </HBox>
+                  <MFXButton fx:id="notificationButton" contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#changeMainPane" prefHeight="51.0" prefWidth="60.0" style="-fx-background-color: #81e4f7;" text=" " textAlignment="RIGHT">
+                     <graphic>
+                        <FontAwesomeIconView caretBias="false" fill="WHITE" glyphName="BELL" selectionEnd="1" selectionStart="0" size="30" stroke="BLACK" textAlignment="RIGHT" />
+                     </graphic>
+                  </MFXButton>
                   <MFXButton fx:id="profileButton" contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#changeMainPane" prefHeight="51.0" prefWidth="60.0" style="-fx-background-color: #81e4f7;" text=" " textAlignment="RIGHT">
                      <graphic>
                         <FontAwesomeIconView caretBias="false" fill="WHITE" glyphName="USER" selectionEnd="1" size="30" stroke="BLACK" textAlignment="RIGHT" />

@@ -1,20 +1,20 @@
 package cells;
-
-import controller.oferts.OfertListViewController;
-import Entities.Ofert;
+ 
+import Entities.Notification; 
+import controller.notifications.NotificationListViewController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane; 
 
-public class OfertCell extends ListCell<Ofert>{
+public class NotificationCell extends ListCell<Notification>{
         
-        public OfertCell(){
+        public NotificationCell(){
             super(); 
         }
         
         @Override
-        public void updateItem(Ofert item,boolean empty){
+        public void updateItem(Notification item,boolean empty){
             super.updateItem(item, empty);
             
             this.setText(null);
@@ -22,12 +22,12 @@ public class OfertCell extends ListCell<Ofert>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("../view/oferts/OfertListView.fxml"));
+                    loader.setLocation(getClass().getResource("../view/notifications/NotificationListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      
-                    OfertListViewController ofertController = loader.getController();
-                    ofertController.configurateOfert(item);
+                    NotificationListViewController notificationController = loader.getController();
+                    notificationController.configurateNotification(item);
                     this.setGraphic(pane);
                     
                 } catch (IOException ex) {

@@ -1,8 +1,7 @@
  
 package Entities;
  
-import java.util.List;
-import java.util.Set;
+import java.util.List; 
 
 public class Ofert {
     private int Id;

@@ -36,6 +36,9 @@ public class MainWorkerController implements Initializable {
     @FXML
     private MFXButton profileButton;
     
+    @FXML
+    private MFXButton alertsButton;
+    
     private static MainWorkerController instance;
     
     /**
@@ -46,6 +49,9 @@ public class MainWorkerController implements Initializable {
     public static MainWorkerController getInstance() {
         return instance;
     }
+    @FXML
+    private MFXButton notificationButton;
+    
     
     public void setMainPane(String paneName, String information) {
         try {
@@ -80,8 +86,11 @@ public class MainWorkerController implements Initializable {
             this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
         }else if(event.getSource() == profileButton){
             this.setMainPane("../view/users/UserViewer.fxml", "My Profile");
+        } else if(event.getSource() == alertsButton){
+            this.setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts");
+        } else if(event.getSource() == notificationButton){  
+            this.setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
         }
-        
     }
 
     @FXML

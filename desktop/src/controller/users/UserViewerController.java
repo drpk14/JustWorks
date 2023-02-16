@@ -66,4 +66,13 @@ public class UserViewerController implements Initializable {
             MainWorkerController.getInstance().setMainPane("../view/users/UserModifier.fxml","My Profile > Edit Profile"); 
         }
     }
+
+    @FXML
+    private void deleteUser(ActionEvent event) {
+        JustWorkApp.sendMessage("DelU");
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");  
+        if(processedInput[1].equals("C")){
+            
+        }
+    }
 }

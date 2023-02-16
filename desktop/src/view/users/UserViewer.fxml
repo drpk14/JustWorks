@@ -62,7 +62,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="351.0" layoutY="514.0" onAction="#showEditPane" text="Edit">
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="301.0" layoutY="510.0" onAction="#showEditPane" text="Edit">
          <font>
             <Font size="20.0" />
          </font>
@@ -72,5 +72,10 @@
             <Font size="20.0" />
          </font>
       </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="401.0" layoutY="510.0" onAction="#deleteUser" style="-fx-background-color: RED;" text="Delete" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
    </children>
 </AnchorPane>

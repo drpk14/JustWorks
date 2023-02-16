@@ -7,12 +7,9 @@ package controller.oferts;
 import Entities.Ofert; 
 import controller.MainBusinessmanController;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
-import java.io.IOException;
+import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView; 
 import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ResourceBundle; 
 import javafx.event.ActionEvent; 
 import javafx.fxml.FXML;  
 import javafx.fxml.Initializable; 
@@ -52,16 +49,7 @@ public class MyOfertsController implements Initializable {
         
             initializeData();
             listView.setCellFactory(param -> new OfertCell()); 
-            
-        /*try{    
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(this.getClass().getResource("../../view/MainBusinessman.fxml"));
-            loader.load(); 
-            bController = loader.getController();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MyOfertsController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+          
             
     } 
     

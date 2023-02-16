@@ -6,6 +6,7 @@ package controller.oferts;
 
 import Entities.Ofert;
 import controller.MainBusinessmanController; 
+import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.net.URL;
@@ -43,18 +44,24 @@ public class OfertViewerController implements Initializable {
     @FXML
     private Text labelTextField;
      
-    
+    private int offerId = 0;
+    @FXML
+    private MFXButton candidateButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
-         
+         if(MainBusinessmanController.getInstance() != null){
+             candidateButton.setText("See Candidates");
+        }else if(MainWorkerController.getInstance() != null){
+             candidateButton.setText("Candidate");
+        }
     }
     
     private void initializeData(){  
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
         for(int i= 1;i<processedInput.length;i=i+8){
             Ofert newOffer = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
-
+                offerId = Integer.parseInt(processedInput[i]);
                 nameTextField.setText(newOffer.getName());
                 descriptionTextArea.setText(newOffer.getDescription()); 
                 ubicationTextField.setText(newOffer.getUbication());
@@ -80,7 +87,27 @@ public class OfertViewerController implements Initializable {
     } 
 
     @FXML
-    private void exitWindow(ActionEvent event) { 
-        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
+    private void exitWindow(ActionEvent event) {
+        if(MainBusinessmanController.getInstance() != null){
+            MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
+        }else if(MainWorkerController.getInstance() != null){ 
+        
+            MainWorkerController.getInstance().setMainPane("../view/oferts/AllOferts.fxml", "All Oferts");
+        }
+    } 
+
+    @FXML
+    private void candidate(ActionEvent event) {
+        JustWorkApp.sendMessage("CheckC:"+offerId); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        if(processedInput[1].equals("C")){
+            System.out.println("todo okeyyyyy");
+        }else if(processedInput[1].equals("I")){
+            if(processedInput[2].equals("Some")){
+                System.out.println("solo unas cuantas");
+            }else{
+                System.out.println("aasdasdasdasd");
+            }
+        }
     } 
 }

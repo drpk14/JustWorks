@@ -99,6 +99,32 @@ public class OfferDao {
         return offer;
     }
     
+    public static boolean checkIfOfferUpdated(Offer offer, User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+            query = session.createQuery("FROM Offer O JOIN O.businessman B JOIN B.user U WHERE O.name = :name AND U.dni = :dni AND O.id != :id"); 
+            query.setString("name",offer.getName());
+            query.setString("dni",user.getDni());
+            query.setString("id",String.valueOf(offer.getId()));
+             
+            List<Object> consult =  query.list(); 
+            if(consult.size() > 0){
+                return true;
+            }
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }
+    
     public static boolean checkIfExistOffer(Offer offer, User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null;  
@@ -107,7 +133,7 @@ public class OfferDao {
             Query query = null;
             query = session.createQuery("FROM Offer O JOIN O.businessman B JOIN B.user U WHERE O.name = :name AND U.dni = :dni"); 
             query.setString("name",offer.getName());
-            query.setString("dni",user.getDni());
+            query.setString("dni",user.getDni()); 
              
             List<Object> consult =  query.list(); 
             if(consult.size() > 0){

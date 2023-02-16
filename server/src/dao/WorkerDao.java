@@ -36,18 +36,20 @@ public class WorkerDao {
         }  
     }
     
-    public static boolean checkIfWorker(User user){
+    public static Worker checkIfWorker(User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
-        Transaction tx = null; 
-        User returnedUser = null;
+        Transaction tx = null;  
         try{
             tx = session.beginTransaction();
             Query query = session.createQuery("FROM Worker W JOIN W.user U WHERE U.dni = :dni");
             query.setString("dni", user.getDni());
             
             List<Object[]> users = query.list();
-            if(users.size() > 0)
-                return true;
+            if(users.size() > 0){
+                Object[] object = users.get(0);
+                return (Worker) object[0];
+            
+            }
                         
             tx.commit(); 
             
@@ -57,6 +59,6 @@ public class WorkerDao {
         }finally {
             session.close();
         }  
-        return false;
+        return null;
     }
 }

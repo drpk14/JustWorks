@@ -13,15 +13,6 @@
         </many-to-one>
         <many-to-one name="worker" class="entities.Worker" fetch="select">
             <column name="workerId" />
-        </many-to-one>
-        <property name="name" type="string">
-            <column name="name" length="15" />
-        </property>
-        <set name="notifications" table="notification" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="alertId" />
-            </key>
-            <one-to-many class="entities.Notification" />
-        </set>
+        </many-to-one> 
     </class>
 </hibernate-mapping>

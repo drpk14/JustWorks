@@ -2,17 +2,22 @@ package server;
 
 
     
+import dao.AlertDao;
 import dao.BusinessmanDao; 
 import static dao.BusinessmanDao.checkIfBusinessman;
+import dao.KnowledgeDao;
 import dao.LabelDao;
 import dao.LabelOfferDao;
+import dao.NotificationDao;
 import dao.OfferDao;
 import dao.UserDao; 
 import dao.WorkerDao;  
 import static dao.WorkerDao.checkIfWorker;
+import entities.Alert;
 import entities.Businessman;
 import entities.Label;
 import entities.LabelOffer;
+import entities.Notification;
 import entities.Offer;
 import entities.User;
 import entities.Worker;
@@ -34,8 +39,7 @@ public class Protocol {
     private String output;
     
     private ServerThread hilo; 
-
-    private List<String> labelsSelected = new ArrayList();
+ 
     public States getState() {
         return state;
     }
@@ -65,7 +69,7 @@ public class Protocol {
                     output+="C:";
                     if(checkIfBusinessman(myUser) != null){
                         output+="B";
-                    }else if(checkIfWorker(myUser)){
+                    }else if(checkIfWorker(myUser) != null){
                         output+="W";
                     }else{
                         output+="A";
@@ -169,7 +173,7 @@ public class Protocol {
                         if(!offer.getContractType().equals(processedInput[6]))
                             offer.setContractType(processedInput[6]);
                         
-                        if(!OfferDao.checkIfExistOffer(offer,myUser)){
+                        if(!OfferDao.checkIfOfferUpdated(offer,myUser)){
                             OfferDao.updateOffer(offer);
                             output+=":C";
                         }else{
@@ -185,14 +189,17 @@ public class Protocol {
                 if(processedInput.length > 1){
                     
                     
-                    
+                    String[] labels = processedInput[6].split(",");
                     Offer offerToAdd = new Offer(BusinessmanDao.checkIfBusinessman(myUser),processedInput[1],processedInput[2],processedInput[3],Integer.valueOf(processedInput[4]),processedInput[5]); 
                        
                     if(!OfferDao.checkIfExistOffer(offerToAdd,myUser)){    
                         OfferDao.addOffer(offerToAdd);    
 
-                        for(String label : labelsSelected){ 
+                        for(String label : labels){ 
                             LabelOfferDao.addLabelOffer(new LabelOffer(LabelDao.getLabelByName(label),offerToAdd));
+                            for(Alert alert : AlertDao.getAlertsByLabel(LabelDao.getLabelByName(label))){
+                                NotificationDao.addNotification(new Notification(alert,alert.getLabel(),offerToAdd));
+                            }
                         }
 
                         output+="C";
@@ -205,24 +212,15 @@ public class Protocol {
                 output+="DelO";
                 output+=":"; 
                 OfferDao.deleteOffer(OfferDao.getOfferDetails(Integer.valueOf(processedInput[1])));
+                    
                 output+="C";
             }else if(processedInput[0].equals("L")){
                 output+="L:"; 
-                
-                if(processedInput.length <= 1){
-                    if(processedInput[1].equals("AddO")){
-                        output+="AddO:"; 
-                    }
-                    for(Label label : LabelDao.getAllLabels()){
-                        output+=label.getName();
-                        output+=":";
-                    }
-                }else{
-                    for(int i = 1;i<processedInput.length;i++){
-                        labelsSelected.add(processedInput[i]);
-                    }
-                    output+="C";
-                }
+                 
+                for(Label label : LabelDao.getAllLabels()){
+                    output+=label.getName();
+                    output+=":";
+                } 
             }else if(processedInput[0].equals("UDet")){
                 output+="UDet:";
                 if(processedInput.length <= 1){ 
@@ -277,6 +275,73 @@ public class Protocol {
                 }else{
                     output+="I:You must modify at least one field";
                 }
+            }else if(processedInput[0].equals("MyA")){
+                output+="MyA:"; 
+                 
+                for(Alert alert : AlertDao.getMyAlerts(myUser)){
+                    output+=alert.getLabel().getName();
+                    output+=":";
+                } 
+            }else if(processedInput[0].equals("AddA")){
+                output+="AddA:"; 
+                if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1])) == null){
+                    AlertDao.addAlert(new Alert(LabelDao.getLabelByName(processedInput[1]),WorkerDao.checkIfWorker(myUser)));
+                    output+="C"; 
+                }else{
+                    output+="I:You already have one alert with this label:"; 
+                
+                }
+            }else if(processedInput[0].equals("DelA")){
+                output+="DelA:"; 
+                if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1]))!= null){
+                    AlertDao.deleteOffer(AlertDao.getAlert(myUser,LabelDao.getLabelByName(processedInput[1])));
+                    output+="C";  
+                }else{
+                    output+="I:This alert don't exist:"; 
+                
+                }
+            }else if(processedInput[0].equals("MyN")){
+                output+="MyN:"; 
+                 
+                for(Notification notification : NotificationDao.getMyNotifications(myUser)){
+                    output+=notification.getId()+":";
+                    output+=notification.getOffer().getName()+":";
+                    output+=notification.getOffer().getId()+":";
+                    output+=notification.getLabel().getName()+":";
+                } 
+            }else if(processedInput[0].equals("DelN")){
+                output+="DelN:"; 
+                
+                NotificationDao.deleteNotification(NotificationDao.getNotificationById(Integer.valueOf(processedInput[1])));
+                output+="C";
+            }else if(processedInput[0].equals("DelN")){
+                output+="DelN:"; 
+                
+                NotificationDao.deleteNotification(NotificationDao.getNotificationById(Integer.valueOf(processedInput[1])));
+                output+="C";
+            }else if(processedInput[0].equals("CheckC")){
+                output+="CheckC:"; 
+                Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
+                
+                Boolean ninguna = true; 
+                ArrayList<Boolean> returnValue = new ArrayList();
+                
+                for(Label label : LabelOfferDao.getLabelsByOffer(offer)){
+                    if(KnowledgeDao.getKnowledgeForThisLabel(label, myUser).size() > 0){
+                        ninguna = false; 
+                        returnValue.add(true);
+                    }else{
+                        returnValue.add(false);
+                    }
+                }
+                
+                if(areAllTrue(returnValue)){
+                    output+="C:";     
+                }else if(!ninguna){
+                    output+="I:Some";  
+                }else if(ninguna){
+                    output+="I:Any";  
+                }
             }
         } 
         
@@ -309,5 +374,13 @@ public class Protocol {
     
     }
  
-    
+    public static boolean areAllTrue(ArrayList<Boolean> array){
+        
+        for(boolean b : array)
+            if(!b) 
+                return false;
+        
+        
+        return true;
+    }
 }

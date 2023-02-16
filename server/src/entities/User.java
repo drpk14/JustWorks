@@ -81,9 +81,33 @@ public class User  implements java.io.Serializable {
         this.password = password;
     } 
 
-
-
-
+    @Override
+    public String toString(){
+        return this.getName()+" "+this.getSurname();
+    }
+    
+    @Override
+    public boolean equals(Object object){
+        User other = (User) object;
+        if(!this.getDni().equals(other.getDni()))
+            return false;
+        
+        if(!this.getEmail().equals(other.getEmail()))
+            return false;
+        
+        if(!this.getName().equals(other.getName()))
+            return false;
+        
+        if(!this.getSurname().equals(other.getSurname()))
+            return false;
+        
+        if(!this.getUser().equals(other.getUser()))
+            return false;
+        if(!this.getPassword().equals(other.getPassword()))
+            return false;
+        
+        return true;
+    }
 }
 
 

@@ -8,14 +8,18 @@ import Entities.Ofert;
 import controller.MainBusinessmanController; 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField; 
+import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;   
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable; 
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;  
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javax.swing.JOptionPane;
 import view.JustWorkApp;
@@ -40,17 +44,44 @@ public class OfertModifierController implements Initializable {
     @FXML
     private MFXButton confirmActionButton; 
     
-    private Ofert modifyOfert = null;  
-    private Text labelsInfo;
+    private Ofert modifyOfert = null;   
     @FXML
     private MFXButton changeLabelButton;
+    @FXML
+    private AnchorPane labelsPane;
+    @FXML
+    private MFXLegacyListView<String> selectionListView;
+    @FXML
+    private Text selectedLabelsText;
+    @FXML
+    private Text labelsInfo;
      
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
          
-         
+        selectionListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        
+        selectionListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+                if(selectionListView.getSelectionModel().getSelectedItems().size() <= 3){
+                    String labelsString = "";
+                    for(int i = 0;i<selectionListView.getSelectionModel().getSelectedItems().size();i++){
+
+                        labelsString += selectionListView.getSelectionModel().getSelectedItems().get(i);
+                        if(i != selectionListView.getSelectionModel().getSelectedItems().size()-1){
+                            labelsString += " , ";
+                        }
+                    }
+                    selectedLabelsText.setText(labelsString);
+                }else{
+                    selectionListView.getSelectionModel().getSelectedItems().remove(c);
+                    JOptionPane.showMessageDialog(null, "You can't select more than 3 labels");
+                }
+            } 
+        });
     }
     
     private void initializeData(){ 
@@ -60,10 +91,13 @@ public class OfertModifierController implements Initializable {
         if(processedInput[0].equals("ModO")){
             changeLabelButton.setDisable(true);
             confirmActionButton.setText("Modify");
+            this.addInfo(processedInput);
             
         }else{
             confirmActionButton.setText("Add");
-        }   
+        } 
+        
+        
     } 
 
     @FXML
@@ -88,7 +122,8 @@ public class OfertModifierController implements Initializable {
                             +descriptionTextArea.getText()+":"
                             +ubicationTextField.getText()+":"
                             +salaryTextField.getText()+":"
-                            +contractTypeTextField.getText()); 
+                            +contractTypeTextField.getText()+":"
+                            +labelsInfo.getText()); 
                     
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
@@ -107,7 +142,8 @@ public class OfertModifierController implements Initializable {
                                         +descriptionTextArea.getText()+":"
                                         +ubicationTextField.getText()+":"
                                         +salaryTextField.getText()+":"
-                                        +contractTypeTextField.getText()+":");
+                                        +contractTypeTextField.getText()+":"
+                                        +this.getLabelString()); 
 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");
                 if(processedInput[1].equals("C")){
@@ -121,7 +157,7 @@ public class OfertModifierController implements Initializable {
  
     
     private boolean checkUserInput(){
-    
+        System.out.println(selectionListView.getSelectionModel().getSelectedItems().size());
         if(nameTextField.getText().contains(":")){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain :");
             return false;
@@ -137,7 +173,12 @@ public class OfertModifierController implements Initializable {
         }else if(contractTypeTextField.getText().contains(":")){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain :");
             return false;
-        } 
+        }
+        
+        if(selectionListView.getSelectionModel().getSelectedItems().size() <= 0 && confirmActionButton.getText().equals("Add")){
+            JOptionPane.showMessageDialog(null, "You need to select at least one label");
+            return false;
+        }
         try{
             Integer.valueOf(salaryTextField.getText());
         }catch(NumberFormatException ex){
@@ -149,38 +190,71 @@ public class OfertModifierController implements Initializable {
     }
 
     @FXML
-    private void changeToLabelPane(ActionEvent event) {
-        JustWorkApp.sendMessage("L:AddO");           
-        MainBusinessmanController.getInstance().setMainPane("../view/labels/labelsSelection.fxml", "Add Offer > Select Labels"); 
-        
-        
+    private void changeToLabelPane(ActionEvent event) { 
+        JustWorkApp.sendMessage("L:");
+         
+        String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
+        for (int i = 1; i < processedInput2.length; i++) {
+            if(!selectionListView.getItems().contains(processedInput2[i])){
+                selectionListView.getItems().add(processedInput2[i]); 
+            } 
+        }
+        this.labelsPane.setVisible(true); 
     }
  
      private void addInfo(String[] processedInput){
-         for(int i= 1;i<processedInput.length;i=i+8){
-                modifyOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
+        for(int i= 1;i<processedInput.length;i=i+8){
+            modifyOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
 
-                nameTextField.setText(modifyOfert.getName());
-                descriptionTextArea.setText(modifyOfert.getDescription()); 
-                ubicationTextField.setText(modifyOfert.getUbication());
-                salaryTextField.setText(String.valueOf(modifyOfert.getSalary()));
-                contractTypeTextField.setText(modifyOfert.getContractType());
-                String[] labels = processedInput[8].split(",");
-                String labelsString = "";
-                if(labels.length >= 2){
-                    List labelsList = new ArrayList();
-                    for(int j = 1;j<labels.length;j++){
-                        labelsList.add(labels[j]);
+            nameTextField.setText(modifyOfert.getName());
+            descriptionTextArea.setText(modifyOfert.getDescription()); 
+            ubicationTextField.setText(modifyOfert.getUbication());
+            salaryTextField.setText(String.valueOf(modifyOfert.getSalary()));
+            contractTypeTextField.setText(modifyOfert.getContractType());
+            String[] labels = processedInput[8].split(",");
+            String labelsString = "";
+            if(labels.length >= 2){
+                List labelsList = new ArrayList();
+                for(int j = 1;j<labels.length;j++){
+                    labelsList.add(labels[j]);
 
-                        labelsString += labels[j];
-                        if(i != labels.length-1){
-                            labelsString += " , ";
-                        } 
-                    }
-                    labelsInfo.setText(labelsString);
-                    modifyOfert.setLabelsList(labelsList);
-
+                    labelsString += labels[j];
+                    
+                     
+                    
+                    if(i != labels.length-1){
+                        labelsString += " , ";
+                    } 
                 }
+                labelsInfo.setText(labelsString);
+                modifyOfert.setLabelsList(labelsList);
+
             }
+        }
      }
+
+    @FXML
+    private void saveLabels(ActionEvent event) {
+        labelsInfo.setText(this.getLabelString());
+        this.labelsPane.setVisible(false);
+    }
+
+    @FXML
+    private void exitLabelPane(ActionEvent event) {
+        this.labelsPane.setVisible(false);
+    }
+    
+    private String getLabelString(){
+        String labelsString = "";
+        System.out.println(selectionListView.getSelectionModel().getSelectedItems().size());
+        for(int i = 0;i<selectionListView.getSelectionModel().getSelectedItems().size();i++){
+            
+            labelsString += selectionListView.getSelectionModel().getSelectedItems().get(i);
+            if(i != selectionListView.getSelectionModel().getSelectedItems().size()-1){
+                labelsString += ",";
+            }
+        }
+    
+        return labelsString;
+    }
 }

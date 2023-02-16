@@ -43,7 +43,7 @@ public class OfertListViewController implements Initializable {
         
     }   
     
-    public void configurateDate(Ofert ofert){
+    public void configurateOfert(Ofert ofert){
         this.id = ofert.getId();
         nameText.setText(ofert.getName());
         businessmanText.setText(ofert.getUser());

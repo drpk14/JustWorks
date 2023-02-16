@@ -68,7 +68,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="344.0" layoutY="563.0" onAction="#exitWindow" text="Exit">
+      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="302.0" layoutY="561.0" onAction="#exitWindow" text="Exit">
          <font>
             <Font size="20.0" />
          </font>
@@ -83,5 +83,10 @@
             <Font size="20.0" />
          </font>
       </Text>
+      <MFXButton fx:id="candidateButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="406.0" layoutY="561.0" onAction="#candidate" style="-fx-background-color: #53ff4a;" text="Candidate" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
    </children>
 </AnchorPane>

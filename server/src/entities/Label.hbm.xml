@@ -10,30 +10,6 @@
         </id>
         <property name="name" type="string">
             <column name="name" length="15" />
-        </property>
-        <set name="alerts" table="alert" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="labelId" />
-            </key>
-            <one-to-many class="entities.Alert" />
-        </set>
-        <set name="notifications" table="notification" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="labelId" />
-            </key>
-            <one-to-many class="entities.Notification" />
-        </set>
-        <set name="labelOffers" table="label_offer" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="labelId" />
-            </key>
-            <one-to-many class="entities.LabelOffer" />
-        </set>
-        <set name="labelKnowledges" table="label_knowledge" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="labelId" />
-            </key>
-            <one-to-many class="entities.LabelKnowledge" />
-        </set>
+        </property> 
     </class>
 </hibernate-mapping>

@@ -13,18 +13,14 @@ public class Alert  implements java.io.Serializable {
 
      private Integer id;
      private Label label;
-     private Worker worker;
-     private String name;
-     private Set notifications = new HashSet(0);
+     private Worker worker; 
 
     public Alert() {
     }
 
-    public Alert(Label label, Worker worker, String name, Set notifications) {
+    public Alert(Label label, Worker worker ) {
        this.label = label;
-       this.worker = worker;
-       this.name = name;
-       this.notifications = notifications;
+       this.worker = worker; 
     }
    
     public Integer getId() {
@@ -47,22 +43,7 @@ public class Alert  implements java.io.Serializable {
     
     public void setWorker(Worker worker) {
         this.worker = worker;
-    }
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Set getNotifications() {
-        return this.notifications;
-    }
-    
-    public void setNotifications(Set notifications) {
-        this.notifications = notifications;
-    }
-
+    } 
 
 
 

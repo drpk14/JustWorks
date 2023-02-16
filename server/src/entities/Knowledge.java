@@ -16,22 +16,16 @@ public class Knowledge  implements java.io.Serializable {
      private Worker worker;
      private String name;
      private Date fechaInicio;
-     private Date fechaFin;
-     private Set qualifications = new HashSet(0);
-     private Set labelKnowledges = new HashSet(0);
-     private Set workExperiences = new HashSet(0);
+     private Date fechaFin; 
 
     public Knowledge() {
     }
 
-    public Knowledge(Worker worker, String name, Date fechaInicio, Date fechaFin, Set qualifications, Set labelKnowledges, Set workExperiences) {
+    public Knowledge(Worker worker, String name, Date fechaInicio, Date fechaFin ) {
        this.worker = worker;
        this.name = name;
        this.fechaInicio = fechaInicio;
-       this.fechaFin = fechaFin;
-       this.qualifications = qualifications;
-       this.labelKnowledges = labelKnowledges;
-       this.workExperiences = workExperiences;
+       this.fechaFin = fechaFin; 
     }
    
     public Integer getId() {
@@ -68,29 +62,7 @@ public class Knowledge  implements java.io.Serializable {
     
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
-    }
-    public Set getQualifications() {
-        return this.qualifications;
-    }
-    
-    public void setQualifications(Set qualifications) {
-        this.qualifications = qualifications;
-    }
-    public Set getLabelKnowledges() {
-        return this.labelKnowledges;
-    }
-    
-    public void setLabelKnowledges(Set labelKnowledges) {
-        this.labelKnowledges = labelKnowledges;
-    }
-    public Set getWorkExperiences() {
-        return this.workExperiences;
-    }
-    
-    public void setWorkExperiences(Set workExperiences) {
-        this.workExperiences = workExperiences;
-    }
-
+    } 
 
 
 
