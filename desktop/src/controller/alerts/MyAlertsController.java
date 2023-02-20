@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javax.swing.JOptionPane;
 import cells.OfertCell;
 import controller.MainWorkerController;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.ArrayList; 
 import java.util.List; 
 import javafx.collections.ListChangeListener;
@@ -40,6 +41,10 @@ public class MyAlertsController implements Initializable {
     private MFXLegacyListView<String> alertListView;
     @FXML
     private MFXLegacyListView<String> labelListView;
+    @FXML
+    private AnchorPane newLabelPane;
+    @FXML
+    private MFXTextField newLabelNameTextField;
     
     //private MainBusinessmanController bController; 
     
@@ -116,11 +121,52 @@ public class MyAlertsController implements Initializable {
         
     
     }
+ 
 
     @FXML
-    private void exitLabelPane(ActionEvent event) {
+    private void changeToAddLabelPane(ActionEvent event) {
+        this.labelsPane.setVisible(false);
+        this.newLabelPane.setVisible(true); 
+    }
+
+    @FXML
+    private void exitLabelsPane(ActionEvent event) {
         
         this.labelsPane.setVisible(false);
-    
-    } 
+        this.newLabelPane.setVisible(false); 
+    }
+
+    @FXML
+    private void saveLabel(ActionEvent event) {
+        if(!newLabelNameTextField.getText().isEmpty()){
+            JustWorkApp.sendMessage("AddL:"+newLabelNameTextField.getText()); 
+
+            
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");
+            if(processedInput[1].equals("C")){
+                labelListView.getItems().clear();
+                JustWorkApp.sendMessage("L:"); 
+         
+         
+                String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
+                for (int i = 1; i < processedInput2.length; i++) {
+                    if(!labelListView.getItems().contains(processedInput2[i])){
+                        labelListView.getItems().add(processedInput2[i]); 
+                    } 
+                }
+                this.labelsPane.setVisible(true);
+                this.newLabelPane.setVisible(false); 
+            }else{
+                JOptionPane.showMessageDialog(null, "This label already exits");
+            }
+        }
+    }
+
+    @FXML
+    private void exitAddLabelPane(ActionEvent event) {
+        
+        this.labelsPane.setVisible(true);
+        this.newLabelPane.setVisible(false); 
+        
+    }
 }

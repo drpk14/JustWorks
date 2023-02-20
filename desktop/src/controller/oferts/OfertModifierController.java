@@ -48,36 +48,40 @@ public class OfertModifierController implements Initializable {
     @FXML
     private MFXButton changeLabelButton;
     @FXML
-    private AnchorPane labelsPane;
-    @FXML
-    private MFXLegacyListView<String> selectionListView;
+    private AnchorPane labelsPane; 
     @FXML
     private Text selectedLabelsText;
     @FXML
     private Text labelsInfo;
+    @FXML
+    private MFXLegacyListView<String> labelListView;
+    @FXML
+    private AnchorPane newLabelPane;
+    @FXML
+    private MFXTextField newLabelNameTextField;
      
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
          
-        selectionListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        labelListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
-        selectionListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
+        labelListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
-                if(selectionListView.getSelectionModel().getSelectedItems().size() <= 3){
+                if(labelListView.getSelectionModel().getSelectedItems().size() <= 3){
                     String labelsString = "";
-                    for(int i = 0;i<selectionListView.getSelectionModel().getSelectedItems().size();i++){
+                    for(int i = 0;i<labelListView.getSelectionModel().getSelectedItems().size();i++){
 
-                        labelsString += selectionListView.getSelectionModel().getSelectedItems().get(i);
-                        if(i != selectionListView.getSelectionModel().getSelectedItems().size()-1){
+                        labelsString += labelListView.getSelectionModel().getSelectedItems().get(i);
+                        if(i != labelListView.getSelectionModel().getSelectedItems().size()-1){
                             labelsString += " , ";
                         }
                     }
                     selectedLabelsText.setText(labelsString);
                 }else{
-                    selectionListView.getSelectionModel().getSelectedItems().remove(c);
+                    labelListView.getSelectionModel().getSelectedItems().remove(c);
                     JOptionPane.showMessageDialog(null, "You can't select more than 3 labels");
                 }
             } 
@@ -157,7 +161,7 @@ public class OfertModifierController implements Initializable {
  
     
     private boolean checkUserInput(){
-        System.out.println(selectionListView.getSelectionModel().getSelectedItems().size());
+        System.out.println(labelListView.getSelectionModel().getSelectedItems().size());
         if(nameTextField.getText().contains(":")){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain :");
             return false;
@@ -175,7 +179,7 @@ public class OfertModifierController implements Initializable {
             return false;
         }
         
-        if(selectionListView.getSelectionModel().getSelectedItems().size() <= 0 && confirmActionButton.getText().equals("Add")){
+        if(labelListView.getSelectionModel().getSelectedItems().size() <= 0 && confirmActionButton.getText().equals("Add")){
             JOptionPane.showMessageDialog(null, "You need to select at least one label");
             return false;
         }
@@ -195,8 +199,8 @@ public class OfertModifierController implements Initializable {
          
         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
         for (int i = 1; i < processedInput2.length; i++) {
-            if(!selectionListView.getItems().contains(processedInput2[i])){
-                selectionListView.getItems().add(processedInput2[i]); 
+            if(!labelListView.getItems().contains(processedInput2[i])){
+                labelListView.getItems().add(processedInput2[i]); 
             } 
         }
         this.labelsPane.setVisible(true); 
@@ -233,28 +237,75 @@ public class OfertModifierController implements Initializable {
         }
      }
 
-    @FXML
     private void saveLabels(ActionEvent event) {
         labelsInfo.setText(this.getLabelString());
         this.labelsPane.setVisible(false);
     }
 
-    @FXML
     private void exitLabelPane(ActionEvent event) {
         this.labelsPane.setVisible(false);
     }
     
     private String getLabelString(){
         String labelsString = "";
-        System.out.println(selectionListView.getSelectionModel().getSelectedItems().size());
-        for(int i = 0;i<selectionListView.getSelectionModel().getSelectedItems().size();i++){
+        System.out.println(labelListView.getSelectionModel().getSelectedItems().size());
+        for(int i = 0;i<labelListView.getSelectionModel().getSelectedItems().size();i++){
             
-            labelsString += selectionListView.getSelectionModel().getSelectedItems().get(i);
-            if(i != selectionListView.getSelectionModel().getSelectedItems().size()-1){
+            labelsString += labelListView.getSelectionModel().getSelectedItems().get(i);
+            if(i != labelListView.getSelectionModel().getSelectedItems().size()-1){
                 labelsString += ",";
             }
         }
     
         return labelsString;
+    }
+
+    @FXML
+    private void saveAlert(ActionEvent event) {
+    }
+
+    @FXML
+    private void changeToAddLabelPane(ActionEvent event) {
+        this.labelsPane.setVisible(false);
+        this.newLabelPane.setVisible(true); 
+    }
+
+    @FXML
+    private void exitLabelsPane(ActionEvent event) {
+        
+        this.labelsPane.setVisible(false);
+        this.newLabelPane.setVisible(false); 
+    }
+
+    @FXML
+    private void saveLabel(ActionEvent event) {
+        if(!newLabelNameTextField.getText().isEmpty()){
+            JustWorkApp.sendMessage("AddL:"+newLabelNameTextField.getText()); 
+
+            
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");
+            if(processedInput[1].equals("C")){
+                labelListView.getItems().clear();
+                JustWorkApp.sendMessage("L:"); 
+         
+         
+                String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
+                for (int i = 1; i < processedInput2.length; i++) {
+                    if(!labelListView.getItems().contains(processedInput2[i])){
+                        labelListView.getItems().add(processedInput2[i]); 
+                    } 
+                }
+                this.labelsPane.setVisible(true);
+                this.newLabelPane.setVisible(false); 
+            }else{
+                JOptionPane.showMessageDialog(null, "This label already exits");
+            }
+        }
+    }
+
+    @FXML
+    private void exitAddLabelPane(ActionEvent event) {
+        this.labelsPane.setVisible(true);
+        this.newLabelPane.setVisible(false); 
     }
 }

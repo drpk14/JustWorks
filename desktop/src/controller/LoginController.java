@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.text.Text;  
+import javax.swing.JOptionPane;
 import view.JustWorkApp;
 
 /**
@@ -60,6 +61,10 @@ public class LoginController implements Initializable {
                     root = FXMLLoader.load(getClass().getResource("../view/MainWorker.fxml"));
                 }else if(processedInput[2].equals("A")){
                     root = FXMLLoader.load(getClass().getResource("../view/MainAdmin.fxml"));
+                }
+                
+                if(processedInput[3].equals("True")){
+                    JOptionPane.showMessageDialog(null, "You have new notifications");
                 }
                     
                 JustWorkApp.changeScene(root);

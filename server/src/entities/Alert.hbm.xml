@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 14-feb-2023 11:28:18 by Hibernate Tools 4.3.1 -->
+<!-- Generated 18-feb-2023 23:32:24 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entities.Alert" table="alert" catalog="justworks" optimistic-lock="version">
+    <class name="entities.Alert" table="alert" catalog="justworks">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="identity"></generator>
         </id>
         <many-to-one name="label" class="entities.Label" fetch="select">
             <column name="labelId" />
         </many-to-one>
         <many-to-one name="worker" class="entities.Worker" fetch="select">
             <column name="workerId" />
-        </many-to-one> 
+        </many-to-one>
     </class>
 </hibernate-mapping>

@@ -34,9 +34,7 @@ public class MyOfertsController implements Initializable {
     @FXML
     private MFXButton modifyButton;
     @FXML
-    private MFXButton deleteButton;  
-    @FXML
-    private MFXButton seeButton;
+    private MFXButton deleteButton;   
     
     //private MainBusinessmanController bController; 
     
@@ -79,12 +77,7 @@ public class MyOfertsController implements Initializable {
             MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Add Ofert");
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
-                if(event.getSource() == seeButton){   
-                    JustWorkApp.sendMessage("ODet:"+listView.getSelectionModel().getSelectedItem().getId());  
-                    
-                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml","My Oferts > Ofert Viewer");
-                    
-                }else if(event.getSource() == modifyButton){
+                if(event.getSource() == modifyButton){
                     JustWorkApp.sendMessage("ModO:"+listView.getSelectionModel().getSelectedItem().getId());  
                     MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Modify Ofert");
                 }else if(event.getSource() == deleteButton){ 

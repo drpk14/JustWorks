@@ -37,7 +37,9 @@ public class LabelDao {
             tx = session.beginTransaction();
             Query query = session.createQuery("FROM Label WHERE name = :name");
             query.setString("name", name);
-            label = (Label) query.list().get(0); 
+            List<Label> queryList = query.list();
+            if(queryList.size() > 0)
+                label = (Label) queryList.get(0); 
             tx.commit();  
         }catch (HibernateException e) { 
             if (tx!=null) tx.rollback(); 
@@ -47,4 +49,21 @@ public class LabelDao {
         } 
         return label;
     } 
+    
+    public static void addLabel(Label label) {
+     
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.save(label);
+            tx.commit();
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            
+         }finally {
+            session.close();
+        }   
+    }
 }

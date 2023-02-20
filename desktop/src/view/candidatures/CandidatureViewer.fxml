@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.candidatures.CandidatureViewerController">
+   <children>
+      <MFXLegacyListView fx:id="workListView" layoutX="17.0" layoutY="59.0" prefHeight="594.0" prefWidth="232.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <MFXLegacyListView fx:id="qualificationListView" layoutX="268.0" layoutY="59.0" prefHeight="594.0" prefWidth="232.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <MFXLegacyListView fx:id="labelsListView" layoutX="520.0" layoutY="59.0" prefHeight="262.0" prefWidth="215.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <Text layoutX="47.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Work Experience:">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="317.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Qualification:">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="594.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="stateText" layoutX="640.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="state">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="521.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State:">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Text>
+      <MFXButton fx:id="contactButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="578.0" layoutY="594.0" onAction="#contact" style="-fx-background-color: #53ff4a;" text="Contact" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MFXButton>
+      <RadioButton fx:id="acceptedStateButton" layoutX="549.0" layoutY="421.0" mnemonicParsing="false" text="Accepted">
+         <toggleGroup>
+            <ToggleGroup fx:id="StateToogleGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="deniedStateButton" layoutX="647.0" layoutY="421.0" mnemonicParsing="false" text="Denied" toggleGroup="$StateToogleGroup" />
+      <MFXButton fx:id="changeStateButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="575.0" layoutY="487.0" onAction="#changeState" text="Change State" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </MFXButton>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

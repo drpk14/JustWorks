@@ -4,10 +4,8 @@
  * and open the template in the editor.
  */
 package dao;
-
-import static dao.BusinessmanDao.checkIfBusinessman;
-import entities.Notification;
-import entities.Offer;
+ 
+import entities.Notification; 
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +46,29 @@ public class NotificationDao{
         return notifications;
     }  
     
+    public static boolean getMyUnwatchedNotifications(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+            query = session.createQuery("FROM Notification N JOIN N.alert A JOIN N.label L JOIN N.offer O JOIN A.worker W JOIN W.user U WHERE U.dni = :dni AND N.notified is false"); 
+            query.setString("dni", user.getDni());
+             
+            List<Object[]> queryList = query.list();
+            if(queryList.size() > 0)
+                return true;
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }  
     public static Notification getNotificationById(Integer Id){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null; 
@@ -79,6 +100,23 @@ public class NotificationDao{
             tx = session.beginTransaction();
             
             session.save(notification);
+            tx.commit();
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            
+         }finally {
+            session.close();
+        }   
+    }
+    
+    public static void updateNotification(Notification notification) {
+     
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;  
+        try{
+            tx = session.beginTransaction();
+            
+            session.update(notification);
             tx.commit();
         }catch (HibernateException e) {
             if (tx!=null) tx.rollback();

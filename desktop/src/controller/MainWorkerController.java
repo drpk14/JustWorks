@@ -51,6 +51,8 @@ public class MainWorkerController implements Initializable {
     }
     @FXML
     private MFXButton notificationButton;
+    @FXML
+    private MFXButton candidatureButton;
     
     
     public void setMainPane(String paneName, String information) {
@@ -90,6 +92,8 @@ public class MainWorkerController implements Initializable {
             this.setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts");
         } else if(event.getSource() == notificationButton){  
             this.setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+        } else if(event.getSource() == candidatureButton){  
+            this.setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
         }
     }
 

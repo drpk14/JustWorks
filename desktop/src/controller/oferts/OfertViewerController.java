@@ -7,8 +7,7 @@ package controller.oferts;
 import Entities.Ofert;
 import controller.MainBusinessmanController; 
 import controller.MainWorkerController;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import java.io.IOException;
+import io.github.palexdev.materialfx.controls.MFXButton; 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
+import javax.swing.JOptionPane;
 import view.JustWorkApp;
 
 /**
@@ -50,10 +50,10 @@ public class OfertViewerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
-         if(MainBusinessmanController.getInstance() != null){
-             candidateButton.setText("See Candidates");
+        if(MainBusinessmanController.getInstance() != null){
+            candidateButton.setText("See Candidates");
         }else if(MainWorkerController.getInstance() != null){
-             candidateButton.setText("Candidate");
+            candidateButton.setText("Candidate");
         }
     }
     
@@ -64,6 +64,7 @@ public class OfertViewerController implements Initializable {
                 offerId = Integer.parseInt(processedInput[i]);
                 nameTextField.setText(newOffer.getName());
                 descriptionTextArea.setText(newOffer.getDescription()); 
+                businessmanTextField.setText(newOffer.getUser());
                 ubicationTextField.setText(newOffer.getUbication());
                 salaryTextField.setText(String.valueOf(newOffer.getSalary()));
                 contractTypeTextField.setText(newOffer.getContractType());
@@ -95,19 +96,37 @@ public class OfertViewerController implements Initializable {
             MainWorkerController.getInstance().setMainPane("../view/oferts/AllOferts.fxml", "All Oferts");
         }
     } 
-
+        
     @FXML
     private void candidate(ActionEvent event) {
-        JustWorkApp.sendMessage("CheckC:"+offerId); 
-        String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        if(processedInput[1].equals("C")){
-            System.out.println("todo okeyyyyy");
-        }else if(processedInput[1].equals("I")){
-            if(processedInput[2].equals("Some")){
-                System.out.println("solo unas cuantas");
-            }else{
-                System.out.println("aasdasdasdasd");
+        if(MainBusinessmanController.getInstance() != null){
+            JustWorkApp.sendMessage("CDet:"+offerId); 
+            MainBusinessmanController.getInstance().setMainPane("../view/candidatures/CandidaturesForOffer.fxml","Candidatures for Offer");
+            
+        }else if(MainWorkerController.getInstance() != null){ 
+            JustWorkApp.sendMessage("CheckC:"+offerId); 
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");
+            if(processedInput[1].equals("C")){
+                JustWorkApp.sendMessage("AddC:"+offerId); 
+                String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
+                if(processedInput2[1].equals("C")){
+                    MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+                }
+            }else if(processedInput[1].equals("I")){
+                if(processedInput[2].equals("Some")){
+                    if(JOptionPane.showConfirmDialog(null, "You don't have one knowledge for each label, Do you want to make candidature?") == 0){
+                        JustWorkApp.sendMessage("AddC:"+offerId); 
+                        String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
+                        if(processedInput2[1].equals("C")){
+                            MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+                        }
+                    }
+
+                }else{
+                    JOptionPane.showMessageDialog(null, "You don't have any knowledge for any label");
+                }
             }
         }
+        
     } 
 }

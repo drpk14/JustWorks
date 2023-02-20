@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 14-feb-2023 11:28:18 by Hibernate Tools 4.3.1 -->
+<!-- Generated 18-feb-2023 23:32:24 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entities.LabelKnowledge" table="label_knowledge" catalog="justworks" optimistic-lock="version">
+    <class name="entities.LabelKnowledge" table="label_knowledge" catalog="justworks">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="identity"></generator>
         </id>
         <many-to-one name="knowledge" class="entities.Knowledge" fetch="select">
             <column name="knowledgeId" />

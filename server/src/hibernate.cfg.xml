@@ -45,7 +45,6 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/justworks?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
-    <mapping resource="entities/WorkExperience.hbm.xml"/>
     <mapping resource="entities/Notification.hbm.xml"/>
     <mapping resource="entities/Knowledge.hbm.xml"/>
     <mapping resource="entities/Message.hbm.xml"/>
@@ -54,7 +53,6 @@ Contributor(s):
     <mapping resource="entities/Businessman.hbm.xml"/>
     <mapping resource="entities/User.hbm.xml"/>
     <mapping resource="entities/LabelOffer.hbm.xml"/>
-    <mapping resource="entities/Qualification.hbm.xml"/>
     <mapping resource="entities/Worker.hbm.xml"/>
     <mapping resource="entities/Label.hbm.xml"/>
     <mapping resource="entities/LabelKnowledge.hbm.xml"/>

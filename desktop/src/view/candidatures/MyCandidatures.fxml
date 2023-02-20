@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.candidatures.MyCandidaturesController">
+   <children>
+      <MFXLegacyListView fx:id="listView" layoutX="12.0" layoutY="61.0" prefHeight="593.0" prefWidth="727.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <Text layoutX="28.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="States:" textAlignment="RIGHT" wrappingWidth="201.42269897460938">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="250.0" layoutY="14.0" onAction="#changeToAccepted" rippleColor="WHITE" style="-fx-background-color: #57ff65;" text="Accepted" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="351.0" layoutY="14.0" onAction="#changeToPending" rippleColor="WHITE" style="-fx-background-color: #ffb640;" text="Pending" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL1" layoutX="446.0" layoutY="14.0" onAction="#changeToDenied" rippleColor="WHITE" style="-fx-background-color: #fa3737;" text="Denied" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </MFXButton>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

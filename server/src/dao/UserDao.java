@@ -2,6 +2,7 @@
 package dao;
  
 import entities.*; 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -147,6 +148,28 @@ public class UserDao {
         return false;
     }
 
+    public static User getUserById(Integer id){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        User user = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+            query = session.createQuery("FROM User U WHERE U.id = :id"); 
+            query.setString("id", id+"");
+             
+            List<User> queryList = query.list();
+            user =  queryList.get(0);
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return user;
+    }
     public static void updateUser(User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;  

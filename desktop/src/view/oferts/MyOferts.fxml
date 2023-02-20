@@ -24,11 +24,6 @@
             <FontAwesomeIconView caretBias="false" fill="RED" glyphName="TRASH" selectionFill="RED" size="40" stroke="RED" textAlignment="RIGHT" />
          </graphic>
       </MFXButton>
-      <MFXButton fx:id="seeButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="494.0" layoutY="10.0" onAction="#manageButtonsActions" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
-         <graphic>
-            <FontAwesomeIconView caretBias="false" glyphName="EYE" selectionFill="BLACK" size="40" stroke="BLACK" textAlignment="RIGHT" />
-         </graphic>
-      </MFXButton>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

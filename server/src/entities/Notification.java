@@ -1,5 +1,5 @@
 package entities;
-// Generated 14-feb-2023 11:28:17 by Hibernate Tools 4.3.1
+// Generated 18-feb-2023 23:32:23 by Hibernate Tools 4.3.1
 
 
 
@@ -13,14 +13,16 @@ public class Notification  implements java.io.Serializable {
      private Alert alert;
      private Label label;
      private Offer offer;
+     private Boolean notified;
 
     public Notification() {
     }
 
-    public Notification(Alert alert, Label label, Offer offer) {
+    public Notification(Alert alert, Label label, Offer offer, Boolean notified) {
        this.alert = alert;
        this.label = label;
        this.offer = offer;
+       this.notified = notified;
     }
    
     public Integer getId() {
@@ -50,6 +52,13 @@ public class Notification  implements java.io.Serializable {
     
     public void setOffer(Offer offer) {
         this.offer = offer;
+    }
+    public Boolean getNotified() {
+        return this.notified;
+    }
+    
+    public void setNotified(Boolean notified) {
+        this.notified = notified;
     }
 
 

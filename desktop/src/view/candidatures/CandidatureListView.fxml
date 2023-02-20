@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="108.0" prefWidth="318.0" style="-fx-border-color: #8a8a8a; -fx-border-width: 4; -fx-border-radius: 5; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.candidatures.CandidatureListViewController">
+   <children>
+      <HBox layoutX="7.0" layoutY="8.0" prefHeight="92.0" prefWidth="302.0">
+         <children>
+            <Text fx:id="infoText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="233.05467224121094">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Text>
+            <VBox prefHeight="92.0" prefWidth="62.0">
+               <children>
+                  <MFXButton contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#see" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
+                     <graphic>
+                        <FontAwesomeIconView caretBias="false" fill="WHITE" glyphName="EYE" selectionEnd="1" selectionFill="BLACK" selectionStart="0" size="30" stroke="BLACK" textAlignment="RIGHT" />
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton fx:id="deleteButton" contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#delete" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
+                     <graphic>
+                        <FontAwesomeIconView caretBias="false" fill="#ff0606" glyphName="TRASH" selectionEnd="1" selectionFill="RED" selectionStart="0" size="30" stroke="RED" textAlignment="RIGHT" />
+                     </graphic>
+                  </MFXButton>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

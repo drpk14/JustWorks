@@ -8,7 +8,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;  
+import java.net.SocketException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties; 
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
     
@@ -28,11 +34,13 @@ public class Server {
         }
         
         Socket clientSocket = null;   
+        SharedColection sharedColection = new SharedColection();
         
         try {
             while (true) {
                 clientSocket = serverSocket.accept();
-                new ServerThread(clientSocket).start();
+                new ServerThread(clientSocket,sharedColection).start();
+                
                 System.out.println("Client connected.");
             }
         } catch (IOException e) {
@@ -45,14 +53,23 @@ public class Server {
         
         private Socket clientSocket = null; 
         private Protocol protocol;  
-        
+        SharedColection sharedColection;
         public boolean anotherTime; 
+        PrintWriter out = null;
+        BufferedReader in = null;
 
-        public ServerThread(Socket nCliente ) {
-            clientSocket = nCliente;
-            this.protocol = new Protocol(this);   
-            anotherTime = true; 
-             
+        public ServerThread(Socket nCliente,SharedColection sharedColection) {
+            try {
+                clientSocket = nCliente;
+                this.protocol = new Protocol(this,sharedColection);
+                anotherTime = true;
+                this.sharedColection = sharedColection;
+                
+                out = new PrintWriter(clientSocket.getOutputStream(), true); 
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }  
         
         public boolean getAnotherTime() {
@@ -63,34 +80,38 @@ public class Server {
             this.anotherTime = anotherTime;
         } 
  
-        public void run() {
-            
-            try {
-                PrintWriter out = null;
-                BufferedReader in = null;
-                String input = "";
-                String output = "";
+        public void run() { 
                 
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                
-                while (anotherTime) {
-                    
-                    input = in.readLine();
-                    
-                    System.out.println("El servidor ha recibido: " + input);
-                    
-                    
-                    output = protocol.processInput(input);
-                    out.println(output); 
-                    System.out.println("El servidor ha devuelto: "+output);
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            String input = "";
+            String output = ""; 
+
+            while (anotherTime) { 
+
+                input = this.read();
+                System.out.println("El servidor ha recibido: " + input);
+
+
+                output = protocol.processInput(input);
+                this.write(output);
+                System.out.println("El servidor ha devuelto: "+output);
             }
-             
+              
         }
         
-       
+        public void write(String text){
+        
+            out.println(text); 
+        }
+        
+        public String read(){
+        
+            try {
+                return in.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            return null;
+        }
     } 
 }

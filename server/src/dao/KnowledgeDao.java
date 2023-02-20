@@ -31,7 +31,7 @@ public class KnowledgeDao {
         try{
             tx = session.beginTransaction();
             Query query = null; 
-            query = session.createQuery("FROM LabelKnowledge LK JOIN LK.label L JOIN LW.knowledge K JOIN K.worker W JOIN W.user U WHERE U.dni = :dni AND L.name = :name"); 
+            query = session.createQuery("FROM LabelKnowledge LK JOIN LK.label L JOIN LK.knowledge K JOIN K.worker W JOIN W.user U WHERE U.dni = :dni AND L.name = :name"); 
             query.setString("dni", user.getDni());
             query.setString("name",label.getName());
              

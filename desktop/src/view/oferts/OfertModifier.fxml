@@ -69,10 +69,10 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <AnchorPane id="AnchorPane" fx:id="labelsPane" layoutX="10.0" layoutY="10.0" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
+      <AnchorPane id="AnchorPane" fx:id="labelsPane" layoutX="20.0" layoutY="20.0" prefHeight="672.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
          <children>
-            <MFXLegacyListView fx:id="selectionListView" layoutX="29.0" layoutY="21.0" prefHeight="608.0" prefWidth="278.0" />
-            <Text layoutX="375.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Labels:" wrappingWidth="294.93670654296875">
+            <MFXLegacyListView fx:id="labelListView" layoutX="29.0" layoutY="59.0" prefHeight="570.0" prefWidth="278.0" />
+            <Text layoutX="375.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Label:" wrappingWidth="294.93670654296875">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
@@ -82,16 +82,41 @@
                   <Font size="15.0" />
                </font>
             </Text>
-            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="522.0" layoutY="514.0" onAction="#saveLabels" text="Save Labels">
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="479.0" layoutY="356.0" onAction="#saveAlert" text="Add Alert">
                <font>
                   <Font size="20.0" />
                </font>
             </MFXButton>
-            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="394.0" layoutY="514.0" onAction="#exitLabelPane" text="Exit">
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="479.0" layoutY="423.0" onAction="#changeToAddLabelPane" text="Add Label">
                <font>
                   <Font size="20.0" />
                </font>
             </MFXButton>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="505.0" layoutY="501.0" onAction="#exitLabelsPane" text="Exit">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+         </children>
+      </AnchorPane>
+      <AnchorPane id="AnchorPane" fx:id="newLabelPane" layoutX="20.0" layoutY="24.0" prefHeight="658.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
+         <children>
+            <Text layoutX="260.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Label:" textAlignment="CENTER" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Text>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="427.0" layoutY="436.0" onAction="#saveLabel" text="Add Label">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="293.0" layoutY="436.0" onAction="#exitAddLabelPane" text="Exit">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXTextField fx:id="newLabelNameTextField" layoutX="241.0" layoutY="295.0" prefHeight="50.0" prefWidth="307.0" />
          </children>
       </AnchorPane>
    </children>

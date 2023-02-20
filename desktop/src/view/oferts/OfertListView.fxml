@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -8,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" style="-fx-border-color: #8a8a8a; -fx-border-width: 4; -fx-border-radius: 5; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.OfertListViewController">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <VBox layoutX="8.0" prefHeight="115.0" prefWidth="434.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="4.0">
          <children>
             <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="JUSTIFY">
                <font>
@@ -35,5 +37,10 @@
             <Insets bottom="4.0" left="5.0" right="10.0" top="4.0" />
          </padding>
       </VBox>
+      <MFXButton contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="442.0" layoutY="36.0" onAction="#watchOffer" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
+         <graphic>
+            <FontAwesomeIconView caretBias="false" glyphName="EYE" selectionFill="BLACK" size="40" stroke="BLACK" textAlignment="RIGHT" />
+         </graphic>
+      </MFXButton>
    </children>
 </AnchorPane>
