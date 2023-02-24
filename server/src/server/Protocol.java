@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List; 
 import server.Server.ServerThread;  
 import static server.States.*;
+import static util.Messages.*;
  
 
 enum States
@@ -71,8 +72,8 @@ public class Protocol {
         
         
         if (state == LOGIN) {
-            if(processedInput[0].equals("L")){ 
-                output+="L:";
+            if(processedInput[0].equals(CL_LOGIN)){ 
+                output+=S_LOGIN+":";
                 if(UserDao.checkUserPassword(processedInput[1], processedInput[2])){ 
                     myUser = UserDao.getUser(processedInput[1]);
                     output+="C:";
@@ -98,18 +99,17 @@ public class Protocol {
                     output+="I";
                 }
             
-            }else if(processedInput[0].equals("R")){  
+            }else if(processedInput[0].equals(CL_REGISTER)){  
                 state = SINGUP;
-                output+="R";
-            }else if(processedInput[0].equals("Exit")){
-                sharedColection.remove(myUser.getUser());
-                output+="Exit";
+                output+=S_REGISTER+":";
+            }else if(processedInput[0].equals(CL_EXIT)){ 
+                output+=S_EXIT+":";
             }  
         
         } else if(state == SINGUP) {
     
-            if(processedInput[0].equals("R")){  
-                output+="R:";
+            if(processedInput[0].equals(CL_REGISTER)){  
+                output+=S_REGISTER+":";
                 
                 
                 
@@ -137,39 +137,38 @@ public class Protocol {
                 }else{ 
                     output+="I";
                 }
-            }else if(processedInput[0].equals("L")){
-                output+="L:";
+            }else if(processedInput[0].equals(CL_LOGIN)){
+                output+=S_LOGIN;
                 state = LOGIN;
-            }else if(processedInput[0].equals("Exit")){
-                sharedColection.remove(myUser.getUser());
-                output+="Exit";
+            }else if(processedInput[0].equals(CL_EXIT)){ 
+                output+=S_EXIT;
             } 
         }else if(state == MENU){
-            if(processedInput[0].equals("AllO")){ 
+            if(processedInput[0].equals(CL_ALL_OFFERS)){ 
                 //See all offers
-                output+="O";
+                output+=S_ALL_OFFERS;
                 output+=this.processListOfOffers(OfferDao.getAllOffers(myUser)); 
                 
-            }else if(processedInput[0].equals("MyO")){
+            }else if(processedInput[0].equals(CL_MY_OFFERS)){
                 if(processedInput.length <= 1){
 
                     //See all my offers
-                    output+="MyO";
+                    output+=S_MY_OFFERS;
                     output+=this.processListOfOffers(OfferDao.getMyOffers(myUser));
                 }else{
                     
                 }
-            }else if(processedInput[0].equals("ODet")){
+            }else if(processedInput[0].equals(CL_OFFER_DETAILS)){
                 //See the details of an offer
-                output+="ODet"; 
+                output+=S_OFFER_DETAILS; 
                 Offer offer = OfferDao.getOfferDetails(Integer.valueOf(processedInput[1]));
                 List offerArrayList = new ArrayList();
                 offerArrayList.add(offer);
                 output+=this.processListOfOffers(offerArrayList); 
                 
-            }else if(processedInput[0].equals("ModO")){
+            }else if(processedInput[0].equals(CL_MODIFY_OFFER)){
                 //Modify an existing offer
-                output+="ModO"; 
+                output+=S_MODIFY_OFFER; 
                 if(processedInput.length <= 2){
                     //Get the offer details  
                     Offer offer = OfferDao.getOfferDetails(Integer.valueOf(processedInput[1]));
@@ -208,9 +207,8 @@ public class Protocol {
                         output+=":I:This offer doesn't exist";   
                     }
                 }
-            }else if(processedInput[0].equals("AddO")){
-                output+="AddO";
-                output+=":"; 
+            }else if(processedInput[0].equals(CL_ADD_OFFER)){
+                output+=S_ADD_OFFER+":"; 
                 if(processedInput.length > 1){
                     
                     
@@ -236,29 +234,28 @@ public class Protocol {
                     }
                 }
                 
-            }else if(processedInput[0].equals("DelO")){
-                output+="DelO";
-                output+=":"; 
+            }else if(processedInput[0].equals(CL_DELETE_OFFER)){
+                output+=S_DELETE_OFFER+":"; 
                 OfferDao.deleteOffer(OfferDao.getOfferDetails(Integer.valueOf(processedInput[1])));
                     
                 output+="C";
-            }else if(processedInput[0].equals("Lab")){
-                output+="L:"; 
+            }else if(processedInput[0].equals(CL_ALL_LABELS)){
+                output+=S_ALL_LABELS+":"; 
                  
                 for(Label label : LabelDao.getAllLabels()){
                     output+=label.getName();
                     output+=":";
                 } 
-            }else if(processedInput[0].equals("AddL")){
-                output+="AddL:";
+            }else if(processedInput[0].equals(CL_ADD_LABEL)){
+                output+=S_ADD_LABEL+":";
                 if(LabelDao.getLabelByName(processedInput[1]) == null){
                     LabelDao.addLabel(new Label(processedInput[1]));
                     output+="C";
                 }else{
                     output+="I";
                 }
-            }else if(processedInput[0].equals("UDet")){
-                output+="UDet:";
+            }else if(processedInput[0].equals(CL_USER_DETAILS)){
+                output+=S_USER_DETAILS+":";
                 if(processedInput.length <= 1){ 
                     output+=myUser.getDni()+":";
                     output+=myUser.getName()+":";
@@ -277,8 +274,8 @@ public class Protocol {
                 
                 }
                 
-            }else if(processedInput[0].equals("ModU")){
-                output+="ModU:";
+            }else if(processedInput[0].equals(CL_MODIFY_USER)){
+                output+=S_MODIFY_USER+":";
                 User user = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
                 if(!myUser.equals(user)){
                     boolean follow = true;
@@ -311,15 +308,15 @@ public class Protocol {
                 }else{
                     output+="I:You must modify at least one field";
                 }
-            }else if(processedInput[0].equals("MyA")){
-                output+="MyA:"; 
+            }else if(processedInput[0].equals(CL_MY_ALERTS)){
+                output+=S_MY_ALERTS+":"; 
                  
                 for(Alert alert : AlertDao.getMyAlerts(myUser)){
                     output+=alert.getLabel().getName();
                     output+=":";
                 } 
-            }else if(processedInput[0].equals("AddA")){
-                output+="AddA:"; 
+            }else if(processedInput[0].equals(CL_ADD_ALERT)){
+                output+=S_ADD_ALERT+":"; 
                 if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1])) == null){
                     AlertDao.addAlert(new Alert(LabelDao.getLabelByName(processedInput[1]),WorkerDao.checkIfWorker(myUser)));
                     output+="C"; 
@@ -327,8 +324,8 @@ public class Protocol {
                     output+="I:You already have one alert with this label"; 
                 
                 }
-            }else if(processedInput[0].equals("DelA")){
-                output+="DelA:"; 
+            }else if(processedInput[0].equals(CL_DELETE_ALERT)){
+                output+=S_DELETE_ALERT+":"; 
                 if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1]))!= null){
                     AlertDao.deleteOffer(AlertDao.getAlert(myUser,LabelDao.getLabelByName(processedInput[1])));
                     output+="C";  
@@ -336,8 +333,8 @@ public class Protocol {
                     output+="I:This alert don't exist"; 
                 
                 }
-            }else if(processedInput[0].equals("MyN")){
-                output+="MyN:"; 
+            }else if(processedInput[0].equals(CL_MY_NOTIFICATIONS)){
+                output+=S_MY_NOTIFICATIONS+":"; 
                  
                 for(Notification notification : NotificationDao.getMyNotifications(myUser)){
                     output+=notification.getId()+":";
@@ -347,13 +344,13 @@ public class Protocol {
                     notification.setNotified(true);
                     NotificationDao.updateNotification(notification);
                 } 
-            }else if(processedInput[0].equals("DelN")){
-                output+="DelN:"; 
+            }else if(processedInput[0].equals(CL_DELETE_NOTIFICATION)){
+                output+=S_DELETE_NOTIFICATION+":"; 
                 
                 NotificationDao.deleteNotification(NotificationDao.getNotificationById(Integer.valueOf(processedInput[1])));
                 output+="C";
-            }else if(processedInput[0].equals("CheckC")){
-                output+="CheckC:"; 
+            }else if(processedInput[0].equals(CL_CHECK_IF_CANDIDATURE_IS_ABLE)){
+                output+=S_CHECK_IF_CANDIDATURE_IS_ABLE+":"; 
                 Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
                 
                 Boolean ninguna = true; 
@@ -376,12 +373,12 @@ public class Protocol {
                     output+="I:Any";  
                 }
                 
-            }else if(processedInput[0].equals("AddC")){
-                output+="AddC:";  
+            }else if(processedInput[0].equals(CL_ADD_CANDIDATURE)){
+                output+=S_ADD_CANDIDATURE+":";  
                 CandidatureDao.addCandidature(new Candidature(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),WorkerDao.checkIfWorker(myUser)));
                 output+="C";  
-            }else if(processedInput[0].equals("MyC")){
-                output+="MyC:";  
+            }else if(processedInput[0].equals(CL_MY_CANDIDATURES)){
+                output+=S_MY_CANDIDATURES+":";  
                 for(Candidature candidature : CandidatureDao.getMyCandidatures(myUser,processedInput[1])){
                     output+=candidature.getId()+":";
                     output+=candidature.getOffer().getId()+":";
@@ -398,8 +395,8 @@ public class Protocol {
                     output+=":";  
                 }
                   
-            }else if(processedInput[0].equals("CDet")){
-                output+="CDet:";     
+            }else if(processedInput[0].equals(CL_CANDIDATURE_DETAILS)){
+                output+=S_CANDIDATURE_DETAILS+":";     
                 Candidature candidature =CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
                 output+=candidature.getId()+":";
                 output+=candidature.getOffer().getId()+":";
@@ -415,8 +412,8 @@ public class Protocol {
                 }
                 output+=":"; 
                 
-            }else if(processedInput[0].equals("CFOO")){
-                output+="CFOO:";
+            }else if(processedInput[0].equals(CL_CANDIDATURES_FOR_ONE_OFFER)){
+                output+=S_CANDIDATURES_FOR_ONE_OFFER+":";
                 for(Candidature candidature : CandidatureDao.getCandidaturesForOneOffer(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),processedInput[2])){
                     output+=candidature.getId()+":";
                     output+=candidature.getOffer().getId()+":";
@@ -433,16 +430,16 @@ public class Protocol {
                     output+=":";
                 }
                 
-            }else if(processedInput[0].equals("CCS")){
-                //Change candidature state 
-                output+="CCS:";
+            }else if(processedInput[0].equals(CL_CHANGE_CANDIDATURE_STATE)){
+                 
+                output+=S_CHANGE_CANDIDATURE_STATE+":";
                 Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
                 candidature.setState(processedInput[2]);
                 CandidatureDao.updateCandidature(candidature);
                 output+="C";
-            }else if(processedInput[0].equals("KBL")){
-                //Knowledge By Label
-                output+="KBL:";
+            }else if(processedInput[0].equals(CL_KNOWLEDGE_BY_LABEL)){
+                
+                output+=S_KNOWLEDGE_BY_LABEL+":";
                 for(Knowledge knowledge  : LabelKnowledgeDao.getKnowledgeByLabel(LabelDao.getLabelByName(processedInput[2]),UserDao.getUserById(Integer.parseInt(processedInput[1])),processedInput[3])){
                     output+=knowledge.getId()+":";
                     output+=knowledge.getWorker().getUser().toString()+":";
@@ -460,8 +457,8 @@ public class Protocol {
                     }
                     output+=":";
                 }
-            }else if(processedInput[0].equals("MyWE")){ 
-                output+="MyWE:";
+            }else if(processedInput[0].equals(CL_MY_WORK_EXPERIENCE)){ 
+                output+=S_MY_WORK_EXPERIENCE+":";
                 for(Knowledge knowledge  : KnowledgeDao.getMyWorkExperience(myUser)){
                     output+=knowledge.getId()+":";
                     output+=knowledge.getWorker().getUser().toString()+":";
@@ -479,8 +476,8 @@ public class Protocol {
                     }
                     output+=":";
                 }
-            }else if(processedInput[0].equals("KDet")){ 
-                output+="KDet:";
+            }else if(processedInput[0].equals(CL_KNOWLEDGE_DETAILS)){ 
+                output+=S_KNOWLEDGE_DETAILS+":";
                 Knowledge knowledge = KnowledgeDao.getKnowledgeById(Integer.parseInt(processedInput[1]));
                 output+=knowledge.getId()+":";
                 output+=knowledge.getWorker().getUser().toString()+":";
@@ -498,10 +495,9 @@ public class Protocol {
                 }
                 output+=":";
                 
-            }else if(processedInput[0].equals("AddK")){ 
+            }else if(processedInput[0].equals(CL_ADD_KNOWLEDGE)){ 
                 
-                output+="AddK";
-                output+=":"; 
+                output+=S_ADD_KNOWLEDGE+":";
                 
                          
                 if(processedInput.length > 2){
@@ -528,8 +524,8 @@ public class Protocol {
                         output+="Q:"; 
                 }
                 
-            }else if(processedInput[0].equals("DelK")){ 
-                output+="DelK:";
+            }else if(processedInput[0].equals(CL_DELETE_KNOWLEDGE)){ 
+                output+=S_DELETE_KNOWLEDGE+":";
                 Knowledge knowledge = KnowledgeDao.getKnowledgeById(Integer.parseInt(processedInput[1]));
                 
                 List<Label> labels = LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge);
@@ -547,9 +543,9 @@ public class Protocol {
                         output+="C";
                     }
                 }
-            }else if(processedInput[0].equals("Exit")){
+            }else if(processedInput[0].equals(CL_EXIT)){
                 sharedColection.remove(myUser.getUser());
-                output+="Exit";
+                output+=S_EXIT;
             }
         } 
         

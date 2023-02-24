@@ -17,6 +17,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;  
 import javafx.scene.text.Text;  
+import util.Messages;
+import static util.Messages.*;
 import view.JustWorkApp;
 
 /**
@@ -71,7 +73,7 @@ public class OfertListViewController implements Initializable {
 
     @FXML
     private void watchOffer(ActionEvent event) {
-        JustWorkApp.sendMessage("ODet:"+id);  
+        JustWorkApp.sendMessage(CL_OFFER_DETAILS+":"+id);  
         if(MainBusinessmanController.getInstance() != null)
             MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml","My Oferts > Ofert Viewer");
         else if(MainWorkerController.getInstance() != null)

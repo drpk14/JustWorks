@@ -4,10 +4,7 @@
  */
 package controller.knowledges;
 
-import Entities.Knowledge;
-import controller.oferts.*;
-import Entities.Ofert;
-import controller.MainBusinessmanController; 
+import Entities.Knowledge; 
 import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField; 
@@ -22,12 +19,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable; 
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;  
+import javafx.scene.control.SelectionMode; 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javax.swing.JOptionPane;
 import view.JustWorkApp;
+import static util.Messages.*;
 
 /**
  * FXML Controller class
@@ -159,7 +156,7 @@ public class KnowledgeModifierController implements Initializable {
                 !finishDatePicker.getValue().equals(modifyKnowledge.getFinishDate())){ 
                 
                      
-                    JustWorkApp.sendMessage("ModK:"+
+                    JustWorkApp.sendMessage(CL_MODIFY_KNOWLEDGE+":"+
                             modifyKnowledge.getId()+":"
                             +nameTextField.getText()+":"
                             +placeTextField.getText()+":"
@@ -180,7 +177,7 @@ public class KnowledgeModifierController implements Initializable {
             }
         }else if(confirmActionButton.getText().equals("Add")){
             if(checkUserInput() == true){  
-                JustWorkApp.sendMessage("AddK:"
+                JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":"
                                         +nameTextField.getText()+":" 
                                         +placeTextField.getText()+":"
                                         +titleTextField.getText()+":"
@@ -233,7 +230,7 @@ public class KnowledgeModifierController implements Initializable {
     
     private void backToMyKnowledges(){
         if(type.equals("WorkExperience")){
-            JustWorkApp.sendMessage("MyWE:"); 
+            JustWorkApp.sendMessage(CL_MY_WORK_EXPERIENCE); 
             MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
                         
         }else if(type.equals("Qualification")){
@@ -248,7 +245,7 @@ public class KnowledgeModifierController implements Initializable {
     
     @FXML
     private void changeToLabelPane(ActionEvent event) { 
-        JustWorkApp.sendMessage("Lab:");
+        JustWorkApp.sendMessage(CL_ALL_LABELS);
          
         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
         for (int i = 1; i < processedInput2.length; i++) {
@@ -300,13 +297,13 @@ public class KnowledgeModifierController implements Initializable {
     @FXML
     private void saveLabel(ActionEvent event) {
         if(!newLabelNameTextField.getText().isEmpty()){
-            JustWorkApp.sendMessage("AddL:"+newLabelNameTextField.getText()); 
+            JustWorkApp.sendMessage(CL_ADD_LABEL+":"+newLabelNameTextField.getText()); 
 
             
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 labelListView.getItems().clear();
-                JustWorkApp.sendMessage("Lab:"); 
+                JustWorkApp.sendMessage(CL_ALL_LABELS); 
          
          
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");

@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javax.swing.JOptionPane;
 import util.ValidadorDNI;
 import view.JustWorkApp;
+import static util.Messages.*;
 
 /**
  * FXML Controller class
@@ -55,7 +56,7 @@ public class UserModifierController implements Initializable {
     
     private void initializeData(){ 
             
-        JustWorkApp.sendMessage("UDet");     
+        JustWorkApp.sendMessage(CL_USER_DETAILS);     
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
         if(processedInput[0].equals("UDet")){ 
             confirmActionButton.setText("Modify");
@@ -95,7 +96,7 @@ public class UserModifierController implements Initializable {
                 !userTextField.getText().equals(modifyUser.getUser())){ 
                 
                      
-                    JustWorkApp.sendMessage("ModU:"
+                    JustWorkApp.sendMessage(CL_MODIFY_USER+":"
                             +dniTextField.getText()+":"
                             +nameTextField.getText()+":"
                             +surnameTextField.getText()+":"

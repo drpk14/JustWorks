@@ -16,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;  
 import javafx.scene.text.Text;  
 import javax.swing.JOptionPane;
+import util.Messages;
+import static util.Messages.*;
 import view.JustWorkApp;
 
 /**
@@ -45,7 +47,7 @@ public class NotificationListViewController implements Initializable {
 
     @FXML
     private void delete(ActionEvent event) {
-        JustWorkApp.sendMessage("DelN:"+notificationId); 
+        JustWorkApp.sendMessage(CL_DELETE_NOTIFICATION+":"+notificationId); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         if(processedInput[1].equals("C")){
             MainWorkerController.getInstance().setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
@@ -56,7 +58,7 @@ public class NotificationListViewController implements Initializable {
 
     @FXML
     private void see(ActionEvent event) {
-        JustWorkApp.sendMessage("ODet:"+notificationId);   
+        JustWorkApp.sendMessage(CL_OFFER_DETAILS+":"+notificationId);   
         
         MainWorkerController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml", "Ofert Viewer");
          

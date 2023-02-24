@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;  
 import java.util.ArrayList; 
 import java.util.List; 
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -71,7 +72,7 @@ public class MyCandidaturesController implements Initializable {
     private void manageList(String state) {
         listView.getItems().clear();
         
-        JustWorkApp.sendMessage("MyC:"+state); 
+        JustWorkApp.sendMessage(Messages.CL_MY_CANDIDATURES+":"+state); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         for(int i= 1;i<processedInput.length;i=i+7){
             Candidature candidature = new Candidature(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3],processedInput[i+4], processedInput[i+5]);

@@ -16,6 +16,7 @@ import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.collections.ListChangeListener;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -61,7 +62,7 @@ public class MyAlertsController implements Initializable {
     
     private void initializeData(){ 
          
-        JustWorkApp.sendMessage("MyA:"); 
+        JustWorkApp.sendMessage(Messages.CL_MY_ALERTS); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         for(int i= 1;i<processedInput.length;i++){ 
             alertListView.getItems().add(processedInput[i]); 
@@ -71,7 +72,7 @@ public class MyAlertsController implements Initializable {
 
     @FXML
     private void changeToAddPane(ActionEvent event) {
-        JustWorkApp.sendMessage("Lab:"); 
+        JustWorkApp.sendMessage(Messages.CL_ALL_LABELS+":"); 
          
          
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
@@ -86,7 +87,7 @@ public class MyAlertsController implements Initializable {
     @FXML
     private void deleteAlert(ActionEvent event) {
         if(!alertListView.getItems().isEmpty()){
-            JustWorkApp.sendMessage("DelA:"+alertListView.getItems().get(0));
+            JustWorkApp.sendMessage(Messages.CL_DELETE_ALERT+":"+alertListView.getItems().get(0));
             String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
             if(processedInput[1].equals("C")){
                 MainWorkerController.getInstance().setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts");
@@ -101,7 +102,7 @@ public class MyAlertsController implements Initializable {
     @FXML
     private void saveAlert(ActionEvent event) {
         if(!labelListView.getSelectionModel().getSelectedItems().isEmpty()){
-            JustWorkApp.sendMessage("AddA:"+labelListView.getSelectionModel().getSelectedItem());
+            JustWorkApp.sendMessage(Messages.CL_ADD_ALERT+":"+labelListView.getSelectionModel().getSelectedItem());
             String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
             if(processedInput[1].equals("C")){
                 MainWorkerController.getInstance().setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts"); 
@@ -132,13 +133,13 @@ public class MyAlertsController implements Initializable {
     @FXML
     private void saveLabel(ActionEvent event) {
         if(!newLabelNameTextField.getText().isEmpty()){
-            JustWorkApp.sendMessage("AddL:"+newLabelNameTextField.getText()); 
+            JustWorkApp.sendMessage(Messages.CL_ADD_LABEL+":"+newLabelNameTextField.getText()); 
 
             
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 labelListView.getItems().clear();
-                JustWorkApp.sendMessage("L:"); 
+                JustWorkApp.sendMessage(Messages.CL_ADD_LABEL); 
          
          
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");

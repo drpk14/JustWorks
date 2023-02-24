@@ -17,8 +17,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
-import javax.swing.JOptionPane;
-import view.JustWorkApp;
+import javax.swing.JOptionPane; 
+import static util.Messages.*;
+import view.JustWorkApp; 
 
 /**
  * FXML Controller class
@@ -100,14 +101,14 @@ public class OfertViewerController implements Initializable {
     @FXML
     private void candidate(ActionEvent event) {
         if(MainBusinessmanController.getInstance() != null){
-            JustWorkApp.sendMessage("CDet:"+offerId); 
+            JustWorkApp.sendMessage(CL_CANDIDATURE_DETAILS+":"+offerId); 
             MainBusinessmanController.getInstance().setMainPane("../view/candidatures/CandidaturesForOffer.fxml","Candidatures for Offer");
             
         }else if(MainWorkerController.getInstance() != null){ 
-            JustWorkApp.sendMessage("CheckC:"+offerId); 
+            JustWorkApp.sendMessage(CL_CHECK_IF_CANDIDATURE_IS_ABLE+":"+offerId); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
-                JustWorkApp.sendMessage("AddC:"+offerId); 
+                JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                 if(processedInput2[1].equals("C")){
                     MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
@@ -115,7 +116,7 @@ public class OfertViewerController implements Initializable {
             }else if(processedInput[1].equals("I")){
                 if(processedInput[2].equals("Some")){
                     if(JOptionPane.showConfirmDialog(null, "You don't have one knowledge for each label, Do you want to make candidature?") == 0){
-                        JustWorkApp.sendMessage("AddC:"+offerId); 
+                        JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                         if(processedInput2[1].equals("C")){
                             MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");

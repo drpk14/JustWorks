@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;  
 import javafx.scene.text.Text;  
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -67,7 +68,7 @@ public class KnowledgeListViewController implements Initializable {
 
     @FXML
     private void watchOffer(ActionEvent event) {
-        JustWorkApp.sendMessage("KDet:"+id);  
+        JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_DETAILS+":"+id);  
         if(MainBusinessmanController.getInstance() != null)
             MainBusinessmanController.getInstance().setMainPane("../view/knowledges/KnowledgeViewer.fxml","Knowledge Viewer");
         else if(MainWorkerController.getInstance() != null)

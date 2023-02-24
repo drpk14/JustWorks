@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.text.Text;  
 import javax.swing.JOptionPane;
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -51,7 +52,7 @@ public class LoginController implements Initializable {
     private void login(ActionEvent event) throws IOException { 
         if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){ 
             
-            JustWorkApp.sendMessage("L:"+this.loginTextField.getText()+":"+this.loginPasswordField.getText());
+            JustWorkApp.sendMessage(Messages.CL_LOGIN+":"+this.loginTextField.getText()+":"+this.loginPasswordField.getText());
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 Parent root = null;
@@ -76,7 +77,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void changeToSingUp(ActionEvent event) throws IOException {
-        JustWorkApp.sendMessage("R:");
+        JustWorkApp.sendMessage(Messages.CL_REGISTER+":");
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
         
         if(processedInput[0].equals("R")){

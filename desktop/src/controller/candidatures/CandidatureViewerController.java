@@ -24,6 +24,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;  
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -82,7 +83,7 @@ public class CandidatureViewerController implements Initializable {
                 workListView.getItems().clear();
                 qualificationListView.getItems().clear();
                 String label = labelsListView.getSelectionModel().getSelectedItems().get(0);
-                JustWorkApp.sendMessage("KBL:"+candidature.getWorkerId()+":"+label+":"+"WorkExperience"); 
+                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label+":"+"WorkExperience"); 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");  
                 for(int i= 1;i<processedInput.length;i=i+9){
                     Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
@@ -98,7 +99,7 @@ public class CandidatureViewerController implements Initializable {
                     workListView.getItems().add(knowledge);
                 }
                 
-                JustWorkApp.sendMessage("KBL:"+candidature.getWorkerId()+":"+label+":"+"Qualification"); 
+                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label+":"+"Qualification"); 
                 processedInput = JustWorkApp.recieveMessage().split(":");  
                 for(int i= 1;i<processedInput.length;i=i+9){
                     Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
@@ -143,7 +144,7 @@ public class CandidatureViewerController implements Initializable {
     private void changeState(ActionEvent event) {
         RadioButton selectedRadioButton = (RadioButton) StateToogleGroup.getSelectedToggle();
         String toogleGroupValue = selectedRadioButton.getText();
-        JustWorkApp.sendMessage("CCS:"+candidature.getId()+":"+toogleGroupValue);
+        JustWorkApp.sendMessage(Messages.CL_CHANGE_CANDIDATURE_STATE+":"+candidature.getId()+":"+toogleGroupValue);
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         if(processedInput[1].equals("C")){
             this.changeStateText(toogleGroupValue);

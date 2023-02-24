@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import cells.OfertCell;
 import java.util.ArrayList; 
 import java.util.List; 
+import static util.Messages.*;
 import view.JustWorkApp;
 
 /**
@@ -53,7 +54,7 @@ public class MyOfertsController implements Initializable {
     
     private void initializeData(){ 
          
-        JustWorkApp.sendMessage("MyO:"); 
+        JustWorkApp.sendMessage(CL_MY_OFFERS); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         for(int i= 1;i<processedInput.length;i=i+8){
             Ofert newOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
@@ -73,15 +74,15 @@ public class MyOfertsController implements Initializable {
     @FXML
     private void manageButtonsActions(ActionEvent event){
         if(event.getSource() == addButton){
-            JustWorkApp.sendMessage("AddO:");   
+            JustWorkApp.sendMessage(CL_ADD_OFFER);   
             MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Add Ofert");
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == modifyButton){
-                    JustWorkApp.sendMessage("ModO:"+listView.getSelectionModel().getSelectedItem().getId());  
+                    JustWorkApp.sendMessage(CL_MODIFY_OFFER+":"+listView.getSelectionModel().getSelectedItem().getId());  
                     MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Modify Ofert");
                 }else if(event.getSource() == deleteButton){ 
-                    JustWorkApp.sendMessage("DelO:"+listView.getSelectionModel().getSelectedItem().getId());   
+                    JustWorkApp.sendMessage(CL_DELETE_OFFER+":"+listView.getSelectionModel().getSelectedItem().getId());   
                      
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){

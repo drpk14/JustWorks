@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import view.JustWorkApp;
+import static util.Messages.*;
 
 /**
  * FXML Controller class
@@ -58,7 +59,7 @@ public class MyKnowledgesController implements Initializable {
          
         
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-        if(processedInput[0].equals("MyWE")){
+        if(processedInput[0].equals(S_MY_WORK_EXPERIENCE)){
             type = "WorkExperience";
         }else if(processedInput[0].equals("MyQ")){
             type = "Qualification";
@@ -83,10 +84,10 @@ public class MyKnowledgesController implements Initializable {
     private void manageButtonsActions(ActionEvent event){
         if(event.getSource() == addButton){
             if(type.equals("WorkExperience")){
-                JustWorkApp.sendMessage("AddK:WE"); 
+                JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":WE"); 
 
             }else if(type.equals("Qualification")){
-                JustWorkApp.sendMessage("AddK:Q"); 
+                JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":Q"); 
 
             } 
             
@@ -94,16 +95,16 @@ public class MyKnowledgesController implements Initializable {
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == modifyButton){
-                    JustWorkApp.sendMessage("ModK:"+listView.getSelectionModel().getSelectedItem().getId());  
+                    JustWorkApp.sendMessage(CL_MODIFY_KNOWLEDGE+":"+listView.getSelectionModel().getSelectedItem().getId());  
                     MainWorkerController.getInstance().setMainPane("../view/knowledges/KnowledgeModifier.fxml","My Knowledge > Add Knowledge");
                 }else if(event.getSource() == deleteButton){ 
-                    JustWorkApp.sendMessage("DelK:"+listView.getSelectionModel().getSelectedItem().getId());   
+                    JustWorkApp.sendMessage(CL_DELETE_KNOWLEDGE+":"+listView.getSelectionModel().getSelectedItem().getId());   
                      
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
                         
                         if(type.equals("WorkExperience")){
-                            JustWorkApp.sendMessage("MyWE:"); 
+                            JustWorkApp.sendMessage(CL_MY_WORK_EXPERIENCE); 
                             MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
                         
                         }else if(type.equals("Qualification")){
@@ -112,7 +113,7 @@ public class MyKnowledgesController implements Initializable {
                     
                         } 
                     }else{
-                       JOptionPane.showMessageDialog(null, "Pa tu casa manito");
+                       JOptionPane.showMessageDialog(null, "");
                     }
                 }
             }else{

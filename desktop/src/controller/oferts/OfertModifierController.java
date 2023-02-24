@@ -21,7 +21,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;  
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; 
+import static util.Messages.*;
 import view.JustWorkApp;
 
 /**
@@ -121,7 +122,7 @@ public class OfertModifierController implements Initializable {
                 !contractTypeTextField.getText().equals(modifyOfert.getContractType())){ 
                 
                      
-                    JustWorkApp.sendMessage("ModO:"+
+                    JustWorkApp.sendMessage(CL_MODIFY_OFFER+":"+
                             modifyOfert.getId()+":"
                             +nameTextField.getText()+":"
                             +descriptionTextArea.getText()+":"
@@ -142,7 +143,7 @@ public class OfertModifierController implements Initializable {
             }
         }else if(confirmActionButton.getText().equals("Add")){
             if(checkUserInput() == true){  
-                JustWorkApp.sendMessage("AddO:"
+                JustWorkApp.sendMessage(CL_ADD_OFFER+":"
                                         +nameTextField.getText()+":"
                                         +descriptionTextArea.getText()+":"
                                         +ubicationTextField.getText()+":"
@@ -196,7 +197,7 @@ public class OfertModifierController implements Initializable {
 
     @FXML
     private void changeToLabelPane(ActionEvent event) { 
-        JustWorkApp.sendMessage("Lab:");
+        JustWorkApp.sendMessage(CL_ALL_LABELS);
          
         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
         for (int i = 1; i < processedInput2.length; i++) {
@@ -278,13 +279,13 @@ public class OfertModifierController implements Initializable {
     @FXML
     private void saveLabel(ActionEvent event) {
         if(!newLabelNameTextField.getText().isEmpty()){
-            JustWorkApp.sendMessage("AddL:"+newLabelNameTextField.getText()); 
+            JustWorkApp.sendMessage(CL_ADD_LABEL+":"+newLabelNameTextField.getText()); 
 
             
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 labelListView.getItems().clear();
-                JustWorkApp.sendMessage("L:"); 
+                JustWorkApp.sendMessage(CL_ALL_LABELS); 
          
          
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");

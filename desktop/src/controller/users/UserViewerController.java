@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable; 
 import javafx.scene.text.Text;
+import static util.Messages.*;
 import view.JustWorkApp;
 
 /**
@@ -43,7 +44,7 @@ public class UserViewerController implements Initializable {
     }
     
     private void initializeData(){  
-        JustWorkApp.sendMessage("UDet");
+        JustWorkApp.sendMessage(CL_USER_DETAILS);
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
         for(int i= 1;i<processedInput.length;i=i+6){
             User newUser= new User(processedInput[i],processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5] );
@@ -69,7 +70,7 @@ public class UserViewerController implements Initializable {
 
     @FXML
     private void deleteUser(ActionEvent event) {
-        JustWorkApp.sendMessage("DelU");
+        JustWorkApp.sendMessage("s");
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
         if(processedInput[1].equals("C")){
             

@@ -11,6 +11,7 @@ import Entities.Notification;
 import cells.NotificationCell; 
 import javafx.fxml.FXML;  
 import javafx.fxml.Initializable;  
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -39,7 +40,7 @@ public class MyNotificationsController implements Initializable {
     } 
     
     private void initializeData(){  
-        JustWorkApp.sendMessage("MyN:"); 
+        JustWorkApp.sendMessage(Messages.CL_MY_NOTIFICATIONS); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         for(int i= 1;i<processedInput.length;i=i+4){ 
             notificationsListView.getItems().add(new Notification(Integer.parseInt(processedInput[i]),processedInput[i+1],Integer.parseInt(processedInput[i+2]),processedInput[i+3])); 

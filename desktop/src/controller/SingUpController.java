@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.text.Text;  
+import util.Messages;
 import view.JustWorkApp; 
 import util.ValidadorDNI;
 
@@ -91,7 +92,7 @@ public class SingUpController implements Initializable {
 
     @FXML
     private void backLogIn(MouseEvent event) throws IOException { 
-        JustWorkApp.sendMessage("L:"); 
+        JustWorkApp.sendMessage(Messages.CL_LOGIN); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         
         if(processedInput[0].equals("L")){
@@ -103,7 +104,7 @@ public class SingUpController implements Initializable {
     @FXML
     private void singUp(ActionEvent event) throws IOException {
         //if(this.checkFields()){
-            String output = "R:";
+            String output = Messages.CL_REGISTER+":";
             output+=textFieldDni.getText()+":";
             output+=textFieldName.getText()+":";
             output+=textFieldSurname.getText()+":";

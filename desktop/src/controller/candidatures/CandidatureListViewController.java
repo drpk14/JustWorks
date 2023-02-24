@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;  
 import javafx.scene.text.Text;  
 import javax.swing.JOptionPane;
+import util.Messages;
 import view.JustWorkApp;
 
 /**
@@ -60,7 +61,7 @@ public class CandidatureListViewController implements Initializable {
     @FXML
     private void see(ActionEvent event) {
         
-        JustWorkApp.sendMessage("CDet:"+candidatureId);   
+        JustWorkApp.sendMessage(Messages.CL_CANDIDATURE_DETAILS+":"+candidatureId);   
         
         if(MainBusinessmanController.getInstance() != null){
             MainBusinessmanController.getInstance().setMainPane("../view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
