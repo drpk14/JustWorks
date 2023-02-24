@@ -13,22 +13,27 @@ public class Knowledge  implements java.io.Serializable {
      private Integer id;
      private Worker worker;
      private String name;
+     private String place;
+     private String title;
      private String type;
      private Date fechaInicio;
      private Date fechaFin;
-     private String place;
+     
 
     public Knowledge() {
     }
 
-    public Knowledge(Worker worker, String name, String type, Date fechaInicio, Date fechaFin, String place) {
-       this.worker = worker;
-       this.name = name;
-       this.type = type;
-       this.fechaInicio = fechaInicio;
-       this.fechaFin = fechaFin;
-       this.place = place;
+    public Knowledge(Worker worker, String name, String place, String title, String type, Date fechaInicio, Date fechaFin) {
+        this.worker = worker;
+        this.name = name;
+        this.place = place;
+        this.title = title;
+        this.type = type;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
     }
+
+    
    
     public Integer getId() {
         return this.id;
@@ -78,6 +83,14 @@ public class Knowledge  implements java.io.Serializable {
     
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 

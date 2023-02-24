@@ -17,6 +17,9 @@
         <property name="type" type="string">
             <column name="type" length="20" />
         </property>
+        <property name="title" type="string">
+            <column name="title" length="20" />
+        </property>
         <property name="fechaInicio" type="date">
             <column name="fechaInicio" length="10" />
         </property>

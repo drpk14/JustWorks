@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package dao;
-
-import static dao.BusinessmanDao.checkIfBusinessman;
+ 
 import entities.Candidature;
+import entities.Label;
 import entities.Offer;
 import entities.User;
 import java.util.ArrayList;
@@ -153,5 +153,43 @@ public class CandidatureDao {
             session.close();
         }  
         return null;
+    } 
+    
+    public static boolean getMyCandidaturesWithLabel(User user,Label label) {
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null;  
+        
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+                
+            query = session.createQuery("FROM Candidature C JOIN C.worker W JOIN W.user U JOIN C.offer O WHERE U.dni = :dni"); 
+            query.setString("dni", user.getDni()); 
+            
+            List<Object[]> queryList = query.list();
+            List<Offer> offersList = new ArrayList();
+            for(Object[] actualUser: queryList){
+                offersList.add((Offer) actualUser[3]);
+                
+            } 
+            
+            for(Offer offer : offersList){
+               List<Label> labels = LabelOfferDao.getLabelsByOffer(offer);
+               
+               for(Label actualLabel: labels){
+                   if(actualLabel.getName().equals(label.getName())){
+                       return true;
+                   }
+               }
+            }
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }   
+        return false;
     } 
 }

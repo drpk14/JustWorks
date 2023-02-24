@@ -6,7 +6,8 @@ package controller.candidatures;
    
 import Entities.Candidature;
 import Entities.Knowledge;   
-import Entities.Ofert;
+import Entities.Ofert; 
+import cells.KnowledgeCell;
 import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;  
@@ -64,6 +65,8 @@ public class CandidatureViewerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {  
         
         initializeData(); 
+        workListView.setCellFactory(param -> new KnowledgeCell()); 
+        qualificationListView.setCellFactory(param -> new KnowledgeCell()); 
 
         if(MainWorkerController.getInstance() != null){
             acceptedStateButton.setVisible(false);
@@ -81,15 +84,32 @@ public class CandidatureViewerController implements Initializable {
                 String label = labelsListView.getSelectionModel().getSelectedItems().get(0);
                 JustWorkApp.sendMessage("KBL:"+candidature.getWorkerId()+":"+label+":"+"WorkExperience"); 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-                for(int i= 1;i<processedInput.length;i=i+7){
-                    Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[1]),processedInput[2],processedInput[3],processedInput[4],LocalDate.parse(processedInput[5]),LocalDate.parse(processedInput[6]));
+                for(int i= 1;i<processedInput.length;i=i+9){
+                    Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
+                    String[] labels = processedInput[i+8].split(",");
+                    List labelsList = new ArrayList(0);
+                    if(labels.length >= 2){
+                        for(int j = 1;j<labels.length;j++){
+                            labelsList.add(labels[j]);
+                        }
+                        knowledge.setLabels(labelsList);
+                    }
+                    
                     workListView.getItems().add(knowledge);
                 }
                 
                 JustWorkApp.sendMessage("KBL:"+candidature.getWorkerId()+":"+label+":"+"Qualification"); 
                 processedInput = JustWorkApp.recieveMessage().split(":");  
-                for(int i= 1;i<processedInput.length;i=i+7){
-                    Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[1]),processedInput[2],processedInput[3],processedInput[4],LocalDate.parse(processedInput[5]),LocalDate.parse(processedInput[6]));
+                for(int i= 1;i<processedInput.length;i=i+9){
+                    Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
+                    String[] labels = processedInput[i+8].split(",");
+                    List labelsList = new ArrayList(0);
+                    if(labels.length >= 2){
+                        for(int j = 1;j<labels.length;j++){
+                            labelsList.add(labels[j]);
+                        }
+                        knowledge.setLabels(labelsList);
+                    }
                     qualificationListView.getItems().add(knowledge);
                 }
             } 

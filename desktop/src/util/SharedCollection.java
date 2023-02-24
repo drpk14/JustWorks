@@ -12,24 +12,16 @@ import java.util.Queue;
  * @author David
  */ 
 
-public class SharedCollection{
-    private static SharedCollection instance;
+public class SharedCollection{ 
      
-    private Queue<String> messages = new LinkedList<>();
+    private Queue<String> messages;
     
-    private Queue<String> responses = new LinkedList<>();
+    private Queue<String> responses;
     
-    private SharedCollection() { 
-        
-    }
-    
-    public static synchronized SharedCollection getInstance() {
-        if (instance == null) {
-            instance = new SharedCollection();
-            
-        }
-        return instance;
-    }
+    public SharedCollection() { 
+        responses = new LinkedList<>();
+        messages = new LinkedList<>();
+    } 
     
     public synchronized void addMessage(String message){
         

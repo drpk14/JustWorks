@@ -23,17 +23,17 @@ import java.util.logging.Logger;
  */ 
 
 public class CommunicationThread extends Thread{
-    private static CommunicationThread instance; 
-    
+     
+    private SharedCollection sharedCollection;
     private PrintWriter out;
     private BufferedReader in;
-    
-    public static synchronized CommunicationThread getInstance() {
-        if (instance == null) {
-            instance = new CommunicationThread();
-        }
-        return instance;
+
+    public CommunicationThread(SharedCollection sharedCollection) {
+        this.sharedCollection = sharedCollection;
+        initializeConnection();
     }
+    
+     
 
     public PrintWriter getOut() {
         return out;
@@ -50,12 +50,7 @@ public class CommunicationThread extends Thread{
     public void setIn(BufferedReader in) {
         this.in = in;
     }
-    
-    
-    
-    private CommunicationThread() { 
-        initializeConnection();
-    }
+     
     
     public void initializeConnection(){
         InputStream is;
@@ -97,12 +92,12 @@ public class CommunicationThread extends Thread{
     public void run() {
         
         while(true){
-            synchronized (SharedCollection.getInstance()) {
+            synchronized (sharedCollection) {
                 try {  
-                    SharedCollection.getInstance().wait();  
-                    this.getOut().println(SharedCollection.getInstance().recieveMessage()); 
-                    SharedCollection.getInstance().addResponse(this.getIn().readLine()); 
-                    SharedCollection.getInstance().notify(); 
+                    sharedCollection.wait();  
+                    this.getOut().println(sharedCollection.recieveMessage()); 
+                    sharedCollection.addResponse(this.getIn().readLine()); 
+                    sharedCollection.notify(); 
                     
                 } catch (InterruptedException | IOException ex) {
                     Logger.getLogger(CommunicationThread.class.getName()).log(Level.SEVERE, null, ex);

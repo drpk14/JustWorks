@@ -40,13 +40,13 @@ public class OfertViewerController implements Initializable {
     @FXML
     private Text contractTypeTextField;
     @FXML
-    private MFXButton exitButton; 
-    @FXML
     private Text labelTextField;
      
     private int offerId = 0;
     @FXML
     private MFXButton candidateButton;
+    @FXML
+    private MFXButton exitButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();

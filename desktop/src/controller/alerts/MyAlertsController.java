@@ -3,23 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package controller.alerts;
-
-import controller.oferts.*;
-import Entities.Ofert; 
-import controller.MainBusinessmanController;
-import io.github.palexdev.materialfx.controls.MFXButton;
+ 
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView; 
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent; 
 import javafx.fxml.FXML;  
 import javafx.fxml.Initializable; 
-import javax.swing.JOptionPane;
-import cells.OfertCell;
+import javax.swing.JOptionPane; 
 import controller.MainWorkerController;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import java.util.ArrayList; 
-import java.util.List; 
+import io.github.palexdev.materialfx.controls.MFXTextField; 
 import javafx.collections.ListChangeListener;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -78,7 +71,7 @@ public class MyAlertsController implements Initializable {
 
     @FXML
     private void changeToAddPane(ActionEvent event) {
-        JustWorkApp.sendMessage("L:"); 
+        JustWorkApp.sendMessage("Lab:"); 
          
          
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
@@ -107,7 +100,7 @@ public class MyAlertsController implements Initializable {
 
     @FXML
     private void saveAlert(ActionEvent event) {
-        if(!labelListView.getItems().isEmpty()){
+        if(!labelListView.getSelectionModel().getSelectedItems().isEmpty()){
             JustWorkApp.sendMessage("AddA:"+labelListView.getSelectionModel().getSelectedItem());
             String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
             if(processedInput[1].equals("C")){

@@ -44,6 +44,11 @@
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
+                        <MFXButton fx:id="workExperienceButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Work Experience">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </MFXButton>
                      </children>
                   </HBox>
                   <MFXButton fx:id="notificationButton" contentDisplay="CENTER" depthLevel="LEVEL0" onAction="#changeMainPane" prefHeight="51.0" prefWidth="60.0" style="-fx-background-color: #81e4f7;" text=" " textAlignment="RIGHT">

@@ -12,7 +12,7 @@ import dao.LabelKnowledgeDao;
 import dao.LabelOfferDao;
 import dao.NotificationDao;
 import dao.OfferDao;
-import dao.UserDao; 
+import dao.UserDao;  
 import dao.WorkerDao;  
 import static dao.WorkerDao.checkIfWorker;
 import entities.Alert;
@@ -20,11 +20,14 @@ import entities.Businessman;
 import entities.Candidature;
 import entities.Knowledge;
 import entities.Label;
+import entities.LabelKnowledge;
 import entities.LabelOffer;
 import entities.Notification;
 import entities.Offer;
 import entities.User;
 import entities.Worker;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList; 
 import java.util.List; 
 import server.Server.ServerThread;  
@@ -239,7 +242,7 @@ public class Protocol {
                 OfferDao.deleteOffer(OfferDao.getOfferDetails(Integer.valueOf(processedInput[1])));
                     
                 output+="C";
-            }else if(processedInput[0].equals("L")){
+            }else if(processedInput[0].equals("Lab")){
                 output+="L:"; 
                  
                 for(Label label : LabelDao.getAllLabels()){
@@ -321,7 +324,7 @@ public class Protocol {
                     AlertDao.addAlert(new Alert(LabelDao.getLabelByName(processedInput[1]),WorkerDao.checkIfWorker(myUser)));
                     output+="C"; 
                 }else{
-                    output+="I:You already have one alert with this label:"; 
+                    output+="I:You already have one alert with this label"; 
                 
                 }
             }else if(processedInput[0].equals("DelA")){
@@ -330,7 +333,7 @@ public class Protocol {
                     AlertDao.deleteOffer(AlertDao.getAlert(myUser,LabelDao.getLabelByName(processedInput[1])));
                     output+="C";  
                 }else{
-                    output+="I:This alert don't exist:"; 
+                    output+="I:This alert don't exist"; 
                 
                 }
             }else if(processedInput[0].equals("MyN")){
@@ -344,11 +347,6 @@ public class Protocol {
                     notification.setNotified(true);
                     NotificationDao.updateNotification(notification);
                 } 
-            }else if(processedInput[0].equals("DelN")){
-                output+="DelN:"; 
-                
-                NotificationDao.deleteNotification(NotificationDao.getNotificationById(Integer.valueOf(processedInput[1])));
-                output+="C";
             }else if(processedInput[0].equals("DelN")){
                 output+="DelN:"; 
                 
@@ -450,9 +448,104 @@ public class Protocol {
                     output+=knowledge.getWorker().getUser().toString()+":";
                     output+=knowledge.getName()+":";
                     output+=knowledge.getPlace()+":";
+                    output+=knowledge.getTitle()+":";
+                    output+=knowledge.getType()+":";
                     output+=knowledge.getFechaInicio().toString()+":";
                     output+=knowledge.getFechaFin().toString()+":";
+                    output+="Labels,";
+                    for(Label actualLabel: LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge)){
+
+                        output+=actualLabel.getName();
+                        output+=",";
+                    }
+                    output+=":";
+                }
+            }else if(processedInput[0].equals("MyWE")){ 
+                output+="MyWE:";
+                for(Knowledge knowledge  : KnowledgeDao.getMyWorkExperience(myUser)){
+                    output+=knowledge.getId()+":";
+                    output+=knowledge.getWorker().getUser().toString()+":";
+                    output+=knowledge.getName()+":";
+                    output+=knowledge.getPlace()+":";
+                    output+=knowledge.getTitle()+":";
+                    output+=knowledge.getType()+":";
+                    output+=knowledge.getFechaInicio().toString()+":";
+                    output+=knowledge.getFechaFin().toString()+":";
+                    output+="Labels,";
+                    for(Label actualLabel: LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge)){
+
+                        output+=actualLabel.getName();
+                        output+=",";
+                    }
+                    output+=":";
+                }
+            }else if(processedInput[0].equals("KDet")){ 
+                output+="KDet:";
+                Knowledge knowledge = KnowledgeDao.getKnowledgeById(Integer.parseInt(processedInput[1]));
+                output+=knowledge.getId()+":";
+                output+=knowledge.getWorker().getUser().toString()+":";
+                output+=knowledge.getName()+":";
+                output+=knowledge.getPlace()+":";
+                output+=knowledge.getTitle()+":";
+                output+=knowledge.getType()+":";
+                output+=knowledge.getFechaInicio().toString()+":";
+                output+=knowledge.getFechaFin().toString()+":";
+                output+="Labels,";
+                for(Label actualLabel: LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge)){
+
+                    output+=actualLabel.getName();
+                    output+=",";
+                }
+                output+=":";
+                
+            }else if(processedInput[0].equals("AddK")){ 
+                
+                output+="AddK";
+                output+=":"; 
+                
+                         
+                if(processedInput.length > 2){
                     
+                    
+                    String[] labels = processedInput[7].split(",");
+                    Knowledge knowledge = new Knowledge(WorkerDao.checkIfWorker(myUser),processedInput[1],processedInput[2],processedInput[3],processedInput[4],Date.valueOf(processedInput[5]),Date.valueOf(processedInput[6]));
+               
+                    if(!KnowledgeDao.checkIfKnowledgeExist(knowledge,myUser)){    
+                        KnowledgeDao.addKnowledge(knowledge);
+
+                        for(String label : labels){ 
+                            LabelKnowledgeDao.addLabelKnowledge(new LabelKnowledge(knowledge,LabelDao.getLabelByName(label))); 
+                        }
+
+                        output+="C";
+                    }else{
+                        output+="I:You already have one offer with this name";   
+                    }
+                }else{
+                    if(processedInput[1].equals("WE"))
+                        output+="WE:";
+                    else if(processedInput[1].equals("Q"))
+                        output+="Q:"; 
+                }
+                
+            }else if(processedInput[0].equals("DelK")){ 
+                output+="DelK:";
+                Knowledge knowledge = KnowledgeDao.getKnowledgeById(Integer.parseInt(processedInput[1]));
+                
+                List<Label> labels = LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge);
+                
+                for(Label label: labels){
+                    if(CandidatureDao.getMyCandidaturesWithLabel(myUser, label)){
+                        if(LabelKnowledgeDao.getKnowledgeByLabel(label, myUser).size() > 1){
+                            KnowledgeDao.deleteKnowledge(knowledge);
+                            output+="C";
+                        }else{
+                            output+="I";
+                        }
+                    }else{
+                        KnowledgeDao.deleteKnowledge(knowledge);
+                        output+="C";
+                    }
                 }
             }else if(processedInput[0].equals("Exit")){
                 sharedColection.remove(myUser.getUser());

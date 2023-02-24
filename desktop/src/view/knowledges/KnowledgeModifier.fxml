@@ -3,72 +3,68 @@
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.OfertModifierController">
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.knowledges.KnowledgeModifierController">
    <children>
-      <Text layoutX="20.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="30.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Text>
-      <Text layoutX="20.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ubication:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Text>
-      <Text layoutX="20.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salary:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Text>
-      <Text layoutX="20.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contract type:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Text>
-      <TextArea fx:id="descriptionTextArea" layoutX="280.0" layoutY="116.0" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </TextArea>
       <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="280.0" layoutY="568.0" onAction="#exitWindow" text="Exit">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
       <MFXTextField fx:id="nameTextField" floatMode="DISABLED" layoutX="280.0" layoutY="54.0" prefHeight="30.0" prefWidth="375.0" textLimit="15" />
-      <MFXTextField fx:id="ubicationTextField" floatMode="DISABLED" layoutX="280.0" layoutY="250.0" prefHeight="30.0" prefWidth="375.0" textLimit="25" />
-      <MFXTextField fx:id="salaryTextField" floatMode="DISABLED" layoutX="280.0" layoutY="319.0" prefHeight="30.0" prefWidth="375.0" textLimit="5" />
-      <MFXTextField fx:id="contractTypeTextField" floatMode="DISABLED" layoutX="280.0" layoutY="396.0" prefHeight="30.0" prefWidth="375.0" textLimit="10" />
+      <MFXTextField fx:id="titleTextField" floatMode="DISABLED" layoutX="280.0" layoutY="200.0" prefHeight="30.0" prefWidth="375.0" textLimit="25" />
+      <MFXTextField fx:id="placeTextField" floatMode="DISABLED" layoutX="280.0" layoutY="126.0" prefHeight="30.0" prefWidth="375.0" textLimit="10" />
       <MFXButton fx:id="confirmActionButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="375.0" layoutY="568.0" onAction="#confirmAction" text="Action">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
-      <MFXButton fx:id="changeLabelButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="571.0" layoutY="463.0" onAction="#changeToLabelPane" text="Change Labels">
+      <MFXButton fx:id="changeLabelButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="562.0" layoutY="443.0" onAction="#changeToLabelPane" text="Change Labels">
          <font>
             <Font size="15.0" />
          </font>
       </MFXButton>
-      <Text layoutX="20.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="30.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="labelsInfo" layoutX="292.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="252.53668212890625">
+      <Text fx:id="labelsInfo" layoutX="292.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="252.53668212890625">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
+      <Text layoutX="30.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="30.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="30.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Init Date:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="30.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Finish Date:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <DatePicker fx:id="initDatePicker" layoutX="280.0" layoutY="280.0" prefHeight="26.0" prefWidth="375.0" />
+      <DatePicker fx:id="finishDatePicker" layoutX="280.0" layoutY="355.0" prefHeight="26.0" prefWidth="375.0" />
       <AnchorPane id="AnchorPane" fx:id="labelsPane" prefHeight="672.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
          <children>
             <MFXLegacyListView fx:id="labelListView" layoutX="29.0" layoutY="59.0" prefHeight="570.0" prefWidth="278.0" />

@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;  
 import javafx.scene.text.Text;
+import view.JustWorkApp;
 
 /**
  * FXML Controller class
@@ -53,6 +54,8 @@ public class MainWorkerController implements Initializable {
     private MFXButton notificationButton;
     @FXML
     private MFXButton candidatureButton;
+    @FXML
+    private MFXButton workExperienceButton;
     
     
     public void setMainPane(String paneName, String information) {
@@ -94,6 +97,9 @@ public class MainWorkerController implements Initializable {
             this.setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
         } else if(event.getSource() == candidatureButton){  
             this.setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+        } else if(event.getSource() == workExperienceButton){  
+            JustWorkApp.sendMessage("MyWE:"); 
+            this.setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
         }
     }
 

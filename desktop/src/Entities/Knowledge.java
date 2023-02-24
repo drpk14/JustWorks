@@ -4,8 +4,7 @@
  */
 package Entities;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDate; 
 import java.util.List;
 
 /**
@@ -15,17 +14,21 @@ import java.util.List;
 public class Knowledge {
     private int id; 
     private String workerName;
-    private String knowledgeName; 
-    private String place;  
+    private String name;
+    private String place;
+    private String title;
+    private String type;
     private LocalDate initDate;
     private LocalDate finishDate;
     private List<String> labels;
 
-    public Knowledge(int id,String workerName, String knowledgeName,String place, LocalDate initDate, LocalDate finishDate) {
+    public Knowledge(int id, String workerName, String name, String place, String title, String type, LocalDate initDate, LocalDate finishDate) {
         this.id = id;
         this.workerName = workerName;
-        this.knowledgeName = knowledgeName;
+        this.name = name;
         this.place = place;
+        this.title = title;
+        this.type = type;
         this.initDate = initDate;
         this.finishDate = finishDate;
     }
@@ -46,12 +49,12 @@ public class Knowledge {
         this.workerName = workerName;
     }
 
-    public String getKnowledgeName() {
-        return knowledgeName;
+    public String getName() {
+        return name;
     }
 
-    public void setKnowledgeName(String knowledgeName) {
-        this.knowledgeName = knowledgeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPlace() {
@@ -60,6 +63,22 @@ public class Knowledge {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public LocalDate getInitDate() {
@@ -85,10 +104,37 @@ public class Knowledge {
     public void setLabels(List<String> labels) {
         this.labels = labels;
     }
-
+ 
+    
     @Override
     public String toString() {
-        return "Knowledge{" + "knowledgeName=" + knowledgeName + ", place=" + place + '}';
+        return "Knowledge{" + "knowledgeName=" + name + ", place=" + place + '}';
     }
     
+    /*@Override
+    public boolean equals(Object object){
+        Knowledge other = (Knowledge) object;
+        if(!this.getName().equals(other.getName()))
+            return false;
+        
+        if(!this.getTitle().equals(other.getTitle()))
+            return false;
+        
+        if(!this.getPlace().equals(other.getPlace()))
+            return false;
+        
+        if(!this.getInitDate().equals(other.getFinishDate()))
+            return false;
+        
+        if(!this.getFinishDate().equals(other.getFinishDate()))
+            return false;
+        
+        if(!this.getType().equals(other.getType()))
+            return false;
+        
+        if(!this.getLabels().equals(other.getLabels()))
+            return false;
+        
+        return true;
+    }*/
 }

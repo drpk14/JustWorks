@@ -113,24 +113,7 @@ public class UserModifierController implements Initializable {
                     JOptionPane.showMessageDialog(null, "You must modify at least one textfield");
                 }
             }
-        }/*else if(confirmActionButton.getText().equals("Add")){
-            if(checkUserInput() == true){  
-                JustWorkApp.sendMessage("AddO:"
-                                        +nameTextField.getText()+":"
-                                        +dniTextField.getText()+":"
-                                        +surnameTextField.getText()+":"
-                                        +salaryTextField.getText()+":"
-                                        +contractTypeTextField.getText()+":"
-                                        +getLabelString()+"");
-
-                String[] processedInput = JustWorkApp.recieveMessage().split(":");
-                if(processedInput[1].equals("C")){
-                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
-                } else if(processedInput[1].equals("I")){
-                    JOptionPane.showMessageDialog(null, processedInput[2]);
-                }
-            }   
-        }*/
+        } 
     }
  
     

@@ -2,14 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package controller.oferts;
+package controller.knowledges;
 
+import Entities.Knowledge;
+import controller.oferts.*;
 import Entities.Ofert;
 import controller.MainBusinessmanController; 
+import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField; 
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;   
@@ -17,6 +21,7 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable; 
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;  
 import javafx.scene.layout.AnchorPane;
@@ -29,22 +34,24 @@ import view.JustWorkApp;
  *
  * @author David
  */
-public class OfertModifierController implements Initializable {
+public class KnowledgeModifierController implements Initializable {
 
     @FXML
-    private MFXTextField nameTextField;
-    @FXML
-    private TextArea descriptionTextArea; 
-    @FXML
-    private MFXTextField ubicationTextField;
-    @FXML
-    private MFXTextField salaryTextField;
-    @FXML
-    private MFXTextField contractTypeTextField;
+    private MFXTextField nameTextField; 
     @FXML
     private MFXButton confirmActionButton; 
     
-    private Ofert modifyOfert = null;   
+    private Knowledge modifyKnowledge = null; 
+    
+    @FXML
+    private MFXTextField titleTextField;
+    @FXML
+    private MFXTextField placeTextField;
+    @FXML
+    private DatePicker initDatePicker;
+    @FXML
+    private DatePicker finishDatePicker;
+     
     @FXML
     private MFXButton changeLabelButton;
     @FXML
@@ -59,7 +66,8 @@ public class OfertModifierController implements Initializable {
     private AnchorPane newLabelPane;
     @FXML
     private MFXTextField newLabelNameTextField;
-     
+    
+    private String type;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,46 +101,76 @@ public class OfertModifierController implements Initializable {
             
              
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        if(processedInput[0].equals("ModO")){
+        
+        if(processedInput[1].equals("WE")){
+            type = "WorkExperience";
+        }else if(processedInput[2].equals("Q")){
+            type = "Qualification";
+        }
+        if(processedInput[0].equals("ModK")){
             changeLabelButton.setDisable(true);
             confirmActionButton.setText("Modify");
             this.addInfo(processedInput);
             
         }else{
-            confirmActionButton.setText("Add");
+            confirmActionButton.setText("Add"); 
+            
         } 
         
         
     } 
+    
+    private void addInfo(String[] processedInput){
+        for(int i= 2;i<processedInput.length;i=i+9){
+            modifyKnowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
+            String[] labels = processedInput[i+8].split(",");
+            List labelsList = new ArrayList(0);
+            if(labels.length >= 2){
+                for(int j = 1;j<labels.length;j++){
+                    labelsList.add(labels[j]);
+                }
+                modifyKnowledge.setLabels(labelsList);
+            } 
+            
+        }
+        
+        nameTextField.setText(modifyKnowledge.getName());
+        placeTextField.setText(modifyKnowledge.getPlace());
+        titleTextField.setText(modifyKnowledge.getTitle());
+        initDatePicker.setValue(modifyKnowledge.getInitDate());
+        finishDatePicker.setValue(modifyKnowledge.getFinishDate());
+         
+        
+     }
 
     @FXML
     private void exitWindow(ActionEvent event) { 
-        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
+        this.backToMyKnowledges();
     }
 
     @FXML
     private void confirmAction(ActionEvent event) {
         if(confirmActionButton.getText().equals("Modify")){
             if(checkUserInput() == true){
-                if(!nameTextField.getText().equals(modifyOfert.getName()) ||
-                !descriptionTextArea.getText().equals(modifyOfert.getDescription()) ||
-                !ubicationTextField.getText().equals(modifyOfert.getUbication()) ||
-                !salaryTextField.getText().equals(modifyOfert.getSalary()) ||
-                !contractTypeTextField.getText().equals(modifyOfert.getContractType())){ 
+                if(!nameTextField.getText().equals(modifyKnowledge.getName()) ||
+                !placeTextField.getText().equals(modifyKnowledge.getPlace()) ||
+                !titleTextField.getText().equals(modifyKnowledge.getTitle()) ||
+                !initDatePicker.getValue().equals(modifyKnowledge.getInitDate()) ||
+                !finishDatePicker.getValue().equals(modifyKnowledge.getFinishDate())){ 
                 
                      
-                    JustWorkApp.sendMessage("ModO:"+
-                            modifyOfert.getId()+":"
+                    JustWorkApp.sendMessage("ModK:"+
+                            modifyKnowledge.getId()+":"
                             +nameTextField.getText()+":"
-                            +descriptionTextArea.getText()+":"
-                            +ubicationTextField.getText()+":"
-                            +salaryTextField.getText()+":"
-                            +contractTypeTextField.getText()+":"
+                            +placeTextField.getText()+":"
+                            +titleTextField.getText()+":"
+                            +initDatePicker.getValue().toString()+":"
+                            +finishDatePicker.getValue().toString()+":"
                             +labelsInfo.getText()); 
                     
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
-                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                        this.backToMyKnowledges();
                     } else if(processedInput[1].equals("I")){
                         JOptionPane.showMessageDialog(null, processedInput[2]);
                     }
@@ -142,17 +180,18 @@ public class OfertModifierController implements Initializable {
             }
         }else if(confirmActionButton.getText().equals("Add")){
             if(checkUserInput() == true){  
-                JustWorkApp.sendMessage("AddO:"
-                                        +nameTextField.getText()+":"
-                                        +descriptionTextArea.getText()+":"
-                                        +ubicationTextField.getText()+":"
-                                        +salaryTextField.getText()+":"
-                                        +contractTypeTextField.getText()+":"
+                JustWorkApp.sendMessage("AddK:"
+                                        +nameTextField.getText()+":" 
+                                        +placeTextField.getText()+":"
+                                        +titleTextField.getText()+":"
+                                        +type+":"   
+                                        +initDatePicker.getValue().toString()+":"
+                                        +finishDatePicker.getValue().toString()+":"
                                         +this.getLabelString()); 
 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");
                 if(processedInput[1].equals("C")){
-                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                    this.backToMyKnowledges();
                 } else if(processedInput[1].equals("I")){
                     JOptionPane.showMessageDialog(null, processedInput[2]);
                 }
@@ -162,38 +201,51 @@ public class OfertModifierController implements Initializable {
  
     
     private boolean checkUserInput(){
-        System.out.println(labelListView.getSelectionModel().getSelectedItems().size());
-        if(nameTextField.getText().contains(":")|| nameTextField.getText().length() <= 0){
+       
+        if(nameTextField.getText().contains(":") || nameTextField.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
             return false;
-        }else if(descriptionTextArea.getText().contains(":")|| descriptionTextArea.getText().length() <= 0){
+        }else if(placeTextField.getText().contains(":")|| placeTextField.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
             return false;
-        }else if(ubicationTextField.getText().contains(":")|| ubicationTextField.getText().length() <= 0){
+        }else if(titleTextField.getText().contains(":")|| titleTextField.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
             return false;
-        }else if(salaryTextField.getText().contains(":")|| salaryTextField.getText().length() <= 0){
-            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
+        }else if(initDatePicker.getValue() == null){
+            JOptionPane.showMessageDialog(null, "You must select the init date");
             return false;
-        }else if(contractTypeTextField.getText().contains(":")|| contractTypeTextField.getText().length() <= 0){
-            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
+        }else if(finishDatePicker.getValue() == null){
+            JOptionPane.showMessageDialog(null, "You must select the finish date");
             return false;
-        }
+        }else if(initDatePicker.getValue().isAfter(finishDatePicker.getValue())){
+            JOptionPane.showMessageDialog(null, "The init date must be before the finish date");
+            return false;
+        } 
         
         if(labelListView.getSelectionModel().getSelectedItems().size() <= 0 && confirmActionButton.getText().equals("Add")){
             JOptionPane.showMessageDialog(null, "You need to select at least one label");
             return false;
-        }
-        try{
-            Integer.valueOf(salaryTextField.getText());
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(null, "The salary text field can't contain letters");
-            return false;
-        }
+        } 
             
         return true;
     }
 
+    
+    private void backToMyKnowledges(){
+        if(type.equals("WorkExperience")){
+            JustWorkApp.sendMessage("MyWE:"); 
+            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+                        
+        }else if(type.equals("Qualification")){
+            JustWorkApp.sendMessage("MyQ:"); 
+            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+
+        }
+    
+    }
+    
+    
+    
     @FXML
     private void changeToLabelPane(ActionEvent event) { 
         JustWorkApp.sendMessage("Lab:");
@@ -207,36 +259,7 @@ public class OfertModifierController implements Initializable {
         this.labelsPane.setVisible(true); 
     }
  
-     private void addInfo(String[] processedInput){
-        for(int i= 1;i<processedInput.length;i=i+8){
-            modifyOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
-
-            nameTextField.setText(modifyOfert.getName());
-            descriptionTextArea.setText(modifyOfert.getDescription()); 
-            ubicationTextField.setText(modifyOfert.getUbication());
-            salaryTextField.setText(String.valueOf(modifyOfert.getSalary()));
-            contractTypeTextField.setText(modifyOfert.getContractType());
-            String[] labels = processedInput[8].split(",");
-            String labelsString = "";
-            if(labels.length >= 2){
-                List labelsList = new ArrayList();
-                for(int j = 1;j<labels.length;j++){
-                    labelsList.add(labels[j]);
-
-                    labelsString += labels[j];
-                    
-                     
-                    
-                    if(i != labels.length-1){
-                        labelsString += " , ";
-                    } 
-                }
-                labelsInfo.setText(labelsString);
-                modifyOfert.setLabelsList(labelsList);
-
-            }
-        }
-     }
+    
 
     private void saveLabels(ActionEvent event) {
         labelsInfo.setText(this.getLabelString());
@@ -260,8 +283,7 @@ public class OfertModifierController implements Initializable {
     
         return labelsString;
     }
-
-
+ 
     @FXML
     private void changeToAddLabelPane(ActionEvent event) {
         this.labelsPane.setVisible(false);
@@ -284,7 +306,7 @@ public class OfertModifierController implements Initializable {
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 labelListView.getItems().clear();
-                JustWorkApp.sendMessage("L:"); 
+                JustWorkApp.sendMessage("Lab:"); 
          
          
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");

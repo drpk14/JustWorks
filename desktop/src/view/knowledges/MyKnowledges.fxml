@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.knowledges.MyKnowledgesController">
+   <children>
+      <MFXLegacyListView fx:id="listView" layoutX="12.0" layoutY="76.0" prefHeight="578.0" prefWidth="727.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <MFXButton fx:id="addButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="686.0" layoutY="-1.0" onAction="#manageButtonsActions" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <graphic>
+            <FontAwesomeIconView caretBias="false" fill="LIME" glyphName="PLUS" selectionFill="BLACK" size="40" stroke="LIME" textAlignment="RIGHT" />
+         </graphic>
+      </MFXButton>
+      <MFXButton fx:id="modifyButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="614.0" layoutY="10.0" onAction="#manageButtonsActions" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
+         <graphic>
+            <FontAwesomeIconView caretBias="false" glyphName="EDIT" selectionFill="BLACK" size="40" stroke="BLACK" textAlignment="RIGHT" />
+         </graphic>
+      </MFXButton>
+      <MFXButton fx:id="deleteButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="554.0" layoutY="10.0" onAction="#manageButtonsActions" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT">
+         <graphic>
+            <FontAwesomeIconView caretBias="false" fill="RED" glyphName="TRASH" selectionFill="RED" size="40" stroke="RED" textAlignment="RIGHT" />
+         </graphic>
+      </MFXButton>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

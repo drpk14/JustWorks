@@ -26,6 +26,7 @@ public class JustWorkApp extends Application{
     private static double yOffset=0.0; 
     private static Scene scene;
     private static Stage stage; 
+    private static SharedCollection sharedCollection;
     
     public static void changeScene(Parent root) {
         scene = new Scene(root); 
@@ -46,8 +47,9 @@ public class JustWorkApp extends Application{
      
     @Override
     public void start(Stage stage) throws Exception { 
-        CommunicationThread.getInstance().start();
-        //initializeConnection();
+        System.out.println("nueva coleccion");
+        sharedCollection = new SharedCollection();
+        new CommunicationThread(sharedCollection).start();
         JustWorkApp.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));   
         stage.initStyle(StageStyle.UNDECORATED);
@@ -60,19 +62,19 @@ public class JustWorkApp extends Application{
     }
     
     public static void sendMessage(String message){ 
-        SharedCollection.getInstance().addMessage(message); 
+        sharedCollection.addMessage(message); 
     }
     
     public static String recieveMessage(){ 
         
         String response = "";
-        synchronized (SharedCollection.getInstance()) {
+        synchronized (sharedCollection) {
             try {
-                if(SharedCollection.getInstance().isResponsesEmpty())
-                    SharedCollection.getInstance().wait();
+                if(sharedCollection.isResponsesEmpty())
+                    sharedCollection.wait();
                 
                 
-                response = SharedCollection.getInstance().recieveResponse();
+                response = sharedCollection.recieveResponse();
             
             } catch (InterruptedException ex) {
                 ex.printStackTrace();

@@ -7,12 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;  
-import java.net.SocketException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties; 
-import java.util.TreeMap;
+import java.net.Socket;   
+import java.util.Properties;  
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,8 +90,7 @@ public class Server {
                 output = protocol.processInput(input);
                 this.write(output);
                 System.out.println("El servidor ha devuelto: "+output);
-            }
-              
+            } 
         }
         
         public void write(String text){
