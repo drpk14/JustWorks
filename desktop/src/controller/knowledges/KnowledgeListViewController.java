@@ -70,8 +70,8 @@ public class KnowledgeListViewController implements Initializable {
     private void watchOffer(ActionEvent event) {
         JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_DETAILS+":"+id);  
         if(MainBusinessmanController.getInstance() != null)
-            MainBusinessmanController.getInstance().setMainPane("../view/knowledges/KnowledgeViewer.fxml","Knowledge Viewer");
+            MainBusinessmanController.getInstance().setMainPane("/view/knowledges/KnowledgeViewer.fxml","Knowledge Viewer");
         else if(MainWorkerController.getInstance() != null)
-            MainWorkerController.getInstance().setMainPane("../view/knowledges/KnowledgeViewer.fxml","Knowledge Viewer");
+            MainWorkerController.getInstance().setMainPane("/view/knowledges/KnowledgeViewer.fxml","Knowledge Viewer");
     }
 } 

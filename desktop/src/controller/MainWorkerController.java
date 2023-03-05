@@ -57,6 +57,8 @@ public class MainWorkerController implements Initializable {
     private MFXButton candidatureButton;
     @FXML
     private MFXButton workExperienceButton;
+    @FXML
+    private MFXButton qualificationButton;
     
     
     public void setMainPane(String paneName, String information) {
@@ -89,23 +91,30 @@ public class MainWorkerController implements Initializable {
     @FXML
     private void changeMainPane(ActionEvent event) {
         if(event.getSource() == ofertsButton){  
-            this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
+            this.setMainPane("/view/oferts/AllOferts.fxml","All Oferts");
         }else if(event.getSource() == profileButton){
-            this.setMainPane("../view/users/UserViewer.fxml", "My Profile");
+            this.setMainPane("/view/users/UserViewer.fxml", "My Profile");
         } else if(event.getSource() == alertsButton){
-            this.setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts");
+            this.setMainPane("/view/alerts/MyAlerts.fxml", "My Alerts");
         } else if(event.getSource() == notificationButton){  
-            this.setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+            this.setMainPane("/view/notifications/MyNotifications.fxml", "My Notifications");
         } else if(event.getSource() == candidatureButton){  
-            this.setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+            this.setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
         } else if(event.getSource() == workExperienceButton){  
             JustWorkApp.sendMessage(Messages.CL_MY_WORK_EXPERIENCE); 
-            this.setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+            this.setMainPane("/view/knowledges/MyKnowledges.fxml","My Knowledges");
+        } else if(event.getSource() == qualificationButton){  
+            JustWorkApp.sendMessage(Messages.CL_MY_QUALIFICATION); 
+            this.setMainPane("/view/knowledges/MyKnowledges.fxml","My Knowledges");
         }
     }
 
     @FXML
     private void exit(ActionEvent event) {
-        System.exit(0);
+        JustWorkApp.sendMessage(Messages.CL_EXIT); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        if(processedInput[1].equals("C")){
+            System.exit(0);
+        }
     }
 } 

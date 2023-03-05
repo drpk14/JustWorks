@@ -192,4 +192,28 @@ public class CandidatureDao {
         }   
         return false;
     } 
+    
+    public static boolean checkIfCandidatureExits(User user,Offer offer){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+            query = session.createQuery("FROM Candidature C JOIN C.worker W JOIN W.user U JOIN C.offer O WHERE U.dni = :dni AND O.id = :id"); 
+            query.setString("dni", user.getDni());
+            query.setString("id",String.valueOf(offer.getId()));
+            List<Object[]> queryList = query.list();
+            if(queryList.size() > 0)
+                return true;
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return false;
+    }  
 }

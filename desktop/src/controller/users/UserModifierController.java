@@ -26,6 +26,10 @@ import static util.Messages.*;
 /**
  * FXML Controller class
  *
+ * 
+ * 
+ * 
+ * 
  * @author David
  */
 public class UserModifierController implements Initializable {
@@ -58,7 +62,7 @@ public class UserModifierController implements Initializable {
             
         JustWorkApp.sendMessage(CL_USER_DETAILS);     
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        if(processedInput[0].equals("UDet")){ 
+        if(processedInput[0].equals(S_USER_DETAILS)){ 
             confirmActionButton.setText("Modify");
             for(int i= 1;i<processedInput.length;i=i+8){
                 modifyUser = new User(processedInput[i],processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5]);
@@ -79,9 +83,9 @@ public class UserModifierController implements Initializable {
     @FXML
     private void exitWindow(ActionEvent event) { 
         if(MainBusinessmanController.getInstance() != null){
-            MainBusinessmanController.getInstance().setMainPane("../view/users/UserViewer.fxml","My Profile > Edit Profile"); 
+            MainBusinessmanController.getInstance().setMainPane("/view/users/UserViewer.fxml","My Profile > Edit Profile"); 
         }else if(MainWorkerController.getInstance() != null){
-            MainWorkerController.getInstance().setMainPane("../view/users/UserViewer.fxml","My Profile > Edit Profile"); 
+            MainWorkerController.getInstance().setMainPane("/view/users/UserViewer.fxml","My Profile > Edit Profile"); 
         }
     }
 
@@ -141,18 +145,13 @@ public class UserModifierController implements Initializable {
         }else if((!new ValidadorDNI(dniTextField.getText()).validar())){
             JOptionPane.showMessageDialog(null, "DNI has not a correct format");
             return false;
-        }else{
-            return true;
-        }/*else if(this.checkEmail(emailTextField.getText())){
-            JOptionPane.showMessageDialog(null, "email has not a correct format");
+        }else if(emailTextField.getText().contains(":")|| emailTextField.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
             return false;
-        } */
+        } else{
+            return true;
+        }
              
     }
- 
-    private boolean checkEmail(String emailAddress){
-        return Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
-            .matcher(emailAddress)
-            .matches();
-    } 
+  
 }

@@ -101,7 +101,7 @@ public class KnowledgeModifierController implements Initializable {
         
         if(processedInput[1].equals("WE")){
             type = "WorkExperience";
-        }else if(processedInput[2].equals("Q")){
+        }else if(processedInput[1].equals("Q")){
             type = "Qualification";
         }
         if(processedInput[0].equals("ModK")){
@@ -231,11 +231,11 @@ public class KnowledgeModifierController implements Initializable {
     private void backToMyKnowledges(){
         if(type.equals("WorkExperience")){
             JustWorkApp.sendMessage(CL_MY_WORK_EXPERIENCE); 
-            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+            MainWorkerController.getInstance().setMainPane("/view/knowledges/MyKnowledges.fxml","My Knowledges");
                         
         }else if(type.equals("Qualification")){
-            JustWorkApp.sendMessage("MyQ:"); 
-            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+            JustWorkApp.sendMessage(CL_MY_QUALIFICATION); 
+            MainWorkerController.getInstance().setMainPane("/view/knowledges/MyKnowledges.fxml","My Knowledges");
 
         }
     

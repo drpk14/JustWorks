@@ -17,6 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane; 
 import javafx.scene.text.Text;
+import util.Messages;
+import view.JustWorkApp;
 
 /**
  * FXML Controller class
@@ -79,16 +81,20 @@ public class MainBusinessmanController implements Initializable {
     @FXML
     private void changeMainPane(ActionEvent event) {
         if(event.getSource() == ofertsButton){  
-            this.setMainPane("../view/oferts/AllOferts.fxml","All Oferts");
+            this.setMainPane("/view/oferts/AllOferts.fxml","All Oferts");
         }else if(event.getSource() == myOfertsButton){
-            this.setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+            this.setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
         }else if(event.getSource() == profileButton){
-            this.setMainPane("../view/users/UserViewer.fxml", "My Profile");
+            this.setMainPane("/view/users/UserViewer.fxml", "My Profile");
         }
     }
 
     @FXML
     private void exit(ActionEvent event) {
-        System.exit(0);
+        JustWorkApp.sendMessage(Messages.CL_EXIT); 
+        String[] processedInput = JustWorkApp.recieveMessage().split(":");
+        if(processedInput[1].equals("C")){
+            System.exit(0);
+        }
     }
 } 

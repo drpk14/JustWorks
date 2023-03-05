@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable; 
 import javafx.scene.text.Text;
+import javax.swing.JOptionPane;
 import static util.Messages.*;
 import view.JustWorkApp;
 
@@ -62,18 +63,22 @@ public class UserViewerController implements Initializable {
     @FXML
     private void showEditPane(ActionEvent event) {
         if(MainBusinessmanController.getInstance() != null){
-            MainBusinessmanController.getInstance().setMainPane("../view/users/UserModifier.fxml","My Profile > Edit Profile"); 
+            MainBusinessmanController.getInstance().setMainPane("/view/users/UserModifier.fxml","My Profile > Edit Profile"); 
         }else if(MainWorkerController.getInstance() != null){
-            MainWorkerController.getInstance().setMainPane("../view/users/UserModifier.fxml","My Profile > Edit Profile"); 
+            MainWorkerController.getInstance().setMainPane("/view/users/UserModifier.fxml","My Profile > Edit Profile"); 
         }
     }
 
     @FXML
     private void deleteUser(ActionEvent event) {
-        JustWorkApp.sendMessage("s");
-        String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-        if(processedInput[1].equals("C")){
-            
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your user?");
+        if(response == 0){
+            JustWorkApp.sendMessage(CL_DELETE_USER);
+            String[] processedInput = JustWorkApp.recieveMessage().split(":");  
+            if(processedInput[1].equals("C")){
+                JOptionPane.showMessageDialog(null, "The user has been deleted correctly, shutdown the aplicattion");
+                JustWorkApp.closeApp();
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ public class KnowledgeCell extends ListCell<Knowledge>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("../view/knowledges/KnowledgeListView.fxml"));
+                    loader.setLocation(getClass().getResource("/view/knowledges/KnowledgeListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      

@@ -61,7 +61,7 @@ public class MyKnowledgesController implements Initializable {
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
         if(processedInput[0].equals(S_MY_WORK_EXPERIENCE)){
             type = "WorkExperience";
-        }else if(processedInput[0].equals("MyQ")){
+        }else if(processedInput[0].equals(S_MY_QUALIFICATION)){
             type = "Qualification";
         }
         
@@ -87,16 +87,15 @@ public class MyKnowledgesController implements Initializable {
                 JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":WE"); 
 
             }else if(type.equals("Qualification")){
-                JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":Q"); 
-
+                JustWorkApp.sendMessage(CL_ADD_KNOWLEDGE+":Q");  
             } 
             
-            MainWorkerController.getInstance().setMainPane("../view/knowledges/KnowledgeModifier.fxml","My Knowledge > Add Knowledge");
+            MainWorkerController.getInstance().setMainPane("/view/knowledges/KnowledgeModifier.fxml","My Knowledge > Add Knowledge");
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == modifyButton){
                     JustWorkApp.sendMessage(CL_MODIFY_KNOWLEDGE+":"+listView.getSelectionModel().getSelectedItem().getId());  
-                    MainWorkerController.getInstance().setMainPane("../view/knowledges/KnowledgeModifier.fxml","My Knowledge > Add Knowledge");
+                    MainWorkerController.getInstance().setMainPane("/view/knowledges/KnowledgeModifier.fxml","My Knowledge > Add Knowledge");
                 }else if(event.getSource() == deleteButton){ 
                     JustWorkApp.sendMessage(CL_DELETE_KNOWLEDGE+":"+listView.getSelectionModel().getSelectedItem().getId());   
                      
@@ -105,19 +104,17 @@ public class MyKnowledgesController implements Initializable {
                         
                         if(type.equals("WorkExperience")){
                             JustWorkApp.sendMessage(CL_MY_WORK_EXPERIENCE); 
-                            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+                            MainWorkerController.getInstance().setMainPane("/view/knowledges/MyKnowledges.fxml","My Work Experience");
                         
                         }else if(type.equals("Qualification")){
-                            JustWorkApp.sendMessage("MyQ:"); 
-                            MainWorkerController.getInstance().setMainPane("../view/knowledges/MyKnowledges.fxml","My Knowledges");
+                            JustWorkApp.sendMessage(CL_MY_QUALIFICATION); 
+                            MainWorkerController.getInstance().setMainPane("/view/knowledges/MyKnowledges.fxml","My Qualification");
                     
                         } 
-                    }else{
-                       JOptionPane.showMessageDialog(null, "");
                     }
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Necesitas seleccionar algún elemento de la lista");
+                JOptionPane.showMessageDialog(null, "You need to select at least one element in the list");
             }
         }
     }

@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/controller/notifications/NotificationListViewController.java</file>
-            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/controller/alerts/MyAlertsController.java</file>
+            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/controller/users/UserViewerController.java</file>
             <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/controller/LoginController.java</file>
-            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/cells/NotificationCell.java</file>
+            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/view/JustWorkApp.java</file>
+            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/desktop/src/util/CommunicationThreadUDP.java</file>
         </group>
     </open-files>
 </project-private>

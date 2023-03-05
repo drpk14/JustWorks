@@ -26,6 +26,7 @@ import entities.Notification;
 import entities.Offer;
 import entities.User;
 import entities.Worker;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList; 
@@ -43,7 +44,7 @@ enum States
 public class Protocol {
   
     private States state = LOGIN;
-    public static User myUser; 
+    public User myUser; 
     private String output;
     SharedColection sharedColection;
     
@@ -57,46 +58,43 @@ public class Protocol {
         this.thread = thread; 
         this.sharedColection = sharedColection;
     }
-    
-    /*
-    
-        vector[]={"mensaje","mensaje"}
      
-    
-        S1-Login-ok
-    
-    */
-    public String processInput(String input) {
+    public String processInput(String input) { 
         this.output = "";
-        String[] processedInput = input.split(":"); 
+        String[] processedInput = input.split(":");  
         
         
-        if (state == LOGIN) {
-            if(processedInput[0].equals(CL_LOGIN)){ 
+        if (state == LOGIN) { 
+            if(processedInput[0].equals(CL_LOGIN)){  
                 output+=S_LOGIN+":";
-                if(UserDao.checkUserPassword(processedInput[1], processedInput[2])){ 
-                    myUser = UserDao.getUser(processedInput[1]);
-                    output+="C:";
-                    if(checkIfBusinessman(myUser) != null){
-                        output+="B";
-                    }else if(checkIfWorker(myUser) != null){
-                        output+="W";
-                    }else{
-                        output+="A";
-                        
-                    }
-                    output+=":";
+                if(UserDao.checkUserPassword(processedInput[1], processedInput[2])){
+                    if(!sharedColection.search(processedInput[1])){
+                        myUser = UserDao.getUser(processedInput[1]);
+                        output+="C:";
+                        if(checkIfBusinessman(myUser) != null){
+                            output+="B";
+                        }else if(checkIfWorker(myUser) != null){
+                            output+="W";
+                        }else{
+                            output+="A";
+
+                        }
+                        output+=":";
+                        output+= myUser.toString()+":";
+
+                        sharedColection.add(myUser.getUser(), thread);
+                        if(NotificationDao.getMyUnwatchedNotifications(myUser)){
+                            output+="True";
+                        }else{
+                            output+="False";
+                        }
+                        state = MENU;
                     
-                    
-                    sharedColection.add(myUser.getUser(), thread);
-                    if(NotificationDao.getMyUnwatchedNotifications(myUser)){
-                        output+="True";
                     }else{
-                        output+="False";
+                        output+="I:This user is logged in the aplicattion";
                     }
-                    state = MENU;
                 }else{ 
-                    output+="I";
+                    output+="I:User or password incorrect";
                 }
             
             }else if(processedInput[0].equals(CL_REGISTER)){  
@@ -109,34 +107,43 @@ public class Protocol {
         } else if(state == SINGUP) {
     
             if(processedInput[0].equals(CL_REGISTER)){  
-                output+=S_REGISTER+":";
+                output+=S_REGISTER+":"; 
+                boolean follow = true;
                 
-                
-                
+                User user = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
                  
-                if(!UserDao.checkIfDniExits(UserDao.getUser(processedInput[1]))){
+                if(!UserDao.checkIfDniExits(user.getDni())){
+                    output+="I:It already exist one user with this dni";
+                    follow=false;
+                } 
+
+                if(!UserDao.checkIfeMailExits(user.getEmail(),user.getDni()) && follow){
+                    output+="I:It already exist one user with this email";
+                    follow=false;
+                } 
+
+                if(!UserDao.checkIfUsernameExits(user.getUser(),user.getDni())&& follow){
+                    output+="I:It already exist one user with this username";
+                    follow=false;
+                } 
+
+                if(follow){
                     
+                    UserDao.addUser(user);
                     
-                    
-                    
-                    
-                    
-                    
-                    //Comprobar
-                    User actualUser = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
-                    UserDao.addUser(actualUser);
                     if(processedInput[7].equals("BusinessMan")){
-                        BusinessmanDao.addBusinessman(new Businessman(actualUser));
+                        BusinessmanDao.addBusinessman(new Businessman(user));
                     }else if(processedInput[7].equals("Worker")){
-                        WorkerDao.addWorker(new Worker(actualUser)); 
+                        WorkerDao.addWorker(new Worker(user)); 
                     }
-                           
-                        
-                    output+="C"; 
+                    
+                    output+="C";
                     state = LOGIN;
-                }else{ 
-                    output+="I";
-                }
+                } 
+                
+                
+                
+            
             }else if(processedInput[0].equals(CL_LOGIN)){
                 output+=S_LOGIN;
                 state = LOGIN;
@@ -160,8 +167,19 @@ public class Protocol {
                 }
             }else if(processedInput[0].equals(CL_OFFER_DETAILS)){
                 //See the details of an offer
-                output+=S_OFFER_DETAILS; 
+                output+=S_OFFER_DETAILS+":"; 
                 Offer offer = OfferDao.getOfferDetails(Integer.valueOf(processedInput[1]));
+                
+                if(BusinessmanDao.checkIfBusinessman(myUser) != null){
+                    if(offer.getBusinessman().getUser().toString().equals(myUser.toString())){
+                        output+="1";
+                    }else{
+                        output+="2";
+                    }
+                }else if(WorkerDao.checkIfWorker(myUser) != null){
+                    output+="3";
+                }
+                
                 List offerArrayList = new ArrayList();
                 offerArrayList.add(offer);
                 output+=this.processListOfOffers(offerArrayList); 
@@ -223,7 +241,7 @@ public class Protocol {
                             for(Alert alert : AlertDao.getAlertsByLabel(LabelDao.getLabelByName(label))){
                                 NotificationDao.addNotification(new Notification(alert,alert.getLabel(),offerToAdd,false));
                                 if(!sharedColection.search(alert.getWorker().getUser().getUser())){
-                                    thread.write("N:");
+                                    //thread.sendUDPMessage(1);
                                 }
                             }
                         }
@@ -274,27 +292,37 @@ public class Protocol {
                 
                 }
                 
+            }else if(processedInput[0].equals(CL_DELETE_USER)){
+                output+=S_DELETE_USER+":";
+                sharedColection.remove(myUser.getUser());
+                UserDao.deleteUser(myUser);
+                thread.setAnotherTime(false);
+                output+="C";
             }else if(processedInput[0].equals(CL_MODIFY_USER)){
                 output+=S_MODIFY_USER+":";
                 User user = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
                 if(!myUser.equals(user)){
                     boolean follow = true;
-                    if(!user.getDni().equals(myUser.getDni()) && UserDao.checkIfDniExits(user)){
+                    if(!user.getDni().equals(myUser.getDni()) && UserDao.checkIfDniExits(myUser.getDni())){
                         output+="I:It already exist one user with this dni";
                         follow=false;
                     } 
                     
-                    if(!user.getEmail().equals(myUser.getEmail()) && UserDao.checkIfeMailExits(user) && follow){
+                    if(!user.getEmail().equals(myUser.getEmail()) && UserDao.checkIfeMailExits(myUser.getEmail(),myUser.getDni()) && follow){
                         output+="I:It already exist one user with this email";
                         follow=false;
                     } 
                     
-                    if(!user.getUser().equals(myUser.getUser()) && UserDao.checkIfUsernameExits(user)&& follow){
+                    if(!user.getUser().equals(myUser.getUser()) && UserDao.checkIfUsernameExits(myUser.getUser(),myUser.getDni())&& follow){
                         output+="I:It already exist one user with this username";
                         follow=false;
                     } 
                     
                     if(follow){
+                        //Delete it just in case the user has change the userName
+                        sharedColection.remove(myUser.getUser());
+                        
+                        
                         myUser.setDni(user.getDni());
                         myUser.setEmail(user.getDni());
                         myUser.setName(user.getName());
@@ -302,6 +330,8 @@ public class Protocol {
                         myUser.setUser(user.getUser());
                         myUser.setPassword(user.getPassword());
                         UserDao.updateUser(myUser); 
+                        
+                        sharedColection.add(myUser.getUser(), thread);
                         output+="C";
                     }
                 
@@ -375,7 +405,17 @@ public class Protocol {
                 
             }else if(processedInput[0].equals(CL_ADD_CANDIDATURE)){
                 output+=S_ADD_CANDIDATURE+":";  
-                CandidatureDao.addCandidature(new Candidature(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),WorkerDao.checkIfWorker(myUser)));
+                if(!CandidatureDao.checkIfCandidatureExits(myUser,OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])))){
+                    CandidatureDao.addCandidature(new Candidature(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),WorkerDao.checkIfWorker(myUser)));
+                    output+="C";
+                }else{
+                    output+="I";
+                }
+                  
+            }else if(processedInput[0].equals(CL_DELETE_CANDIDATURE)){
+                output+=S_DELETE_CANDIDATURE+":";
+                CandidatureDao.deleteCandidature(CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1])));
+                
                 output+="C";  
             }else if(processedInput[0].equals(CL_MY_CANDIDATURES)){
                 output+=S_MY_CANDIDATURES+":";  
@@ -476,6 +516,25 @@ public class Protocol {
                     }
                     output+=":";
                 }
+            }else if(processedInput[0].equals(CL_MY_QUALIFICATION)){ 
+                output+=S_MY_QUALIFICATION+":";
+                for(Knowledge knowledge  : KnowledgeDao.getMyQualification(myUser)){
+                    output+=knowledge.getId()+":";
+                    output+=knowledge.getWorker().getUser().toString()+":";
+                    output+=knowledge.getName()+":";
+                    output+=knowledge.getPlace()+":";
+                    output+=knowledge.getTitle()+":";
+                    output+=knowledge.getType()+":";
+                    output+=knowledge.getFechaInicio().toString()+":";
+                    output+=knowledge.getFechaFin().toString()+":";
+                    output+="Labels,";
+                    for(Label actualLabel: LabelKnowledgeDao.getLabelsForThisKnowledge(knowledge)){
+
+                        output+=actualLabel.getName();
+                        output+=",";
+                    }
+                    output+=":";
+                }
             }else if(processedInput[0].equals(CL_KNOWLEDGE_DETAILS)){ 
                 output+=S_KNOWLEDGE_DETAILS+":";
                 Knowledge knowledge = KnowledgeDao.getKnowledgeById(Integer.parseInt(processedInput[1]));
@@ -543,11 +602,34 @@ public class Protocol {
                         output+="C";
                     }
                 }
+            }else if(processedInput[0].equals(CL_STOP_SERVER)){
+                output+=S_STOP_SERVER+":";
+                try {
+                    ProcessBuilder pb = new ProcessBuilder("C:\\xampp\\xampp_stop.exe");
+                    Process process = pb.start();
+                    process.waitFor(); 
+
+                    int exitCode = process.exitValue();
+                    if (exitCode == 0) {
+                        System.out.println("Xampp stopped correctly");
+                        output+="C";
+                    } else {
+                        System.err.println("Error stopping xampp");
+                        output+="I";
+                    }
+                } catch (IOException e) {
+                    System.err.println("Error starting xampp: " + e.getMessage());
+                    output+="I";
+                } catch (InterruptedException e) {
+                    System.err.println("Error waiting for xampp to start: " + e.getMessage());
+                    output+="I";
+                } 
             }else if(processedInput[0].equals(CL_EXIT)){
+                output+=S_EXIT+":C";
                 sharedColection.remove(myUser.getUser());
-                output+=S_EXIT;
+                thread.setAnotherTime(false);
             }
-        } 
+        }  
         
         return output;
     }

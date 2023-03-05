@@ -22,7 +22,7 @@ public class CandidatureCell extends ListCell<Candidature>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("../view/candidatures/CandidatureListView.fxml"));
+                    loader.setLocation(getClass().getResource("/view/candidatures/CandidatureListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      

@@ -23,10 +23,13 @@ public class SharedColection {
     public synchronized  void add(String key, ServerThread thread){
     
         activeThreads.put(key,thread);
+        
+        System.out.println("Adding user: "+key+" // There are "+activeThreads.size()+" active  after updating");
     }
     
     public synchronized  void remove(String key){
         activeThreads.remove(key);
+        System.out.println("Removing user: "+key+" // There are "+activeThreads.size()+" active  after updating");
     }
     
     public synchronized  boolean search(String key){

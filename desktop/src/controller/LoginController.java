@@ -50,21 +50,21 @@ public class LoginController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException { 
-        if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){ 
-            
+          
+        if(this.loginTextField.getText().length()>0 && this.loginPasswordField.getText().length()>0){  
             JustWorkApp.sendMessage(Messages.CL_LOGIN+":"+this.loginTextField.getText()+":"+this.loginPasswordField.getText());
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){
                 Parent root = null;
                 if(processedInput[2].equals("B")){
-                    root = FXMLLoader.load(getClass().getResource("../view/MainBusinessman.fxml"));
+                    root = FXMLLoader.load(this.getClass().getResource("/view/MainBusinessman.fxml"));
                 }else if(processedInput[2].equals("W")){
-                    root = FXMLLoader.load(getClass().getResource("../view/MainWorker.fxml"));
+                    root = FXMLLoader.load(this.getClass().getResource("/view/MainWorker.fxml"));
                 }else if(processedInput[2].equals("A")){
-                    root = FXMLLoader.load(getClass().getResource("../view/MainAdmin.fxml"));
+                    root = FXMLLoader.load(this.getClass().getResource("/view/MainAdmin.fxml"));
                 }
                 
-                if(processedInput[3].equals("True")){
+                if(processedInput[4].equals("True")){
                     JOptionPane.showMessageDialog(null, "You have new notifications");
                 }
                     
@@ -80,8 +80,8 @@ public class LoginController implements Initializable {
         JustWorkApp.sendMessage(Messages.CL_REGISTER+":");
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
         
-        if(processedInput[0].equals("R")){
-            Parent root = FXMLLoader.load(getClass().getResource("../view/SingUp.fxml")); 
+        if(processedInput[0].equals(Messages.S_REGISTER)){
+            Parent root = FXMLLoader.load(getClass().getResource("/view/SingUp.fxml")); 
             JustWorkApp.changeScene(root);
         }
     }

@@ -50,51 +50,61 @@ public class OfertViewerController implements Initializable {
     private MFXButton exitButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initializeData();
-        if(MainBusinessmanController.getInstance() != null){
-            candidateButton.setText("See Candidates");
-        }else if(MainWorkerController.getInstance() != null){
-            candidateButton.setText("Candidate");
-        }
+        initializeData(); 
     }
     
     private void initializeData(){  
         String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-        for(int i= 1;i<processedInput.length;i=i+8){
+        for(int i= 2;i<processedInput.length;i=i+8){
             Ofert newOffer = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
-                offerId = Integer.parseInt(processedInput[i]);
-                nameTextField.setText(newOffer.getName());
-                descriptionTextArea.setText(newOffer.getDescription()); 
-                businessmanTextField.setText(newOffer.getUser());
-                ubicationTextField.setText(newOffer.getUbication());
-                salaryTextField.setText(String.valueOf(newOffer.getSalary()));
-                contractTypeTextField.setText(newOffer.getContractType());
-                String[] labels = processedInput[8].split(",");
-                String labelsString = "";
-                if(labels.length >= 2){
-                    List labelsList = new ArrayList();
-                    for(int j = 1;j<labels.length;j++){
-                        labelsList.add(labels[j]);
+            offerId = Integer.parseInt(processedInput[i]);
+            nameTextField.setText(newOffer.getName());
+            descriptionTextArea.setText(newOffer.getDescription()); 
+            businessmanTextField.setText(newOffer.getUser());
+            ubicationTextField.setText(newOffer.getUbication());
+            salaryTextField.setText(String.valueOf(newOffer.getSalary()));
+            contractTypeTextField.setText(newOffer.getContractType());
+            String[] labels = processedInput[8].split(",");
+            String labelsString = "";
+            if(labels.length >= 2){
+                List labelsList = new ArrayList();
+                for(int j = 1;j<labels.length;j++){
+                    labelsList.add(labels[j]);
 
-                        labelsString += labels[j];
-                        if(i != labels.length-1){
-                            labelsString += " , ";
-                        } 
-                    }
-                    newOffer.setLabelsList(labelsList);
-                    labelTextField.setText(labelsString);
-                           
-                } 
+                    labelsString += labels[j];
+                    if(i != labels.length-1){
+                        labelsString += " , ";
+                    } 
+                }
+                newOffer.setLabelsList(labelsList);
+                labelTextField.setText(labelsString);
+
+            }
+            
+            int option = Integer.parseInt(processedInput[1]);
+
+        switch (option){
+            case 1:
+                candidateButton.setText("See Candidatures"); 
+
+                break;
+            case 2:
+                candidateButton.setVisible(false);
+                break;
+            case 3:
+                candidateButton.setText("Candidate"); 
+                break;
+            }
         } 
     } 
 
     @FXML
     private void exitWindow(ActionEvent event) {
         if(MainBusinessmanController.getInstance() != null){
-            MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
+            MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts"); 
         }else if(MainWorkerController.getInstance() != null){ 
         
-            MainWorkerController.getInstance().setMainPane("../view/oferts/AllOferts.fxml", "All Oferts");
+            MainWorkerController.getInstance().setMainPane("/view/oferts/AllOferts.fxml", "All Oferts");
         }
     } 
         
@@ -102,7 +112,7 @@ public class OfertViewerController implements Initializable {
     private void candidate(ActionEvent event) {
         if(MainBusinessmanController.getInstance() != null){
             JustWorkApp.sendMessage(CL_CANDIDATURE_DETAILS+":"+offerId); 
-            MainBusinessmanController.getInstance().setMainPane("../view/candidatures/CandidaturesForOffer.fxml","Candidatures for Offer");
+            MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidaturesForOffer.fxml","Candidatures for Offer");
             
         }else if(MainWorkerController.getInstance() != null){ 
             JustWorkApp.sendMessage(CL_CHECK_IF_CANDIDATURE_IS_ABLE+":"+offerId); 
@@ -111,7 +121,9 @@ public class OfertViewerController implements Initializable {
                 JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                 if(processedInput2[1].equals("C")){
-                    MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+                    MainWorkerController.getInstance().setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
+                }else{
+                    JOptionPane.showMessageDialog(null, "You already have one candidature for this offer");
                 }
             }else if(processedInput[1].equals("I")){
                 if(processedInput[2].equals("Some")){
@@ -119,7 +131,9 @@ public class OfertViewerController implements Initializable {
                         JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                         if(processedInput2[1].equals("C")){
-                            MainWorkerController.getInstance().setMainPane("../view/candidatures/MyCandidatures.fxml","My Candidatures");
+                            MainWorkerController.getInstance().setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
+                        }else{
+                            JOptionPane.showMessageDialog(null, "You already have one candidature for this offer");
                         }
                     }
 

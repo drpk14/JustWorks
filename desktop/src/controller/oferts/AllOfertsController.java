@@ -60,7 +60,6 @@ public class AllOfertsController implements Initializable {
                 newOfert.setLabelsList(labelsList);
             }
             listView.getItems().add(newOfert); 
-        }
-        
+        } 
     } 
 } 

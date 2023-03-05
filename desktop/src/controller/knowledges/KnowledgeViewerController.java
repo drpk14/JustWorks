@@ -27,7 +27,7 @@ public class KnowledgeViewerController implements Initializable {
     @FXML
     private Text labelTextField;
      
-    private int workExperienceId = 0; 
+    private int knowledgeId = 0; 
     @FXML
     private Text workerTextField;
     @FXML
@@ -48,7 +48,7 @@ public class KnowledgeViewerController implements Initializable {
         String[] processedInput = JustWorkApp.recieveMessage().split(":");    
         for(int i= 1;i<processedInput.length;i=i+10){
             Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[1]),processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6],LocalDate.parse(processedInput[7]),LocalDate.parse(processedInput[8]));
-            workExperienceId = knowledge.getId();
+            knowledgeId = knowledge.getId();
             nameTextField.setText(knowledge.getName());
             workerTextField.setText(knowledge.getWorkerName());
             placeTextField.setText(knowledge.getPlace());

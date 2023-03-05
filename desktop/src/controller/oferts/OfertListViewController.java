@@ -75,8 +75,8 @@ public class OfertListViewController implements Initializable {
     private void watchOffer(ActionEvent event) {
         JustWorkApp.sendMessage(CL_OFFER_DETAILS+":"+id);  
         if(MainBusinessmanController.getInstance() != null)
-            MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml","My Oferts > Ofert Viewer");
+            MainBusinessmanController.getInstance().setMainPane("/view/oferts/OfertViewer.fxml","My Oferts > Ofert Viewer");
         else if(MainWorkerController.getInstance() != null)
-            MainWorkerController.getInstance().setMainPane("../view/oferts/OfertViewer.fxml","All Oferts > Ofert Viewer");
+            MainWorkerController.getInstance().setMainPane("/view/oferts/OfertViewer.fxml","All Oferts > Ofert Viewer");
     }
 } 

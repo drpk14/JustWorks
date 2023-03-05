@@ -22,7 +22,7 @@ public class NotificationCell extends ListCell<Notification>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("../view/notifications/NotificationListView.fxml"));
+                    loader.setLocation(getClass().getResource("/view/notifications/NotificationListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      

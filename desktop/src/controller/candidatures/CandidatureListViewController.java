@@ -49,24 +49,23 @@ public class CandidatureListViewController implements Initializable {
 
     @FXML
     private void delete(ActionEvent event) {
-        JustWorkApp.sendMessage("DelN:"+candidatureId); 
+        JustWorkApp.sendMessage(Messages.CL_DELETE_CANDIDATURE+":"+candidatureId); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         if(processedInput[1].equals("C")){
-            MainWorkerController.getInstance().setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+            MainWorkerController.getInstance().setMainPane("/view/candidatures/MyCandidatures.fxml", "My Candidatures");
         }else if(processedInput[1].equals("I")){
             JOptionPane.showMessageDialog(null, processedInput[2]);
         }  
-    }
-
+    } 
     @FXML
     private void see(ActionEvent event) {
         
         JustWorkApp.sendMessage(Messages.CL_CANDIDATURE_DETAILS+":"+candidatureId);   
         
         if(MainBusinessmanController.getInstance() != null){
-            MainBusinessmanController.getInstance().setMainPane("../view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
+            MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
         }else if(MainWorkerController.getInstance() != null){ 
-            MainWorkerController.getInstance().setMainPane("../view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
+            MainWorkerController.getInstance().setMainPane("/view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
         }  
     }
 } 

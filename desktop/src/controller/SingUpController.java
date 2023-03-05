@@ -8,6 +8,7 @@ import io.github.palexdev.materialfx.controls.MFXRadioButton;
 import java.io.IOException;  
 import java.net.URL; 
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.text.Text;  
+import javax.swing.JOptionPane;
 import util.Messages;
 import view.JustWorkApp; 
 import util.ValidadorDNI;
@@ -59,32 +61,6 @@ public class SingUpController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) { 
     }    
     
-    private boolean checkFields(){
-        if(userType.getSelectedToggle() == null)
-            return false;
-        
-        if(new ValidadorDNI(textFieldDni.getText()).validar()) 
-            return false;
-        
-        if(textFieldPassword.getText().length() <= 0)
-            return false;
-    
-        if(textFieldUser.getText().length() <= 0)
-            return false;
-        
-        if(textFieldEMail.getText().length() <= 0)
-            return false;
-        
-        if(textFieldSurname.getText().length() <= 0)
-            return false; 
-        
-        if(textFieldName.getText().length() <= 0)
-            return false;
-        
-        return true;
-        
-    } 
-    
     @FXML
     private void exit(MouseEvent event) {
         System.exit(0);
@@ -96,14 +72,14 @@ public class SingUpController implements Initializable {
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         
         if(processedInput[0].equals("L")){
-            Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml")); 
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml")); 
             JustWorkApp.changeScene(root);
         } 
     }
 
     @FXML
     private void singUp(ActionEvent event) throws IOException {
-        //if(this.checkFields()){
+        if(this.checkUserInput()){
             String output = Messages.CL_REGISTER+":";
             output+=textFieldDni.getText()+":";
             output+=textFieldName.getText()+":";
@@ -121,11 +97,44 @@ public class SingUpController implements Initializable {
             if(processedInput[1].equals("C")){
                 Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml")); 
                 JustWorkApp.changeScene(root);
-            }else{
-                textError.setVisible(true);
+            }else if(processedInput[1].equals("I")){
+                JOptionPane.showMessageDialog(null,processedInput[2]);
             }
-        /*}else{
-            
-        }*/
+        } 
     }
+    
+    private boolean checkUserInput(){
+    
+        if(textFieldName.getText().contains(":") || textFieldName.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(textFieldDni.getText().contains(":")){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(textFieldSurname.getText().contains(":")|| textFieldSurname.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(textFieldEMail.getText().contains(":")){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(textFieldUser.getText().contains(":")|| textFieldUser.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(textFieldPassword.getText().contains(":")|| textFieldPassword.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if((!new ValidadorDNI(textFieldDni.getText()).validar())){
+            JOptionPane.showMessageDialog(null, "DNI has not a correct format");
+            return false;
+        }else if(textFieldEMail.getText().contains(":")|| textFieldEMail.getText().length() <= 0){
+            JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            return false;
+        }else if(userType.getSelectedToggle() != null){
+            JOptionPane.showMessageDialog(null, "You must select one button");
+            return false;
+        } else{
+            return true;
+        }  
+    } 
+    
 } 

@@ -45,7 +45,7 @@ public class AlertDao {
         try{
             tx = session.beginTransaction();
             Query query = null;
-            query = session.createQuery("FROM Alert A JOIN A.label L WHERE L.name = :name"); 
+            query = session.createQuery("FROM Alert A JOIN A.label L JOIN A.worker W JOIN W.user U WHERE L.name = :name"); 
             query.setString("name", label.getName());
              
             List<Object[]> queryList = query.list();

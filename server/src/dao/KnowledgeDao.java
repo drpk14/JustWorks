@@ -106,6 +106,34 @@ public class KnowledgeDao {
         return knowledges;
     }
     
+    public static List<Knowledge> getMyQualification(User user){
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        List<Knowledge> knowledges = new ArrayList();
+        try{
+            tx = session.beginTransaction();
+            Query query = null; 
+            query = session.createQuery("FROM Knowledge K JOIN K.worker W JOIN W.user U WHERE U.dni = :dni AND K.type = :type"); 
+            query.setString("dni", user.getDni());
+            query.setString("type","Qualification");
+             
+            List<Object[]> queryList = query.list();
+            for(Object[] actualUser: queryList){
+                knowledges.add((Knowledge) actualUser[0]);
+            } 
+            
+            
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }  
+        return knowledges;
+    }
+    
     public static boolean checkIfKnowledgeExist(Knowledge knowledge, User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null;  

@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">JustWorks</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="port">Port</string>
+    <string name="ip_direction">IP Direction</string>
+    <string name="connect">Connect</string>
+    <string name="title_activity_main_businessman">MainBusinessmanActivity</string>
+    <string name="title_activity_main_worker">MainWorkerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_all_offers">All Offers</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_my_offers">My Offers</string>
+    <string name="menu_offer_viewer">Offer Viewer</string>
+    <string name="menu_my_work_experience">My Work Experience</string>
+
+    <string name="name">Name</string>
+    <string name="businessman_name">BusinessmanName</string>
+    <string name="salary">Salary</string>
+    <string name="ubication">Ubication</string>
+    <string name="labels">Labels</string>
+    <string name="button">Button</string>
+    <string name="welcome">\"Welcome \"</string>
+    <string name="menu_welcome">Welcome</string>
+    <string name="worker_name">Worker Name</string>
+    <string name="place">Place</string>
+    <string name="title">Title</string>
+    <string name="init_date">Init Date</string>
+    <string name="finish_date">Finish Date</string>
+    <string name="menu_knowledge_viewer">Knowledge Viewer</string>
+    <string name="menu_my_candidatures">My Candidatures</string>
+    <string name="see_candidatures">See Candidatures</string>
+    <string name="candidate">Candidate</string>
+    <string name="title_activity_candidature_for_one_offer">Candidature For One Offer</string>
+    <string name="title_offer_viewer">Offer Viewer</string>
+    <string name="menu_my_qualification">My Qualification</string>
+    <string name="dni">DNI</string>
+    <string name="surname">Surname</string>
+    <string name="email">Email</string>
+    <string name="user">User</string>
+    <string name="welcome_justWorks">Welcome to JustWorks</string>
+    <string name="title_user_viewer">User Viewer</string>
+
+
+</resources>

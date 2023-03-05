@@ -75,18 +75,18 @@ public class MyOfertsController implements Initializable {
     private void manageButtonsActions(ActionEvent event){
         if(event.getSource() == addButton){
             JustWorkApp.sendMessage(CL_ADD_OFFER);   
-            MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Add Ofert");
+            MainBusinessmanController.getInstance().setMainPane("/view/oferts/OfertModifier.fxml","My Oferts > Add Ofert");
         }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == modifyButton){
                     JustWorkApp.sendMessage(CL_MODIFY_OFFER+":"+listView.getSelectionModel().getSelectedItem().getId());  
-                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/OfertModifier.fxml","My Oferts > Modify Ofert");
+                    MainBusinessmanController.getInstance().setMainPane("/view/oferts/OfertModifier.fxml","My Oferts > Modify Ofert");
                 }else if(event.getSource() == deleteButton){ 
                     JustWorkApp.sendMessage(CL_DELETE_OFFER+":"+listView.getSelectionModel().getSelectedItem().getId());   
                      
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
-                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                        MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
                     } 
                 }
             }else{

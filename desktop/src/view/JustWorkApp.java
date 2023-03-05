@@ -4,6 +4,18 @@
  * and open the template in the editor.
  */
 package view; 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch; 
 import javafx.fxml.FXMLLoader;
@@ -13,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import util.CommunicationThread;
+import util.CommunicationThreadUDP;
 import util.SharedCollection;
 
 /**
@@ -48,8 +61,25 @@ public class JustWorkApp extends Application{
     @Override
     public void start(Stage stage) throws Exception { 
         System.out.println("nueva coleccion");
+        InputStream is;
+        Properties prop = new Properties();
+        try {
+            is = new FileInputStream("configuracion.ini");
+            prop.load(is);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        String ip = prop.getProperty("host");
+        int port = Integer.valueOf(prop.getProperty("puerto"));
+          
+        
         sharedCollection = new SharedCollection();
-        new CommunicationThread(sharedCollection).start();
+        
+        new CommunicationThread(sharedCollection,ip,port).start();
+        new CommunicationThreadUDP(ip, port).start();
         JustWorkApp.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));   
         stage.initStyle(StageStyle.UNDECORATED);
@@ -59,7 +89,7 @@ public class JustWorkApp extends Application{
     
     public static void main(String[] args) {
         launch(args);
-    }
+    } 
     
     public static void sendMessage(String message){ 
         sharedCollection.addMessage(message); 
@@ -75,7 +105,7 @@ public class JustWorkApp extends Application{
                 
                 
                 response = sharedCollection.recieveResponse();
-            
+                 
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             } 
@@ -83,5 +113,7 @@ public class JustWorkApp extends Application{
         return response;
     }
     
-    
+    public static void closeApp(){
+        System.exit(0);
+    }
 }

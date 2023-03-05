@@ -108,7 +108,7 @@ public class OfertModifierController implements Initializable {
 
     @FXML
     private void exitWindow(ActionEvent event) { 
-        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts"); 
+        MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts"); 
     }
 
     @FXML
@@ -133,7 +133,7 @@ public class OfertModifierController implements Initializable {
                     
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
-                        MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                        MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
                     } else if(processedInput[1].equals("I")){
                         JOptionPane.showMessageDialog(null, processedInput[2]);
                     }
@@ -153,7 +153,7 @@ public class OfertModifierController implements Initializable {
 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");
                 if(processedInput[1].equals("C")){
-                    MainBusinessmanController.getInstance().setMainPane("../view/oferts/MyOferts.fxml","My Oferts");
+                    MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
                 } else if(processedInput[1].equals("I")){
                     JOptionPane.showMessageDialog(null, processedInput[2]);
                 }

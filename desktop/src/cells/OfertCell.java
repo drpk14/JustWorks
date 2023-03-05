@@ -22,7 +22,7 @@ public class OfertCell extends ListCell<Ofert>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("../view/oferts/OfertListView.fxml"));
+                    loader.setLocation(getClass().getResource("/view/oferts/OfertListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      
