@@ -26,7 +26,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="26.0" prefWidth="691.0">
                      <children>
-                        <MFXButton fx:id="ofertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="All Oferts">
+                        <MFXButton fx:id="ofertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Oferts">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -34,22 +34,27 @@
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="alertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Alerts">
+                        <MFXButton fx:id="alertsButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Alerts">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="candidatureButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Candidatures">
+                        <MFXButton fx:id="candidatureButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Candidatures">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="workExperienceButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Work Experience">
+                        <MFXButton fx:id="workExperienceButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Work Experience">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </MFXButton>
-                        <MFXButton fx:id="qualificationButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="My Qualification">
+                        <MFXButton fx:id="qualificationButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Qualification">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </MFXButton>
+                        <MFXButton fx:id="profilesButton" depthLevel="LEVEL0" onAction="#changeMainPane" rippleAnimationSpeed="0.0" rippleRadius="0.0" text="Profiles">
                            <font>
                               <Font size="14.0" />
                            </font>

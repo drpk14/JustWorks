@@ -70,7 +70,9 @@ public class LoginController implements Initializable {
                     
                 JustWorkApp.changeScene(root);
             }else{
+                textError.setText(processedInput[2]);
                 textError.setVisible(true);
+                
             }
         }
     }

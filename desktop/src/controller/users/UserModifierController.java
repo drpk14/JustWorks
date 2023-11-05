@@ -92,6 +92,7 @@ public class UserModifierController implements Initializable {
     @FXML
     private void confirmAction(ActionEvent event) {
         if(confirmActionButton.getText().equals("Modify")){
+            System.out.println("Check input true");
             if(checkUserInput() == true){
                 if(!nameTextField.getText().equals(modifyUser.getName()) ||
                 !dniTextField.getText().equals(modifyUser.getDni()) ||

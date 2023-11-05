@@ -46,11 +46,14 @@ public class Messages {
     public static final String CL_ADD_KNOWLEDGE = "CL_AddK";
     public static final String CL_DELETE_KNOWLEDGE = "CL_DelK"; 
     public static final String CL_MODIFY_KNOWLEDGE = "CL_ModK"; 
-    public static final String CL_STOP_SERVER = "CL_StopS";
+    public static final String CL_MY_PROFILES = "CL_MyP"; 
+    public static final String CL_MY_PROFILES_WITHOUT_ALERTS = "CL_MyPWOA"; 
+    public static final String CL_ADD_PROFILE = "CL_AddP";
+    public static final String CL_MODIFY_PROFILE = "CL_ModifyP"; 
+    public static final String CL_DELETE_PROFILE = "CL_DeleteP"; 
+    public static final String CL_STOP_SERVER = "CL_StopS"; 
     
-    
-                //  SERVER MESSAGES  //
-    
+                //  SERVER MESSAGES  // 
     
     public static final String S_LOGIN = "S_L";
     public static final String S_REGISTER = "S_R";
@@ -85,7 +88,10 @@ public class Messages {
     public static final String S_ADD_KNOWLEDGE = "S_AddK";
     public static final String S_DELETE_KNOWLEDGE = "S_DelK"; 
     public static final String S_MODIFY_KNOWLEDGE = "S_ModK"; 
-    public static final String S_STOP_SERVER = "S_StopS";
-    
-    
+    public static final String S_MY_PROFILES = "S_MyP";  
+    public static final String S_MY_PROFILES_WITHOUT_ALERTS = "S_MyPWOA"; 
+    public static final String S_ADD_PROFILE = "S_AddP";
+    public static final String S_MODIFY_PROFILE = "S_ModifyP"; 
+    public static final String S_DELETE_PROFILE = "S_DeleteP"; 
+    public static final String S_STOP_SERVER = "S_StopS";  
 }

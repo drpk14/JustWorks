@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 18-feb-2023 23:32:24 by Hibernate Tools 4.3.1 -->
+<!-- Generated 31-oct-2023 21:04:09 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entities.Candidature" table="candidature" catalog="justworks">
+    <class name="entities.Candidature" table="candidature" catalog="justworks" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <many-to-one name="offer" class="entities.Offer" fetch="select">
             <column name="offerId" />
@@ -19,6 +19,6 @@
         </property>
         <property name="state" type="string">
             <column name="state" length="20" />
-        </property>
+        </property> 
     </class>
 </hibernate-mapping>

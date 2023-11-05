@@ -56,7 +56,7 @@ public class CandidatureListViewController implements Initializable {
         }else if(processedInput[1].equals("I")){
             JOptionPane.showMessageDialog(null, processedInput[2]);
         }  
-    } 
+    }
     @FXML
     private void see(ActionEvent event) {
         

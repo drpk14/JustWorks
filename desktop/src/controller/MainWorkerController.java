@@ -59,6 +59,8 @@ public class MainWorkerController implements Initializable {
     private MFXButton workExperienceButton;
     @FXML
     private MFXButton qualificationButton;
+    @FXML
+    private MFXButton profilesButton;
     
     
     public void setMainPane(String paneName, String information) {
@@ -85,8 +87,7 @@ public class MainWorkerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) { 
         instance = this;
-    }    
- 
+    }     
     
     @FXML
     private void changeMainPane(ActionEvent event) {
@@ -97,7 +98,7 @@ public class MainWorkerController implements Initializable {
         } else if(event.getSource() == alertsButton){
             this.setMainPane("/view/alerts/MyAlerts.fxml", "My Alerts");
         } else if(event.getSource() == notificationButton){  
-            this.setMainPane("/view/notifications/MyNotifications.fxml", "My Notifications");
+            this.setMainPane("/view/notifications/MyWorkerNotifications.fxml", "My Notifications");
         } else if(event.getSource() == candidatureButton){  
             this.setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
         } else if(event.getSource() == workExperienceButton){  
@@ -106,6 +107,8 @@ public class MainWorkerController implements Initializable {
         } else if(event.getSource() == qualificationButton){  
             JustWorkApp.sendMessage(Messages.CL_MY_QUALIFICATION); 
             this.setMainPane("/view/knowledges/MyKnowledges.fxml","My Knowledges");
+        } else if(event.getSource() == profilesButton){   
+            this.setMainPane("/view/profiles/MyProfiles.fxml","My Profiles");
         }
     }
 

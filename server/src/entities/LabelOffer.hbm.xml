@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 18-feb-2023 23:32:24 by Hibernate Tools 4.3.1 -->
+<!-- Generated 31-oct-2023 21:04:09 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entities.LabelOffer" table="label_offer" catalog="justworks">
+    <class name="entities.LabelOffer" table="label_offer" catalog="justworks" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <many-to-one name="label" class="entities.Label" fetch="select">
             <column name="labelId" />
@@ -14,5 +14,8 @@
         <many-to-one name="offer" class="entities.Offer" fetch="select">
             <column name="offerId" />
         </many-to-one>
+        <property name="obligatory" type="java.lang.Boolean">
+            <column name="obligatory" />
+        </property>
     </class>
 </hibernate-mapping>

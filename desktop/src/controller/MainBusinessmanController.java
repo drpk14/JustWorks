@@ -50,6 +50,8 @@ public class MainBusinessmanController implements Initializable {
     }
     @FXML
     private MFXButton profileButton;
+    @FXML
+    private MFXButton notificationButton;
 
     public void setMainPane(String paneName, String information) {
         try {
@@ -86,6 +88,8 @@ public class MainBusinessmanController implements Initializable {
             this.setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
         }else if(event.getSource() == profileButton){
             this.setMainPane("/view/users/UserViewer.fxml", "My Profile");
+        }else if(event.getSource() == notificationButton){  
+            this.setMainPane("/view/notifications/MyBusinessmanNotifications.fxml", "My Notifications");
         }
     }
 

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 package controller.oferts;
-
+ 
 import Entities.Ofert;
 import controller.MainBusinessmanController; 
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -22,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javax.swing.JOptionPane; 
+import util.Messages;
 import static util.Messages.*;
 import view.JustWorkApp;
 
@@ -94,7 +95,7 @@ public class OfertModifierController implements Initializable {
             
              
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        if(processedInput[0].equals("ModO")){
+        if(processedInput[0].equals(Messages.S_MODIFY_OFFER)){
             changeLabelButton.setDisable(true);
             confirmActionButton.setText("Modify");
             this.addInfo(processedInput);
@@ -163,7 +164,7 @@ public class OfertModifierController implements Initializable {
  
     
     private boolean checkUserInput(){
-        System.out.println(labelListView.getSelectionModel().getSelectedItems().size());
+        
         if(nameTextField.getText().contains(":")|| nameTextField.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or be empty");
             return false;
@@ -208,7 +209,7 @@ public class OfertModifierController implements Initializable {
         this.labelsPane.setVisible(true); 
     }
  
-     private void addInfo(String[] processedInput){
+    private void addInfo(String[] processedInput){
         for(int i= 1;i<processedInput.length;i=i+8){
             modifyOfert = new Ofert(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],Integer.parseInt(processedInput[i+5]),processedInput[i+6]);
 
@@ -261,7 +262,6 @@ public class OfertModifierController implements Initializable {
     
         return labelsString;
     }
-
 
     @FXML
     private void changeToAddLabelPane(ActionEvent event) {

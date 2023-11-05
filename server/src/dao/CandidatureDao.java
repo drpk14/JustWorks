@@ -22,14 +22,15 @@ import util.NewHibernateUtil;
  * @author david
  */
 public class CandidatureDao { 
-    public static void addCandidature(Candidature candidature) {
-     
+    public static Candidature addCandidature(Candidature candidature) {
+        Candidature objectCreated = null;
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;  
         try{
             tx = session.beginTransaction();
             
             session.save(candidature);
+            objectCreated = (Candidature) session.get(Candidature.class, candidature.getId());
             tx.commit();
         }catch (HibernateException e) {
             if (tx!=null) tx.rollback();
@@ -37,6 +38,7 @@ public class CandidatureDao {
          }finally {
             session.close();
         }   
+        return objectCreated;
     }
     
     public static void updateCandidature(Candidature candidature) {

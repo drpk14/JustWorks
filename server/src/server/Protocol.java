@@ -12,11 +12,14 @@ import dao.LabelKnowledgeDao;
 import dao.LabelOfferDao;
 import dao.NotificationDao;
 import dao.OfferDao;
+import dao.ProfileDao;
+import dao.ProfileLabelDao;
 import dao.UserDao;  
 import dao.WorkerDao;  
 import static dao.WorkerDao.checkIfWorker;
 import entities.Alert;
 import entities.Businessman;
+import entities.BusinessmanNotification;
 import entities.Candidature;
 import entities.Knowledge;
 import entities.Label;
@@ -24,12 +27,16 @@ import entities.LabelKnowledge;
 import entities.LabelOffer;
 import entities.Notification;
 import entities.Offer;
+import entities.Profile;
+import entities.ProfileLabel;
 import entities.User;
 import entities.Worker;
+import entities.WorkerNotification;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList; 
+import java.util.Arrays;
 import java.util.List; 
 import server.Server.ServerThread;  
 import static server.States.*;
@@ -76,13 +83,12 @@ public class Protocol {
                         }else if(checkIfWorker(myUser) != null){
                             output+="W";
                         }else{
-                            output+="A";
-
+                            output+="A"; 
                         }
                         output+=":";
                         output+= myUser.toString()+":";
 
-                        sharedColection.add(myUser.getUser(), thread);
+                        sharedColection.add(myUser.getUser(), thread); 
                         if(NotificationDao.getMyUnwatchedNotifications(myUser)){
                             output+="True";
                         }else{
@@ -112,17 +118,17 @@ public class Protocol {
                 
                 User user = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
                  
-                if(!UserDao.checkIfDniExits(user.getDni())){
+                if(UserDao.checkIfDniExits(user.getDni())){
                     output+="I:It already exist one user with this dni";
                     follow=false;
                 } 
 
-                if(!UserDao.checkIfeMailExits(user.getEmail(),user.getDni()) && follow){
+                if(UserDao.checkIfeMailExits(user.getEmail()) && follow){
                     output+="I:It already exist one user with this email";
                     follow=false;
                 } 
 
-                if(!UserDao.checkIfUsernameExits(user.getUser(),user.getDni())&& follow){
+                if(UserDao.checkIfUsernameExits(user.getUser())&& follow){
                     output+="I:It already exist one user with this username";
                     follow=false;
                 } 
@@ -154,7 +160,45 @@ public class Protocol {
             if(processedInput[0].equals(CL_ALL_OFFERS)){ 
                 //See all offers
                 output+=S_ALL_OFFERS;
-                output+=this.processListOfOffers(OfferDao.getAllOffers(myUser)); 
+                List<Offer> offers = OfferDao.getAllOffers(myUser);
+                List<Offer> offersToDelete = new ArrayList();
+                for(Offer offer:offers){
+                    Boolean follow = true;
+                    Boolean remove = false;
+                    if(!processedInput[2].equals("notNameFilter")){
+                        if(!offer.getName().toLowerCase().contains(processedInput[2].toLowerCase())){
+                            follow = false;
+                            remove = true;
+                        }
+                    }
+                    
+                    if(Integer.parseInt(processedInput[1]) != 0 && follow){
+                        remove = true;
+                        Profile profile = ProfileDao.getProfileById(Integer.parseInt(processedInput[1]));
+                        List<Label> offerLabels = LabelOfferDao.getLabelsByOffer(offer);
+                        for(Label profileLabel:ProfileLabelDao.getLabelsForThisProfile(profile)){
+                            if(follow){
+                                for(Label offerLabel : offerLabels){
+                                    if(follow){
+                                        if(profileLabel.getName().equals(offerLabel.getName())){
+                                            follow = false;
+                                            remove = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(remove){
+                        offersToDelete.add(offer);
+                    }
+                }
+                
+                for(Offer offer:offersToDelete){
+                    offers.remove(offer);
+                }
+                output+=this.processListOfOffers(offers);   
                 
             }else if(processedInput[0].equals(CL_MY_OFFERS)){
                 if(processedInput.length <= 1){
@@ -162,8 +206,6 @@ public class Protocol {
                     //See all my offers
                     output+=S_MY_OFFERS;
                     output+=this.processListOfOffers(OfferDao.getMyOffers(myUser));
-                }else{
-                    
                 }
             }else if(processedInput[0].equals(CL_OFFER_DETAILS)){
                 //See the details of an offer
@@ -192,8 +234,7 @@ public class Protocol {
                     Offer offer = OfferDao.getOfferDetails(Integer.valueOf(processedInput[1]));
                     List offerArrayList = new ArrayList();
                     offerArrayList.add(offer);
-                    output+=this.processListOfOffers(offerArrayList); 
-                    
+                    output+=this.processListOfOffers(offerArrayList);   
                     
                 }else{
                     //Modify the offer
@@ -233,25 +274,42 @@ public class Protocol {
                     String[] labels = processedInput[6].split(",");
                     Offer offerToAdd = new Offer(BusinessmanDao.checkIfBusinessman(myUser),processedInput[1],processedInput[2],processedInput[3],Integer.valueOf(processedInput[4]),processedInput[5]); 
                        
-                    if(!OfferDao.checkIfExistOffer(offerToAdd,myUser)){    
-                        OfferDao.addOffer(offerToAdd);    
-
-                        for(String label : labels){ 
-                            LabelOfferDao.addLabelOffer(new LabelOffer(LabelDao.getLabelByName(label),offerToAdd));
-                            for(Alert alert : AlertDao.getAlertsByLabel(LabelDao.getLabelByName(label))){
-                                NotificationDao.addNotification(new Notification(alert,alert.getLabel(),offerToAdd,false));
-                                if(!sharedColection.search(alert.getWorker().getUser().getUser())){
-                                    //thread.sendUDPMessage(1);
+                    if(!OfferDao.checkIfExistOffer(offerToAdd,myUser)){
+                        
+                        Offer offerCreated = OfferDao.addOffer(offerToAdd);   
+                        
+                        for(String labelInfo : labels){
+                            String labelName = labelInfo.split("-")[0];
+                            String labelObligatority = labelInfo.split("-")[1]; 
+                            boolean obligatority;
+                            
+                            if(labelObligatority.equals("1"))
+                                obligatority = true;
+                            else
+                                obligatority = false;
+                            
+                            LabelOfferDao.addLabelOffer(new LabelOffer(LabelDao.getLabelByName(labelName),offerToAdd,obligatority));
+                            
+                            List<Profile> profiles = ProfileLabelDao.getProfileForThisLabel(labelName);
+                            for(Profile profile : profiles){
+                                Alert alert = AlertDao.getAlertForThisProfile(profile);
+                                if(alert != null){
+                                       Notification notification = NotificationDao.addNotification(new Notification());
+                                       NotificationDao.addNotification(new WorkerNotification(alert,notification,offerCreated)); 
                                 }
                             }
-                        }
-
+                            /*for(Alert alert : AlertDao.getAlertsByLabel(LabelDao.getLabelByName(label))){
+                                NotificationDao.addNotification(new Notification(alert,alert.getLabel(),offerToAdd,false));
+                                if(!sharedColection.search(alert.getProfile().getWorker().getUser().getUser())){
+                                    //thread.sendUDPMessage(1);
+                                }
+                            }*/
+                        } 
                         output+="C";
                     }else{
                         output+="I:You already have one offer with this name";   
                     }
-                }
-                
+                } 
             }else if(processedInput[0].equals(CL_DELETE_OFFER)){
                 output+=S_DELETE_OFFER+":"; 
                 OfferDao.deleteOffer(OfferDao.getOfferDetails(Integer.valueOf(processedInput[1])));
@@ -303,20 +361,28 @@ public class Protocol {
                 User user = new User(processedInput[1],processedInput[2],processedInput[3],processedInput[4],processedInput[5],processedInput[6]);
                 if(!myUser.equals(user)){
                     boolean follow = true;
-                    if(!user.getDni().equals(myUser.getDni()) && UserDao.checkIfDniExits(myUser.getDni())){
-                        output+="I:It already exist one user with this dni";
-                        follow=false;
+                    if(!user.getDni().equals(myUser.getDni())){
+                        if(UserDao.checkIfDniExits(user.getDni())){
+                            output+="I:It already exist one user with this dni";
+                            follow=false;
+                        }
+                        
                     } 
                     
-                    if(!user.getEmail().equals(myUser.getEmail()) && UserDao.checkIfeMailExits(myUser.getEmail(),myUser.getDni()) && follow){
-                        output+="I:It already exist one user with this email";
-                        follow=false;
-                    } 
+                    if(!user.getEmail().equals(myUser.getEmail())){
+                        if(UserDao.checkIfeMailExits(user.getEmail())){
+                            output+="I:It already exist one user with this email";
+                            follow=false;
+                        }
+                        
+                    }  
                     
-                    if(!user.getUser().equals(myUser.getUser()) && UserDao.checkIfUsernameExits(myUser.getUser(),myUser.getDni())&& follow){
-                        output+="I:It already exist one user with this username";
-                        follow=false;
-                    } 
+                    if(!user.getUser().equals(myUser.getUser())){
+                        if(UserDao.checkIfUsernameExits(user.getUser())){
+                            output+="I:It already exist one user with this username";
+                            follow=false;
+                        } 
+                    }   
                     
                     if(follow){
                         //Delete it just in case the user has change the userName
@@ -324,7 +390,7 @@ public class Protocol {
                         
                         
                         myUser.setDni(user.getDni());
-                        myUser.setEmail(user.getDni());
+                        myUser.setEmail(user.getEmail());
                         myUser.setName(user.getName());
                         myUser.setSurname(user.getSurname());
                         myUser.setUser(user.getUser());
@@ -342,42 +408,60 @@ public class Protocol {
                 output+=S_MY_ALERTS+":"; 
                  
                 for(Alert alert : AlertDao.getMyAlerts(myUser)){
-                    output+=alert.getLabel().getName();
+                    output+=alert.getId();
                     output+=":";
-                } 
+                    output+=alert.getProfile().getId(); 
+                    output+=":";
+                    output+=alert.getProfile().getName();
+                    output+=":";
+                }
             }else if(processedInput[0].equals(CL_ADD_ALERT)){
                 output+=S_ADD_ALERT+":"; 
-                if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1])) == null){
-                    AlertDao.addAlert(new Alert(LabelDao.getLabelByName(processedInput[1]),WorkerDao.checkIfWorker(myUser)));
+                
+                Profile profile = ProfileDao.getProfileById(Integer.parseInt(processedInput[1]));
+                if(AlertDao.getAlertForThisProfile(profile) == null){
+                    AlertDao.addAlert(new Alert(profile));
                     output+="C"; 
                 }else{
-                    output+="I:You already have one alert with this label"; 
+                    output+="I:You already have one alert with this profile"; 
                 
                 }
             }else if(processedInput[0].equals(CL_DELETE_ALERT)){
                 output+=S_DELETE_ALERT+":"; 
-                if(AlertDao.getAlert(myUser, LabelDao.getLabelByName(processedInput[1]))!= null){
-                    AlertDao.deleteOffer(AlertDao.getAlert(myUser,LabelDao.getLabelByName(processedInput[1])));
+                Alert alert = AlertDao.getAlertById(Integer.parseInt(processedInput[1]));
+                if(alert != null){
+                    AlertDao.deleteAlert(alert);
                     output+="C";  
                 }else{
-                    output+="I:This alert don't exist"; 
-                
+                    output+="I:This alert don't exist";  
                 }
             }else if(processedInput[0].equals(CL_MY_NOTIFICATIONS)){
                 output+=S_MY_NOTIFICATIONS+":"; 
-                 
-                for(Notification notification : NotificationDao.getMyNotifications(myUser)){
-                    output+=notification.getId()+":";
-                    output+=notification.getOffer().getName()+":";
-                    output+=notification.getOffer().getId()+":";
-                    output+=notification.getLabel().getName()+":";
-                    notification.setNotified(true);
-                    NotificationDao.updateNotification(notification);
-                } 
+                if(checkIfBusinessman(myUser) != null){
+                    for(BusinessmanNotification bussinesmanNotification : NotificationDao.getMyBusinessmanNotifications(myUser)){
+                        Notification notification = bussinesmanNotification.getNotification(); 
+                        output+=notification.getId()+":";
+                        output+=bussinesmanNotification.getId()+":";
+                        output+=bussinesmanNotification.getCandidature().getId()+":";
+                        output+=bussinesmanNotification.getCandidature().getOffer().getName()+":"; 
+                        bussinesmanNotification.getNotification().setNotified(true);
+                        NotificationDao.updateNotification(bussinesmanNotification.getNotification());
+                    }
+                }else if(checkIfWorker(myUser) != null){
+                    for(WorkerNotification workerNotification : NotificationDao.getMyWorkerNotifications(myUser)){
+                        Notification notification = workerNotification.getNotification(); 
+                        output+=notification.getId()+":";
+                        output+=workerNotification.getId()+":";
+                        output+=workerNotification.getOffer().getId()+":"; 
+                        output+=workerNotification.getAlert().getProfile().getName()+":"; 
+                        workerNotification.getNotification().setNotified(true);
+                        NotificationDao.updateNotification(workerNotification.getNotification());
+                    }
+                }
             }else if(processedInput[0].equals(CL_DELETE_NOTIFICATION)){
                 output+=S_DELETE_NOTIFICATION+":"; 
-                
-                NotificationDao.deleteNotification(NotificationDao.getNotificationById(Integer.valueOf(processedInput[1])));
+                Notification notification = NotificationDao.getNotificationById(Integer.parseInt(processedInput[1]));
+                NotificationDao.deleteNotification(notification); 
                 output+="C";
             }else if(processedInput[0].equals(CL_CHECK_IF_CANDIDATURE_IS_ABLE)){
                 output+=S_CHECK_IF_CANDIDATURE_IS_ABLE+":"; 
@@ -405,8 +489,11 @@ public class Protocol {
                 
             }else if(processedInput[0].equals(CL_ADD_CANDIDATURE)){
                 output+=S_ADD_CANDIDATURE+":";  
-                if(!CandidatureDao.checkIfCandidatureExits(myUser,OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])))){
-                    CandidatureDao.addCandidature(new Candidature(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),WorkerDao.checkIfWorker(myUser)));
+                Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
+                if(!CandidatureDao.checkIfCandidatureExits(myUser,offer)){
+                    Candidature candidature = CandidatureDao.addCandidature(new Candidature(offer,WorkerDao.checkIfWorker(myUser)));
+                    Notification notification = NotificationDao.addNotification(new Notification());
+                    NotificationDao.addNotification(new BusinessmanNotification(candidature,notification)); 
                     output+="C";
                 }else{
                     output+="I";
@@ -602,6 +689,110 @@ public class Protocol {
                         output+="C";
                     }
                 }
+            }else if(processedInput[0].equals(CL_MY_PROFILES)){
+                output+=S_MY_PROFILES+":";
+                for(Profile profile : ProfileDao.getMyProfiles(myUser)){ 
+                    output+=profile.getId()+":"; 
+                    output+=profile.getName()+":"; 
+                    output+="Labels,";
+                    for(Label label:ProfileLabelDao.getLabelsForThisProfile(profile)){
+                        output+=label.getName();
+                        output+=","; 
+                    }
+                    output+=":";  
+                }
+            }else if(processedInput[0].equals(CL_MY_PROFILES_WITHOUT_ALERTS)){
+                output+=S_MY_PROFILES_WITHOUT_ALERTS+":";
+                for(Profile profile : ProfileDao.getMyProfiles(myUser)){
+                    if(AlertDao.getAlertForThisProfile(profile) ==  null){
+                        output+=profile.getId()+":"; 
+                        output+=profile.getName()+":"; 
+                        output+="Labels,";
+                        for(Label label:ProfileLabelDao.getLabelsForThisProfile(profile)){
+                            output+=label.getName();
+                            output+=","; 
+                        }
+                        output+=":";
+                    } 
+                }
+            }else if(processedInput[0].equals(CL_ADD_PROFILE)){
+                output+=S_ADD_PROFILE+":";
+                if(processedInput.length > 1){
+                    //Profile profile = new Profile(WorkerDao.checkIfWorker(myUser),processedInput[1]);
+                    if(ProfileDao.getMyProfileByName(processedInput[1],myUser) == null){
+                        
+                       Profile profile = ProfileDao.addProfile(new Profile(WorkerDao.checkIfWorker(myUser),processedInput[1]));
+                        String[] labels = processedInput[2].split(",");
+                        for(String label:labels){
+                            ProfileLabelDao.addProfileLabel(new ProfileLabel(LabelDao.getLabelByName(label),profile));
+                        }
+                        output+="C";
+                    }else{
+                        output+="I:You already have a profile with this label";
+                    }
+                }
+            }else if(processedInput[0].equals(CL_MODIFY_PROFILE)){   
+                output+=S_MODIFY_PROFILE+":"; 
+                if(processedInput.length <= 2){
+                    Profile profile = ProfileDao.getProfileById(Integer.parseInt(processedInput[1]));
+                    output+=profile.getId()+":";
+                    output+=profile.getName()+":";
+                    output+="Labels,";
+                    for(Label label:ProfileLabelDao.getLabelsForThisProfile(profile)){
+                        output+=label.getName();
+                        output+=",";
+                    }
+                }else{
+                    Profile profile = ProfileDao.getProfileById(Integer.parseInt(processedInput[1]));  
+                    
+                    String[] labels = processedInput[3].split(",");  
+                    List<String> newLabelsList = new ArrayList(); 
+                    for(String label:labels){
+                        newLabelsList.add(label.trim()); 
+                    }
+                    
+                    List<String> actualLabelsList = new ArrayList();
+                    for(Label label:ProfileLabelDao.getLabelsForThisProfile(profile)){
+                        actualLabelsList.add(label.getName().trim()); 
+                    }
+                    List<String> labelsToAdd = compareStringArrays(newLabelsList,actualLabelsList);  
+                    List<String> labelsToDelete = compareStringArrays(actualLabelsList,newLabelsList); 
+                    boolean follow = true;    
+                    
+                    
+                    if(!labelsToAdd.isEmpty() || !labelsToDelete.isEmpty() || !profile.getName().equals(processedInput[2])){
+                        if(!profile.getName().equals(processedInput[2])){
+                            if(ProfileDao.getMyProfileByName(processedInput[2], myUser) == null){
+                                profile.setName(processedInput[2]);
+                                ProfileDao.updateProfile(profile);   
+                            }else{
+                                output+="I:You already have one profile with this name";   
+                                follow = false;
+                            }
+                        }
+                        
+                        if(!labelsToAdd.isEmpty() && follow){
+                            for(String label:labelsToAdd){
+                                ProfileLabelDao.addProfileLabel(new ProfileLabel(LabelDao.getLabelByName(label),profile));
+                            }
+                        }  
+                        
+                        if(!labelsToDelete.isEmpty() && follow){
+                            for(String label:labelsToDelete){
+                                ProfileLabelDao.deleteProfileLabel(ProfileLabelDao.getProfileLabel(profile.getId(), label));
+                            }
+                        }
+                        
+                        if(follow)
+                            output+="C";
+                    }else{
+                        output+="I:You haven't change anything";   
+                    }
+                }
+            }else if(processedInput[0].equals(CL_DELETE_PROFILE)){
+                output+=S_DELETE_PROFILE+":";
+                ProfileDao.deleteProfile(ProfileDao.getProfileById(Integer.parseInt(processedInput[1])));
+                output+="C";
             }else if(processedInput[0].equals(CL_STOP_SERVER)){
                 output+=S_STOP_SERVER+":";
                 try {
@@ -624,6 +815,8 @@ public class Protocol {
                     System.err.println("Error waiting for xampp to start: " + e.getMessage());
                     output+="I";
                 } 
+                thread.setAnotherTime(false);
+                Server.setFollow(false);
             }else if(processedInput[0].equals(CL_EXIT)){
                 output+=S_EXIT+":C";
                 sharedColection.remove(myUser.getUser());
@@ -652,8 +845,7 @@ public class Protocol {
                     Label actualLabelChanged = actualLabel;
                     output+=actualLabelChanged.getName();
                     output+=",";
-                }
-
+                } 
             }
         }
         return output;
@@ -668,5 +860,16 @@ public class Protocol {
         
         
         return true;
+    }
+    
+    public static List<String> compareStringArrays(List<String> array1,List<String> array2){
+        List<String> differences = new ArrayList(); 
+        
+        for (String element : array1) { 
+            if (!array2.contains(element)) {
+                differences.add(element);
+            }
+        } 
+        return differences;
     }
 }

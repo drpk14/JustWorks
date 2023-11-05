@@ -17,6 +17,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
+    private static boolean follow  =true;
+
+    public static boolean isFollow() {
+        return follow;
+    }
+
+    public static void setFollow(boolean follow) {
+        Server.follow = follow;
+    }
+    
     
     public static void main(String[] args) throws IOException {
         InputStream is = new FileInputStream("config.ini");
@@ -24,6 +34,9 @@ public class Server {
         prop.load(is); 
         int portService = Integer.valueOf(prop.getProperty("port"));
         ServerSocket serverSocket = null;
+        
+        
+        
         
         try {
             System.out.println("Server listening");
@@ -33,7 +46,7 @@ public class Server {
             System.exit(1);
         } 
         
-        /*try {
+        try {
             ProcessBuilder pb = new ProcessBuilder("C:\\xampp\\xampp_start.exe");
             Process process = pb.start();
             process.waitFor(); 
@@ -48,14 +61,14 @@ public class Server {
             System.err.println("Error starting xampp: " + e.getMessage());
         } catch (InterruptedException e) {
             System.err.println("Error waiting for xampp to start: " + e.getMessage());
-        } */
+        } 
 
         
         Socket clientSocket = null;   
         SharedColection sharedColection = new SharedColection();
         
         try {
-            while (true) {
+            while (Server.isFollow()) {
                 clientSocket = serverSocket.accept();
                 new ServerThread(clientSocket,sharedColection,portService).start();
                 
@@ -157,6 +170,9 @@ public class Server {
         
             try {
                 return in.readLine();
+            }  catch (java.net.SocketException ex) {
+                sharedColection.remove(protocol.myUser.getUser()); 
+                this.setAnotherTime(false);
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,22 +187,24 @@ public class Server {
 
             try{
                 while (anotherTime) { 
-
+                    
+                    
                     input = this.read();
-                    System.out.println("El servidor ha recibido: " + input);
+                    
+                    if(input != null){
+                        
+                        System.out.println("El servidor ha recibido: " + input); 
 
-
-                    output = protocol.processInput(input);
-                    this.write(output);
-                    System.out.println("El servidor ha devuelto: "+output);
+                        output = protocol.processInput(input);
+                        this.write(output);
+                        System.out.println("El servidor ha devuelto: "+output);
+                    } 
                 }
-            }catch(java.lang.NullPointerException ex){
-                if(output == null){
-                    sharedColection.remove(protocol.myUser.getUser());
-                }
+            }catch(java.lang.NullPointerException ex){ 
+                
             }
             
-            System.out.println("User disconeccted");
+            System.out.println("User disconected");
         }
         
         

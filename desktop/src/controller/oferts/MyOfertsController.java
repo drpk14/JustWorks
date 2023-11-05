@@ -87,7 +87,7 @@ public class MyOfertsController implements Initializable {
                     String[] processedInput = JustWorkApp.recieveMessage().split(":");
                     if(processedInput[1].equals("C")){
                         MainBusinessmanController.getInstance().setMainPane("/view/oferts/MyOferts.fxml","My Oferts");
-                    } 
+                    }
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Necesitas seleccionar algún elemento de la lista");

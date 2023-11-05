@@ -129,7 +129,7 @@ public class SingUpController implements Initializable {
         }else if(textFieldEMail.getText().contains(":")|| textFieldEMail.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
             return false;
-        }else if(userType.getSelectedToggle() != null){
+        }else if(!radioButtonBusinessMan.isSelected() && !radioButtonWorker.isSelected()){
             JOptionPane.showMessageDialog(null, "You must select one button");
             return false;
         } else{

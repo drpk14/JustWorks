@@ -46,11 +46,15 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/justworks?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <mapping resource="entities/Notification.hbm.xml"/>
+    <mapping resource="entities/Profile.hbm.xml"/>
     <mapping resource="entities/Knowledge.hbm.xml"/>
     <mapping resource="entities/Message.hbm.xml"/>
     <mapping resource="entities/Offer.hbm.xml"/>
+    <mapping resource="entities/ProfileLabel.hbm.xml"/>
     <mapping resource="entities/Candidature.hbm.xml"/>
     <mapping resource="entities/Businessman.hbm.xml"/>
+    <mapping resource="entities/WorkerNotification.hbm.xml"/>
+    <mapping resource="entities/BusinessmanNotification.hbm.xml"/>
     <mapping resource="entities/User.hbm.xml"/>
     <mapping resource="entities/LabelOffer.hbm.xml"/>
     <mapping resource="entities/Worker.hbm.xml"/>

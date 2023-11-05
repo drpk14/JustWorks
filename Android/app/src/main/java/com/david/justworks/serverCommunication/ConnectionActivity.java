@@ -38,7 +38,9 @@ public class ConnectionActivity extends AppCompatActivity {
                     int port = Integer.parseInt(portEditText.getText().toString());
                     SharedCollection sharedCollection = new SharedCollection();
                     CommunicationMethods.getInstance().setSharedCollection(sharedCollection);
+
                     new CommunicationThread(ip,port,sharedCollection).start();
+                    //new CommunicationThreadUDP(ip,port,getApplicationContext()).start();
                     Intent intent = new Intent(ConnectionActivity.this, LoginActivity.class);
 
                     startActivity(intent);

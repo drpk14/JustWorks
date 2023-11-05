@@ -48,7 +48,7 @@ public class OfferDao {
             session.close();
         }  
         return offers;
-    }
+    } 
     
     public static List<Offer> getMyOffers(User user){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
@@ -149,21 +149,23 @@ public class OfferDao {
         return false;
     }
 
-    public static void addOffer(Offer offer) {
-     
+    public static Offer addOffer(Offer offer) {
+        Offer objectCreated = null;
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;  
         try{
             tx = session.beginTransaction();
             
             session.save(offer);
+            objectCreated = (Offer) session.get(Offer.class, offer.getId());
             tx.commit();
         }catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             
          }finally {
             session.close();
-        }   
+        }
+        return objectCreated;
     }
     
     public static void updateOffer(Offer offer) {

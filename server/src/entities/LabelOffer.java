@@ -1,5 +1,5 @@
 package entities;
-// Generated 18-feb-2023 23:32:23 by Hibernate Tools 4.3.1
+// Generated 31-oct-2023 21:04:09 by Hibernate Tools 4.3.1
 
 
 
@@ -12,13 +12,15 @@ public class LabelOffer  implements java.io.Serializable {
      private Integer id;
      private Label label;
      private Offer offer;
+     private Boolean obligatory;
 
     public LabelOffer() {
     }
 
-    public LabelOffer(Label label, Offer offer) {
+    public LabelOffer(Label label, Offer offer, Boolean obligatory) {
        this.label = label;
        this.offer = offer;
+       this.obligatory = obligatory;
     }
    
     public Integer getId() {
@@ -41,6 +43,13 @@ public class LabelOffer  implements java.io.Serializable {
     
     public void setOffer(Offer offer) {
         this.offer = offer;
+    }
+    public Boolean getObligatory() {
+        return this.obligatory;
+    }
+    
+    public void setObligatory(Boolean obligatory) {
+        this.obligatory = obligatory;
     }
 
 

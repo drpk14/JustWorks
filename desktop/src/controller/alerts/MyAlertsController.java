@@ -4,6 +4,7 @@
  */
 package controller.alerts;
  
+import Entities.Alert;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView; 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,11 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;  
 import javafx.fxml.Initializable; 
 import javax.swing.JOptionPane; 
-import controller.MainWorkerController;
-import io.github.palexdev.materialfx.controls.MFXTextField; 
-import javafx.collections.ListChangeListener;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import controller.MainWorkerController;  
 import util.Messages;
 import view.JustWorkApp;
 
@@ -26,19 +23,9 @@ import view.JustWorkApp;
  */
 public class MyAlertsController implements Initializable {
 
-    
+      
     @FXML
-    private AnchorPane labelsPane; 
-    @FXML
-    private Text selectedLabelsText;
-    @FXML
-    private MFXLegacyListView<String> alertListView;
-    @FXML
-    private MFXLegacyListView<String> labelListView;
-    @FXML
-    private AnchorPane newLabelPane;
-    @FXML
-    private MFXTextField newLabelNameTextField;
+    private MFXLegacyListView<Alert> alertListView;  
     
     //private MainBusinessmanController bController; 
     
@@ -49,45 +36,27 @@ public class MyAlertsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
         
-            initializeData(); 
-            
-            labelListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
-            @Override
-            public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) { 
-                selectedLabelsText.setText(labelListView.getSelectionModel().getSelectedItem());
-                 
-            } 
-        });
-    } 
+            initializeData();   
+    }
     
     private void initializeData(){ 
          
         JustWorkApp.sendMessage(Messages.CL_MY_ALERTS); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
-        for(int i= 1;i<processedInput.length;i++){ 
-            alertListView.getItems().add(processedInput[i]); 
-        } 
-    }
-    
+        for(int i= 1;i<processedInput.length;i=i+3){ 
+            alertListView.getItems().add(new Alert(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),processedInput[i+2])); 
+        }
+    } 
 
     @FXML
     private void changeToAddPane(ActionEvent event) {
-        JustWorkApp.sendMessage(Messages.CL_ALL_LABELS+":"); 
-         
-         
-        String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        for (int i = 1; i < processedInput.length; i++) {
-            if(!labelListView.getItems().contains(processedInput[i])){
-                labelListView.getItems().add(processedInput[i]); 
-            } 
-        }
-        this.labelsPane.setVisible(true);
+       MainWorkerController.getInstance().setMainPane("../view/alerts/AlertAdder.fxml", "My Alerts > Add Alert");
     }
 
     @FXML
     private void deleteAlert(ActionEvent event) {
         if(!alertListView.getItems().isEmpty()){
-            JustWorkApp.sendMessage(Messages.CL_DELETE_ALERT+":"+alertListView.getItems().get(0));
+            JustWorkApp.sendMessage(Messages.CL_DELETE_ALERT+":"+alertListView.getItems().get(0).getId());
             String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
             if(processedInput[1].equals("C")){
                 MainWorkerController.getInstance().setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts");
@@ -97,70 +66,5 @@ public class MyAlertsController implements Initializable {
         }else{
             JOptionPane.showMessageDialog(null, "You need to select one alert");
         }
-    }
-
-    @FXML
-    private void saveAlert(ActionEvent event) {
-        if(!labelListView.getSelectionModel().getSelectedItems().isEmpty()){
-            JustWorkApp.sendMessage(Messages.CL_ADD_ALERT+":"+labelListView.getSelectionModel().getSelectedItem());
-            String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
-            if(processedInput[1].equals("C")){
-                MainWorkerController.getInstance().setMainPane("../view/alerts/MyAlerts.fxml", "My Alerts"); 
-            }else{
-                JOptionPane.showMessageDialog(null, processedInput[2]);
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "You need to select one label");
-        }
-        
-    
-    }
- 
-
-    @FXML
-    private void changeToAddLabelPane(ActionEvent event) {
-        this.labelsPane.setVisible(false);
-        this.newLabelPane.setVisible(true); 
-    }
-
-    @FXML
-    private void exitLabelsPane(ActionEvent event) {
-        
-        this.labelsPane.setVisible(false);
-        this.newLabelPane.setVisible(false); 
-    }
-
-    @FXML
-    private void saveLabel(ActionEvent event) {
-        if(!newLabelNameTextField.getText().isEmpty()){
-            JustWorkApp.sendMessage(Messages.CL_ADD_LABEL+":"+newLabelNameTextField.getText()); 
-
-            
-            String[] processedInput = JustWorkApp.recieveMessage().split(":");
-            if(processedInput[1].equals("C")){
-                labelListView.getItems().clear();
-                JustWorkApp.sendMessage(Messages.CL_ADD_LABEL); 
-         
-         
-                String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
-                for (int i = 1; i < processedInput2.length; i++) {
-                    if(!labelListView.getItems().contains(processedInput2[i])){
-                        labelListView.getItems().add(processedInput2[i]); 
-                    } 
-                }
-                this.labelsPane.setVisible(true);
-                this.newLabelPane.setVisible(false); 
-            }else{
-                JOptionPane.showMessageDialog(null, "This label already exits");
-            }
-        }
-    }
-
-    @FXML
-    private void exitAddLabelPane(ActionEvent event) {
-        
-        this.labelsPane.setVisible(true);
-        this.newLabelPane.setVisible(false); 
-        
     }
 }

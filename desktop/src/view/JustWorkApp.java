@@ -7,15 +7,8 @@ package view;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.InputStream; 
+import java.util.Properties; 
 import javafx.application.Application;
 import static javafx.application.Application.launch; 
 import javafx.fxml.FXMLLoader;
@@ -101,15 +94,14 @@ public class JustWorkApp extends Application{
         synchronized (sharedCollection) {
             try {
                 if(sharedCollection.isResponsesEmpty())
-                    sharedCollection.wait();
-                
+                    sharedCollection.wait(); 
                 
                 response = sharedCollection.recieveResponse();
                  
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             } 
-        } 
+        }  
         return response;
     }
     

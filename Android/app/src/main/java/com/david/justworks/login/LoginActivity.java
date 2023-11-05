@@ -38,12 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
 
 
-        SharedCollection sharedCollection = new SharedCollection();
-        CommunicationMethods.getInstance().setSharedCollection(sharedCollection);
-
-        new CommunicationThread("192.168.100.41",4444,sharedCollection).start();
-
-        //new CommunicationThreadUDP("192.168.100.3",4444,getApplicationContext()).start();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

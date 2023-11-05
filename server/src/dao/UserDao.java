@@ -116,61 +116,13 @@ public class UserDao {
         return false;
     }
     
-    public static boolean checkIfUsernameExits(String username,String DNI){
-        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
-        Transaction tx = null;  
-        try{
-            tx = session.beginTransaction();  
-            Query query = session.createQuery("FROM User U WHERE U.user = :user AND U.dni != :dni");  
-            query.setString("user",username);
-            query.setString("dni",DNI);
-             
-            List<Object> consult =  query.list(); 
-            if(consult.size() > 0){
-                return true;
-            }
-            tx.commit(); 
-            
-        }catch (HibernateException e) { 
-            if (tx!=null) tx.rollback(); 
-            e.printStackTrace();
-        }finally {
-            session.close();
-        }  
-        return false;
-    }
-    
-    public static boolean checkIfeMailExits(String email,String DNI){
-        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
-        Transaction tx = null;  
-        try{
-            tx = session.beginTransaction();
-            Query query = session.createQuery("FROM User U WHERE U.email = :email AND U.dni != :dni");  
-            query.setString("email",email);
-            query.setString("dni",DNI);
-             
-            List<Object> consult =  query.list(); 
-            if(consult.size() > 0){
-                return true;
-            }
-            tx.commit(); 
-            
-        }catch (HibernateException e) { 
-            if (tx!=null) tx.rollback(); 
-            e.printStackTrace();
-        }finally {
-            session.close();
-        }  
-        return false;
-    }
-    
     public static boolean checkIfUsernameExits(String username){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null;  
         try{
             tx = session.beginTransaction();  
-            Query query = session.createQuery("FROM User U WHERE U.user = :user");  
-            query.setString("user",username);
+            Query query = session.createQuery("FROM User U WHERE U.user = :user ");  
+            query.setString("user",username); 
              
             List<Object> consult =  query.list(); 
             if(consult.size() > 0){
@@ -186,6 +138,7 @@ public class UserDao {
         }  
         return false;
     }
+     
     
     public static boolean checkIfeMailExits(String email){
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 

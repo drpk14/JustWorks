@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.AllOfertsController">
+<AnchorPane id="AnchorPane" maxHeight="669.0" maxWidth="750.0" minHeight="669.0" minWidth="750.0" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.AllOfertsController">
    <children>
-      <MFXTextField fx:id="textField" layoutX="15.0" layoutY="10.0" prefHeight="50.0" prefWidth="661.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
-      <MFXButton fx:id="searchButton" contentDisplay="CENTER" depthLevel="LEVEL0" layoutX="686.0" layoutY="-1.0" prefHeight="51.0" prefWidth="60.0" text=" " textAlignment="RIGHT" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-         <graphic>
-            <FontAwesomeIconView caretBias="false" glyphName="SEARCH" selectionFill="BLACK" size="40" stroke="BLACK" textAlignment="RIGHT" />
-         </graphic>
+      <MFXLegacyListView fx:id="listView" layoutX="17.0" layoutY="91.0" prefHeight="564.0" prefWidth="717.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="632.0" layoutY="29.0" onAction="#changeToFilterPane" text="FILTER">
+         <font>
+            <Font size="20.0" />
+         </font>
       </MFXButton>
-      <MFXLegacyListView fx:id="listView" layoutX="16.0" layoutY="73.0" prefHeight="578.0" prefWidth="727.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
+      <AnchorPane id="AnchorPane" fx:id="filterPane" layoutX="10.0" layoutY="10.0" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
+         <children>
+            <MFXLegacyListView fx:id="profileListView" layoutX="31.0" layoutY="44.0" prefHeight="570.0" prefWidth="278.0" />
+            <Text fx:id="selectedProfileText" layoutX="362.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="353.0" layoutY="466.0" onAction="#cancel" text="Cancel">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="599.0" layoutY="466.0" onAction="#clean" text="Clean">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+            <Text layoutX="362.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile name:" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Text>
+            <Text layoutX="362.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile labels:" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Text>
+            <Text fx:id="selectedProfileLabelsText" layoutX="362.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL5" layoutX="485.0" layoutY="466.0" onAction="#filter" text="Filter">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </MFXButton>
+            <MFXTextField fx:id="offerFilterTextField" floatMode="DISABLED" layoutX="362.0" layoutY="376.0" prefHeight="30.0" prefWidth="295.0" textLimit="40" />
+            <Text layoutX="362.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Offer name:" wrappingWidth="294.93670654296875">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
