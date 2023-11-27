@@ -10,6 +10,7 @@ import dao.KnowledgeDao;
 import dao.LabelDao;
 import dao.LabelKnowledgeDao;
 import dao.LabelOfferDao;
+import dao.MessageDao;
 import dao.NotificationDao;
 import dao.OfferDao;
 import dao.ProfileDao;
@@ -18,25 +19,26 @@ import dao.UserDao;
 import dao.WorkerDao;  
 import static dao.WorkerDao.checkIfWorker;
 import entities.Alert;
-import entities.Businessman;
-import entities.BusinessmanNotification;
+import entities.Businessman; 
 import entities.Candidature;
+import entities.CandidatureStateChangedNotification;
 import entities.Knowledge;
 import entities.Label;
 import entities.LabelKnowledge;
 import entities.LabelOffer;
+import entities.Message;
+import entities.NewCandidatureNotification;
+import entities.NewMessageNotification;
+import entities.NewOfferNotification;
 import entities.Notification;
 import entities.Offer;
 import entities.Profile;
 import entities.ProfileLabel;
 import entities.User;
-import entities.Worker;
-import entities.WorkerNotification;
+import entities.Worker; 
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.ArrayList; 
-import java.util.Arrays;
+import java.sql.Date; 
+import java.util.ArrayList;  
 import java.util.List; 
 import server.Server.ServerThread;  
 import static server.States.*;
@@ -89,7 +91,7 @@ public class Protocol {
                         output+= myUser.toString()+":";
 
                         sharedColection.add(myUser.getUser(), thread); 
-                        if(NotificationDao.getMyUnwatchedNotifications(myUser)){
+                        if(NotificationDao.IHaveUnwatchedNotifications(myUser)){
                             output+="True";
                         }else{
                             output+="False";
@@ -152,7 +154,7 @@ public class Protocol {
             
             }else if(processedInput[0].equals(CL_LOGIN)){
                 output+=S_LOGIN;
-                state = LOGIN;
+                state = LOGIN; 
             }else if(processedInput[0].equals(CL_EXIT)){ 
                 output+=S_EXIT;
             } 
@@ -175,12 +177,12 @@ public class Protocol {
                     if(Integer.parseInt(processedInput[1]) != 0 && follow){
                         remove = true;
                         Profile profile = ProfileDao.getProfileById(Integer.parseInt(processedInput[1]));
-                        List<Label> offerLabels = LabelOfferDao.getLabelsByOffer(offer);
+                        List<LabelOffer> offerLabels = LabelOfferDao.getLabelsByOffer(offer);
                         for(Label profileLabel:ProfileLabelDao.getLabelsForThisProfile(profile)){
                             if(follow){
-                                for(Label offerLabel : offerLabels){
+                                for(LabelOffer offerLabel : offerLabels){
                                     if(follow){
-                                        if(profileLabel.getName().equals(offerLabel.getName())){
+                                        if(profileLabel.getName().equals(offerLabel.getLabel().getName())){
                                             follow = false;
                                             remove = false;
                                         }
@@ -270,17 +272,16 @@ public class Protocol {
                 output+=S_ADD_OFFER+":"; 
                 if(processedInput.length > 1){
                     
-                    
                     String[] labels = processedInput[6].split(",");
                     Offer offerToAdd = new Offer(BusinessmanDao.checkIfBusinessman(myUser),processedInput[1],processedInput[2],processedInput[3],Integer.valueOf(processedInput[4]),processedInput[5]); 
-                       
+                    
                     if(!OfferDao.checkIfExistOffer(offerToAdd,myUser)){
                         
                         Offer offerCreated = OfferDao.addOffer(offerToAdd);   
                         
                         for(String labelInfo : labels){
-                            String labelName = labelInfo.split("-")[0];
-                            String labelObligatority = labelInfo.split("-")[1]; 
+                            String labelName = labelInfo.split("/")[0];
+                            String labelObligatority = labelInfo.split("/")[1]; 
                             boolean obligatority;
                             
                             if(labelObligatority.equals("1"))
@@ -294,8 +295,11 @@ public class Protocol {
                             for(Profile profile : profiles){
                                 Alert alert = AlertDao.getAlertForThisProfile(profile);
                                 if(alert != null){
-                                       Notification notification = NotificationDao.addNotification(new Notification());
-                                       NotificationDao.addNotification(new WorkerNotification(alert,notification,offerCreated)); 
+                                       Notification notification = NotificationDao.addNotification(new Notification(profile.getWorker().getUser()));
+                                       NotificationDao.addNotification(new NewOfferNotification(alert,notification,offerCreated)); 
+                                       if(sharedColection.search(profile.getWorker().getUser().getUser())){
+                                        sharedColection.get(profile.getWorker().getUser().getUser()).sendUDPMessage(1);
+                                    }
                                 }
                             }
                             /*for(Alert alert : AlertDao.getAlertsByLabel(LabelDao.getLabelByName(label))){
@@ -309,7 +313,7 @@ public class Protocol {
                     }else{
                         output+="I:You already have one offer with this name";   
                     }
-                } 
+                }
             }else if(processedInput[0].equals(CL_DELETE_OFFER)){
                 output+=S_DELETE_OFFER+":"; 
                 OfferDao.deleteOffer(OfferDao.getOfferDetails(Integer.valueOf(processedInput[1])));
@@ -386,8 +390,7 @@ public class Protocol {
                     
                     if(follow){
                         //Delete it just in case the user has change the userName
-                        sharedColection.remove(myUser.getUser());
-                        
+                        sharedColection.remove(myUser.getUser()); 
                         
                         myUser.setDni(user.getDni());
                         myUser.setEmail(user.getEmail());
@@ -435,28 +438,52 @@ public class Protocol {
                 }else{
                     output+="I:This alert don't exist";  
                 }
-            }else if(processedInput[0].equals(CL_MY_NOTIFICATIONS)){
-                output+=S_MY_NOTIFICATIONS+":"; 
-                if(checkIfBusinessman(myUser) != null){
-                    for(BusinessmanNotification bussinesmanNotification : NotificationDao.getMyBusinessmanNotifications(myUser)){
-                        Notification notification = bussinesmanNotification.getNotification(); 
-                        output+=notification.getId()+":";
-                        output+=bussinesmanNotification.getId()+":";
-                        output+=bussinesmanNotification.getCandidature().getId()+":";
-                        output+=bussinesmanNotification.getCandidature().getOffer().getName()+":"; 
-                        bussinesmanNotification.getNotification().setNotified(true);
-                        NotificationDao.updateNotification(bussinesmanNotification.getNotification());
-                    }
-                }else if(checkIfWorker(myUser) != null){
-                    for(WorkerNotification workerNotification : NotificationDao.getMyWorkerNotifications(myUser)){
-                        Notification notification = workerNotification.getNotification(); 
-                        output+=notification.getId()+":";
-                        output+=workerNotification.getId()+":";
-                        output+=workerNotification.getOffer().getId()+":"; 
-                        output+=workerNotification.getAlert().getProfile().getName()+":"; 
-                        workerNotification.getNotification().setNotified(true);
-                        NotificationDao.updateNotification(workerNotification.getNotification());
-                    }
+            }else if(processedInput[0].equals(CL_MY_CANDIDATURE_STATE_CHANGED_NOTIFICATIONS)){
+                output+=S_MY_CANDIDATURE_STATE_CHANGED_NOTIFICATIONS+":";  
+                for(CandidatureStateChangedNotification candidatureStateChangedNotification : NotificationDao.getMyCandidatureStateChangedNotifications(myUser)){
+                    Notification notification = NotificationDao.getNotificationById(candidatureStateChangedNotification.getNotification().getId()); 
+                            //candidatureStateChangedNotification.getNotification();
+                    output+=notification.getId()+":";
+                    output+=candidatureStateChangedNotification.getId()+":";
+                    output+=candidatureStateChangedNotification.getCandidature().getId()+":";
+                    output+=candidatureStateChangedNotification.getCandidature().getOffer().getName()+":";
+                    output+=candidatureStateChangedNotification.getCandidature().getState()+":"; 
+                    notification.setNotified(true);
+                    NotificationDao.updateNotification(notification); 
+                }
+            }else if(processedInput[0].equals(CL_MY_NEW_CANDIDATURE_NOTIFICATIONS)){
+                output+=S_MY_NEW_CANDIDATURE_NOTIFICATIONS+":";  
+                for(NewCandidatureNotification newCandidatureNotification : NotificationDao.getMyNewCandidatureNotifications(myUser)){
+                    Notification notification = newCandidatureNotification.getNotification(); 
+                    output+=notification.getId()+":";
+                    output+=newCandidatureNotification.getId()+":";
+                    output+=newCandidatureNotification.getCandidature().getId()+":";
+                    output+=newCandidatureNotification.getCandidature().getOffer().getName()+":";  
+                    notification.setNotified(true);
+                    NotificationDao.updateNotification(notification); 
+                }
+                //NO FUNCIONAAAAA
+            }else if(processedInput[0].equals(CL_MY_NEW_OFFER_NOTIFICATIONS)){
+                output+=S_MY_NEW_OFFER_NOTIFICATIONS+":";  
+                for(NewOfferNotification newOfferNotification : NotificationDao.getMyNewOfferNotifications(myUser)){
+                    Notification notification = newOfferNotification.getNotification();
+                    output+=notification.getId()+":";
+                    output+=newOfferNotification.getId()+":";
+                    output+=newOfferNotification.getOffer().getId()+":";
+                    output+=newOfferNotification.getAlert().getProfile().getName()+":"; 
+                    notification.setNotified(true);
+                    NotificationDao.updateNotification(notification); 
+                }
+            }else if(processedInput[0].equals(CL_MY_NEW_MESSAGE_NOTIFICATIONS)){
+                output+=S_MY_NEW_MESSAGE_NOTIFICATIONS+":";  
+                for(NewMessageNotification newMessageNotification : NotificationDao.getMyNewMessageNotifications(myUser)){
+                    Notification notification = newMessageNotification.getNotification();
+                    output+=notification.getId()+":";
+                    output+=newMessageNotification.getId()+":";
+                    output+=newMessageNotification.getMessage().getCandidature().getId()+":";
+                    output+=newMessageNotification.getMessage().getCandidature().getOffer().getName()+":";  
+                    notification.setNotified(true);
+                    NotificationDao.updateNotification(notification); 
                 }
             }else if(processedInput[0].equals(CL_DELETE_NOTIFICATION)){
                 output+=S_DELETE_NOTIFICATION+":"; 
@@ -467,38 +494,47 @@ public class Protocol {
                 output+=S_CHECK_IF_CANDIDATURE_IS_ABLE+":"; 
                 Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
                 
-                Boolean ninguna = true; 
-                ArrayList<Boolean> returnValue = new ArrayList();
-                
-                for(Label label : LabelOfferDao.getLabelsByOffer(offer)){
-                    if(KnowledgeDao.getKnowledgeForThisLabel(label, myUser).size() > 0){
-                        ninguna = false; 
-                        returnValue.add(true);
-                    }else{
-                        returnValue.add(false);
+                boolean obligatories = true;   
+                for(Label label : LabelOfferDao.getObligatoryLabelsByOffer(offer)){
+                    if(KnowledgeDao.getKnowledgeForThisLabel(label, myUser).size() <= 0){
+                        obligatories = false;  
                     }
                 }
                 
-                if(areAllTrue(returnValue)){
-                    output+="C:";     
-                }else if(!ninguna){
-                    output+="I:Some";  
-                }else if(ninguna){
-                    output+="I:Any";  
+                boolean optionals = true;
+                if(obligatories){ 
+                    for(Label label : LabelOfferDao.getOptionalLabelsByOffer(offer)){
+                        if(KnowledgeDao.getKnowledgeForThisLabel(label, myUser).size() <= 0){
+                            optionals = false;  
+                        }
+                    }
                 }
                 
+                if(obligatories){
+                    if(optionals){
+                        output+="C:";
+                    }else{
+                        output+="I:NonOptionals";  
+                    }
+                }else{
+                    output+="I:Any";  
+                }
+                 
             }else if(processedInput[0].equals(CL_ADD_CANDIDATURE)){
-                output+=S_ADD_CANDIDATURE+":";  
+                output+=S_ADD_CANDIDATURE+":";
                 Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
                 if(!CandidatureDao.checkIfCandidatureExits(myUser,offer)){
                     Candidature candidature = CandidatureDao.addCandidature(new Candidature(offer,WorkerDao.checkIfWorker(myUser)));
-                    Notification notification = NotificationDao.addNotification(new Notification());
-                    NotificationDao.addNotification(new BusinessmanNotification(candidature,notification)); 
+                    Notification notification = NotificationDao.addNotification(new Notification(offer.getBusinessman().getUser()));
+                    NotificationDao.addNotification(new NewCandidatureNotification(candidature,notification)); 
                     output+="C";
+                    if(sharedColection.search(candidature.getOffer().getBusinessman().getUser().getUser())){
+                        sharedColection.get(candidature.getOffer().getBusinessman().getUser().getUser()).sendUDPMessage(2);
+                    }
                 }else{
                     output+="I";
                 }
-                  
+             
             }else if(processedInput[0].equals(CL_DELETE_CANDIDATURE)){
                 output+=S_DELETE_CANDIDATURE+":";
                 CandidatureDao.deleteCandidature(CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1])));
@@ -514,9 +550,9 @@ public class Protocol {
                     output+=candidature.getWorker().getUser().toString()+":";
                     output+=candidature.getState()+":";
                     output+="Labels,";
-                    for(Label actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
+                    for(LabelOffer actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
                         
-                        output+=actualLabel.getName();
+                        output+=actualLabel.getLabel().getName();
                         output+=",";
                     }
                     output+=":";  
@@ -532,9 +568,13 @@ public class Protocol {
                 output+=candidature.getWorker().getUser().toString()+":";
                 output+=candidature.getState()+":";
                 output+="Labels,";
-                for(Label actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
+                for(LabelOffer actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
                     
-                    output+=actualLabel.getName();
+                    output+=actualLabel.getLabel().getName();
+                    if(actualLabel.getObligatory())
+                        output+="/1";
+                    else
+                        output+="/0";
                     output+=",";
                 }
                 output+=":"; 
@@ -549,9 +589,9 @@ public class Protocol {
                     output+=candidature.getWorker().getUser().toString()+":";
                     output+=candidature.getState()+":";
                     output+="Labels,";
-                    for(Label actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
+                    for(LabelOffer actualLabel: LabelOfferDao.getLabelsByOffer(candidature.getOffer())){
 
-                        output+=actualLabel.getName();
+                        output+=actualLabel.getLabel().getName();
                         output+=",";
                     }
                     output+=":";
@@ -563,6 +603,14 @@ public class Protocol {
                 Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
                 candidature.setState(processedInput[2]);
                 CandidatureDao.updateCandidature(candidature);
+                if(!NotificationDao.IHaveANotificationForThisCandidatureStageChanged(candidature)){
+                    Notification notification = NotificationDao.addNotification(new Notification(candidature.getWorker().getUser()));
+                    NotificationDao.addNotification(new CandidatureStateChangedNotification(candidature,notification));  
+                }
+                if(sharedColection.search(candidature.getWorker().getUser().getUser())){
+                    sharedColection.get(candidature.getWorker().getUser().getUser()).sendUDPMessage(3);
+                }
+                
                 output+="C";
             }else if(processedInput[0].equals(CL_KNOWLEDGE_BY_LABEL)){
                 
@@ -793,6 +841,46 @@ public class Protocol {
                 output+=S_DELETE_PROFILE+":";
                 ProfileDao.deleteProfile(ProfileDao.getProfileById(Integer.parseInt(processedInput[1])));
                 output+="C";
+            
+            }else if(processedInput[0].equals(CL_MESSAGES_OF_THIS_CANDIDATURE)){
+                output+=S_MESSAGES_OF_THIS_CANDIDATURE+":";
+                Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
+                output+=candidature.getId()+":";
+                output+=candidature.getOffer().getName()+":";
+                for(Message message : MessageDao.getMessagesForThisCandidature(candidature)){
+                    output+=message.getId()+":";
+                    output+=message.getContent()+":";   
+                    output+=message.getSendedTime().getHours()+"_";
+                    output+=message.getSendedTime().getMinutes()+":";
+                    if(message.getUser().equals(myUser)){
+                        output+="true";
+                    }else{
+                        output+="false";
+                    }
+                    output+=":";
+                }
+            }else if(processedInput[0].equals(CL_ADD_MESSAGE)){
+                output+=S_ADD_MESSAGE+":";
+                Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
+                Message message = MessageDao.addMessage(new Message(candidature,myUser,processedInput[2]));  
+                output+=message.getId()+":";
+                output+=message.getContent()+":";   
+                output+=message.getSendedTime().getHours()+"_";
+                output+=message.getSendedTime().getMinutes()+":"; 
+                output+="true"; 
+                if(!NotificationDao.IHaveANotificationForThisCandidatureStageChanged(candidature)){
+                    Notification notification = NotificationDao.addNotification(new Notification(candidature.getWorker().getUser()));
+                    NotificationDao.addNotification(new CandidatureStateChangedNotification(candidature,notification));  
+                } 
+                if(checkIfBusinessman(myUser) != null){ 
+                    if(sharedColection.search(candidature.getWorker().getUser().getUser())){
+                        sharedColection.get(candidature.getWorker().getUser().getUser()).sendUDPMessage(4);
+                    }
+                }else if(checkIfWorker(myUser) != null){
+                    if(sharedColection.search(candidature.getOffer().getBusinessman().getUser().getUser())){
+                        sharedColection.get(candidature.getOffer().getBusinessman().getUser().getUser()).sendUDPMessage(4);
+                    }
+                }
             }else if(processedInput[0].equals(CL_STOP_SERVER)){
                 output+=S_STOP_SERVER+":";
                 try {
@@ -817,6 +905,11 @@ public class Protocol {
                 } 
                 thread.setAnotherTime(false);
                 Server.setFollow(false);
+            }else if(processedInput[0].equals(CL_LOGOUT)){
+                output+=S_LOGOUT+":";
+                sharedColection.remove(myUser.getUser());
+                state = LOGIN;
+                output+="C";
             }else if(processedInput[0].equals(CL_EXIT)){
                 output+=S_EXIT+":C";
                 sharedColection.remove(myUser.getUser());
@@ -841,9 +934,8 @@ public class Protocol {
             output+="Labels,";
             if(LabelOfferDao.getLabelsByOffer(actualOffer).size() > 0){
 
-                for(Label actualLabel: LabelOfferDao.getLabelsByOffer(actualOffer)){
-                    Label actualLabelChanged = actualLabel;
-                    output+=actualLabelChanged.getName();
+                for(LabelOffer actualLabel: LabelOfferDao.getLabelsByOffer(actualOffer)){ 
+                    output+=actualLabel.getLabel().getName();
                     output+=",";
                 } 
             }
@@ -865,11 +957,11 @@ public class Protocol {
     public static List<String> compareStringArrays(List<String> array1,List<String> array2){
         List<String> differences = new ArrayList(); 
         
-        for (String element : array1) { 
+        for (String element : array1) {
             if (!array2.contains(element)) {
                 differences.add(element);
             }
-        } 
+        }
         return differences;
     }
 }

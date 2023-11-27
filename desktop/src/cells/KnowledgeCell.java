@@ -25,7 +25,7 @@ public class KnowledgeCell extends ListCell<Knowledge>{
                     loader.setLocation(getClass().getResource("/view/knowledges/KnowledgeListView.fxml"));
                     
                     AnchorPane pane = loader.load();
-                     
+                    
                     KnowledgeListViewController knowledgeController = loader.getController();
                     knowledgeController.configurateKnowledge(item);
                     this.setGraphic(pane);

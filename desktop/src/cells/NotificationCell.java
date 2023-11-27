@@ -1,20 +1,20 @@
 package cells;
- 
-import Entities.WorkerNotification;  
-import controller.notifications.WorkerNotificationListViewController;
+
+import Entities.Notification; 
+import controller.notifications.NotificationListViewController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane; 
 
-public class WorkerNotificationCell extends ListCell<WorkerNotification>{
+public class NotificationCell extends ListCell<Notification>{
         
-        public WorkerNotificationCell(){
+        public NotificationCell(){
             super(); 
         }
         
         @Override
-        public void updateItem(WorkerNotification item,boolean empty){
+        public void updateItem(Notification item,boolean empty){
             super.updateItem(item, empty);
             
             this.setText(null);
@@ -22,11 +22,11 @@ public class WorkerNotificationCell extends ListCell<WorkerNotification>{
             if(item != null && !empty){
                 try {
                     FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/view/notifications/WorkerNotificationListView.fxml"));
+                    loader.setLocation(getClass().getResource("/view/notifications/NotificationListView.fxml"));
                     
                     AnchorPane pane = loader.load();
                      
-                    WorkerNotificationListViewController notificationController = loader.getController();
+                    NotificationListViewController notificationController = loader.getController();
                     notificationController.configurateNotification(item);
                     this.setGraphic(pane);
                     

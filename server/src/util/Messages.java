@@ -13,7 +13,8 @@ public class Messages {
                 //  CLIENT MESSAGES  //
     
     
-    public static final String CL_LOGIN = "CL_L";
+    public static final String CL_LOGIN = "CL_LogIn";
+    public static final String CL_LOGOUT = "CL_LogOut";
     public static final String CL_REGISTER = "CL_R";
     public static final String CL_EXIT = "CL_E";
     public static final String CL_ALL_OFFERS = "CL_AllO";
@@ -30,7 +31,10 @@ public class Messages {
     public static final String CL_MY_ALERTS = "CL_MyA";
     public static final String CL_ADD_ALERT = "CL_AddA";
     public static final String CL_DELETE_ALERT = "CL_DelA";
-    public static final String CL_MY_NOTIFICATIONS = "CL_MyN";
+    public static final String CL_MY_CANDIDATURE_STATE_CHANGED_NOTIFICATIONS = "CL_MyCSCN";
+    public static final String CL_MY_NEW_CANDIDATURE_NOTIFICATIONS = "CL_MyNCN";
+    public static final String CL_MY_NEW_OFFER_NOTIFICATIONS = "CL_MyNON";
+    public static final String CL_MY_NEW_MESSAGE_NOTIFICATIONS = "CL_MyNMN"; 
     public static final String CL_DELETE_NOTIFICATION = "CL_DelN";
     public static final String CL_CHECK_IF_CANDIDATURE_IS_ABLE = "CL_CheckC";
     public static final String CL_ADD_CANDIDATURE = "CL_AddC";
@@ -51,13 +55,16 @@ public class Messages {
     public static final String CL_ADD_PROFILE = "CL_AddP";
     public static final String CL_MODIFY_PROFILE = "CL_ModifyP"; 
     public static final String CL_DELETE_PROFILE = "CL_DeleteP"; 
+    public static final String CL_ADD_MESSAGE = "CL_AddM";
+    public static final String CL_MESSAGES_OF_THIS_CANDIDATURE = "CL_MyMOTC";
     public static final String CL_STOP_SERVER = "CL_StopS";
     
     
                 //  SERVER MESSAGES  //
     
     
-    public static final String S_LOGIN = "S_L";
+    public static final String S_LOGIN = "S_LogIn";
+    public static final String S_LOGOUT = "S_LogOut";
     public static final String S_REGISTER = "S_R";
     public static final String S_EXIT = "S_E";
     public static final String S_ALL_OFFERS = "S_AllO";
@@ -74,7 +81,10 @@ public class Messages {
     public static final String S_MY_ALERTS = "S_MyA";
     public static final String S_ADD_ALERT = "S_AddA";
     public static final String S_DELETE_ALERT = "S_DelA";
-    public static final String S_MY_NOTIFICATIONS = "S_MyN";
+    public static final String S_MY_CANDIDATURE_STATE_CHANGED_NOTIFICATIONS = "S_MyCSCN";
+    public static final String S_MY_NEW_CANDIDATURE_NOTIFICATIONS = "S_MyNCN";
+    public static final String S_MY_NEW_OFFER_NOTIFICATIONS = "S_MyNON";
+    public static final String S_MY_NEW_MESSAGE_NOTIFICATIONS = "S_MyNMN"; 
     public static final String S_DELETE_NOTIFICATION = "S_DelN";
     public static final String S_CHECK_IF_CANDIDATURE_IS_ABLE = "S_CheckC";
     public static final String S_ADD_CANDIDATURE = "S_AddC";
@@ -95,6 +105,8 @@ public class Messages {
     public static final String S_ADD_PROFILE = "S_AddP";
     public static final String S_MODIFY_PROFILE = "S_ModifyP"; 
     public static final String S_DELETE_PROFILE = "S_DeleteP"; 
+    public static final String S_ADD_MESSAGE = "S_AddM";
+    public static final String S_MESSAGES_OF_THIS_CANDIDATURE = "S_MyMOTC";
     public static final String S_STOP_SERVER = "S_StopS";
     
     

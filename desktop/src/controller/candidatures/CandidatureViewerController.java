@@ -6,8 +6,11 @@ package controller.candidatures;
    
 import Entities.Candidature;
 import Entities.Knowledge;   
+import Entities.Label;
 import Entities.Ofert; 
 import cells.KnowledgeCell;
+import cells.LabelOfferCell;
+import controller.MainBusinessmanController;
 import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;  
@@ -25,6 +28,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;  
 import util.Messages;
+import static util.Messages.CL_MESSAGES_OF_THIS_CANDIDATURE;
+import static util.Messages.S_ADD_MESSAGE;
 import view.JustWorkApp;
 
 /**
@@ -40,7 +45,7 @@ public class CandidatureViewerController implements Initializable {
     @FXML
     private MFXLegacyListView<Knowledge> qualificationListView;
     @FXML
-    private MFXLegacyListView<String> labelsListView;
+    private MFXLegacyListView<Label> labelsListView;
     @FXML
     private Text stateText;
     @FXML
@@ -66,9 +71,10 @@ public class CandidatureViewerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {  
         
         initializeData(); 
-        workListView.setCellFactory(param -> new KnowledgeCell()); 
-        qualificationListView.setCellFactory(param -> new KnowledgeCell()); 
-
+        workListView.setCellFactory(param -> new KnowledgeCell());
+        qualificationListView.setCellFactory(param -> new KnowledgeCell());
+        labelsListView.setCellFactory(param -> new LabelOfferCell());
+        
         if(MainWorkerController.getInstance() != null){
             acceptedStateButton.setVisible(false);
 
@@ -77,13 +83,13 @@ public class CandidatureViewerController implements Initializable {
             changeStateButton.setVisible(false);
         }
         
-        labelsListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
+        labelsListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Label>() {
             @Override
-            public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+            public void onChanged(javafx.collections.ListChangeListener.Change<? extends Label> c) {
                 workListView.getItems().clear();
                 qualificationListView.getItems().clear();
-                String label = labelsListView.getSelectionModel().getSelectedItems().get(0);
-                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label+":"+"WorkExperience"); 
+                Label label = labelsListView.getSelectionModel().getSelectedItems().get(0);
+                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label.getName()+":"+"WorkExperience"); 
                 String[] processedInput = JustWorkApp.recieveMessage().split(":");  
                 for(int i= 1;i<processedInput.length;i=i+9){
                     Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
@@ -99,7 +105,7 @@ public class CandidatureViewerController implements Initializable {
                     workListView.getItems().add(knowledge);
                 }
                 
-                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label+":"+"Qualification"); 
+                JustWorkApp.sendMessage(Messages.CL_KNOWLEDGE_BY_LABEL+":"+candidature.getWorkerId()+":"+label.getName()+":"+"Qualification"); 
                 processedInput = JustWorkApp.recieveMessage().split(":");  
                 for(int i= 1;i<processedInput.length;i=i+9){
                     Knowledge knowledge = new Knowledge(Integer.parseInt(processedInput[i]),processedInput[i+1],processedInput[i+2],processedInput[i+3],processedInput[i+4],processedInput[i+5],LocalDate.parse(processedInput[i+6]),LocalDate.parse(processedInput[i+7]));
@@ -118,7 +124,7 @@ public class CandidatureViewerController implements Initializable {
             
     } 
     
-    private void initializeData(){ 
+    private void initializeData(){
          String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
          for(int i= 1;i<processedInput.length;i=i+7){
             candidature = new Candidature(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3],processedInput[i+4], processedInput[i+5]);
@@ -126,18 +132,27 @@ public class CandidatureViewerController implements Initializable {
             List labelsList = new ArrayList(0);
             if(labels.length >= 2){
                 for(int j = 1;j<labels.length;j++){
-                    labelsList.add(labels[j]);
+                    String[] labelInfo = labels[j].split("/");
+                    if(labelInfo[1].equals("1")) 
+                        labelsList.add(new Label(labelInfo[0],true));
+                    else
+                        labelsList.add(new Label(labelInfo[0],false));
                 }
                 candidature.setLabels(labelsList);
                 labelsListView.getItems().addAll(labelsList); 
                 this.changeStateText(candidature.getState());
-            } 
+            }
         }
     } 
 
     @FXML
     private void contact(ActionEvent event) {
-        
+        JustWorkApp.sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId());
+        if(MainBusinessmanController.getInstance() != null){
+            MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidatureMessages.fxml","Candidature > Message"); 
+        }else if(MainWorkerController.getInstance() != null){  
+            MainWorkerController.getInstance().setMainPane("/view/candidatures/CandidatureMessages.fxml","Candidature > Message"); 
+        }
     }
 
     @FXML

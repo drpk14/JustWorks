@@ -33,6 +33,7 @@ public class Server {
         Properties prop = new Properties();
         prop.load(is); 
         int portService = Integer.valueOf(prop.getProperty("port"));
+        int udpPortService = Integer.valueOf(prop.getProperty("UDPPort"));
         ServerSocket serverSocket = null;
         
         
@@ -61,16 +62,16 @@ public class Server {
             System.err.println("Error starting xampp: " + e.getMessage());
         } catch (InterruptedException e) {
             System.err.println("Error waiting for xampp to start: " + e.getMessage());
-        } 
+        }
 
         
-        Socket clientSocket = null;   
+        Socket clientSocket = null; 
         SharedColection sharedColection = new SharedColection();
         
         try {
             while (Server.isFollow()) {
                 clientSocket = serverSocket.accept();
-                new ServerThread(clientSocket,sharedColection,portService).start();
+                new ServerThread(clientSocket,sharedColection,clientSocket.getInetAddress(),udpPortService).start();
                 
                 System.out.println("Client connected.");
             }
@@ -93,25 +94,28 @@ public class Server {
         BufferedReader in = null;
  
 
-        public ServerThread(Socket nCliente,SharedColection sharedColection,int port) {
+        public ServerThread(Socket nCliente,SharedColection sharedColection,InetAddress ipAddress,int port) {
             try {
                 clientSocket = nCliente;
                 this.protocol = new Protocol(this,sharedColection);
                 anotherTime = true;
                 this.sharedColection = sharedColection;
+                this.ipAddress = ipAddress;
                 this.port = port;
                 
                 out = new PrintWriter(clientSocket.getOutputStream(), true); 
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 //startUDPConnection();
-                
+                serverSocket = new DatagramSocket();
                 
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-        }  
+        }
         
-        private void startUDPConnection(){ 
+        private void startUDPConnection(){
             try {
                 byte[] receiveData = new byte[1024]; 
                 serverSocket = new DatagramSocket(port);
@@ -129,23 +133,31 @@ public class Server {
             }
         }
         
-        public void sendUDPMessage(int messageID){ 
+        public void sendUDPMessage(int messageID){
             byte[] sendData = new byte[1024];
             try {
-                String message = " ";
+                String message = "";
                 switch(messageID){
                     case 1:
-                        message = "Notification";
+                        message = "NewOffer";
                         break;
-                        
                     case 2:
-                        message = "ServerShoutDown";
+                        message = "NewCandidature";
+                        break;
+                    case 3:
+                        message = "CandidatureStateChanged";
+                        break;
+                    case 4:
+                        message = "NewMessage";
                         break;  
+                    case 5:
+                        message = "ServerShoutDown";
+                        break;     
                 }
                 
                 sendData = message.getBytes();
                 
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, port);
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipAddress, port); 
                 serverSocket.send(sendPacket);
                 System.out.println("Mensaje enviado");
             } catch (IOException ex) {
@@ -171,8 +183,10 @@ public class Server {
             try {
                 return in.readLine();
             }  catch (java.net.SocketException ex) {
-                sharedColection.remove(protocol.myUser.getUser()); 
-                this.setAnotherTime(false);
+                if(protocol.myUser != null){
+                    sharedColection.remove(protocol.myUser.getUser()); 
+                    this.setAnotherTime(false);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -201,12 +215,13 @@ public class Server {
                     } 
                 }
             }catch(java.lang.NullPointerException ex){ 
-                
+                ex.printStackTrace();
+            }catch(Exception ex){ 
+                ex.printStackTrace();
             }
             
-            System.out.println("User disconected");
+            System.out.println("Client disconected");
         }
-        
-        
+         
     } 
 }

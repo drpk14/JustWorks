@@ -4,12 +4,14 @@
  */
 package util;
   
+import controller.MainBusinessmanController;
+import controller.MainWorkerController;
+import controller.candidatures.CandidatureMessagesController;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.DatagramSocket; 
+import java.net.SocketException; 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -26,15 +28,27 @@ public class CommunicationThreadUDP extends Thread{
     private String ip;
     private int port;
     private DatagramSocket socket;
+    private boolean follow = true;
 
-    public CommunicationThreadUDP(String ip, int port) {
+    public void setFollow(boolean follow) {
+        this.follow = follow;
+    } 
+
+    public CommunicationThreadUDP(String ip, int port){
         this.ip = ip;
         this.port = port;
-        initializeConnection();
-    } 
- 
-    
-    public void initializeConnection(){ 
+        try {
+            socket = new DatagramSocket(port);
+            //initializeUDPConnection();
+        /*}catch (java.net.BindException ex) {
+            JOptionPane.showMessageDialog(null, "Puerto ocupado, apagando la aplicacion");
+            JustWorkApp.closeApp();*/
+        } catch (SocketException ex) {
+            Logger.getLogger(CommunicationThreadUDP.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+  
+    /*public void initializeUDPConnection(){
         byte[] buffer = new byte[1024];
         try {
             socket = new DatagramSocket();
@@ -45,9 +59,7 @@ public class CommunicationThreadUDP extends Thread{
              
             DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length,InetAddress.getByName(ip), port);
             
-            socket.send(pregunta); 
-            
-            
+            socket.send(pregunta);  
             
         } catch (SocketException ex) {
             Logger.getLogger(JustWorkApp.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,35 +68,69 @@ public class CommunicationThreadUDP extends Thread{
         } catch (IOException ex) {
             Logger.getLogger(JustWorkApp.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-     
-    
-
+    }*/
+ 
     @Override
     public void run() {
          
         byte[] receiveData = new byte[1024];
-        while(true){
+        while(follow){
             try {
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 System.out.println("Esperando al mensaje");
-                socket.receive(receivePacket);
-                 
+                System.out.println(port);
+                socket.receive(receivePacket); 
                 System.out.println("Despues de recibir el mensaje");
                 String response = new String(receivePacket.getData());
                 System.out.println(response);
-                if(response.contains("Notification")){
-                    JOptionPane.showMessageDialog(null, "Tienes nuevas notificaciones");
+                if(response.contains("NewOffer")){
+                    if(MainBusinessmanController.getInstance() != null){ 
+                        MainBusinessmanController.getInstance().changeRedDotVisibility(true);
+                    }else if(MainWorkerController.getInstance() != null){  
+                        MainWorkerController.getInstance().changeRedDotVisibility(true); 
+                    }
+                }else if(response.contains("NewCandidature")){
+                    if(MainBusinessmanController.getInstance() != null){ 
+                        MainBusinessmanController.getInstance().changeRedDotVisibility(true);
+                    }else if(MainWorkerController.getInstance() != null){  
+                        MainWorkerController.getInstance().changeRedDotVisibility(true); 
+                    }
+                
+                }else if(response.contains("CandidatureStateChanged")){
+                    if(MainBusinessmanController.getInstance() != null){ 
+                        MainBusinessmanController.getInstance().changeRedDotVisibility(true);
+                    }else if(MainWorkerController.getInstance() != null){  
+                        MainWorkerController.getInstance().changeRedDotVisibility(true); 
+                    }
+                
+                }else if(response.contains("NewMessage")){
+                    if(MainBusinessmanController.getInstance() != null){
+                        if(MainBusinessmanController.getInstance().getControler() instanceof CandidatureMessagesController){
+                            CandidatureMessagesController candidatureMessagesController = (CandidatureMessagesController) MainBusinessmanController.getInstance().getControler();
+                            candidatureMessagesController.refreshMessages();
+                        }else{ 
+                            MainBusinessmanController.getInstance().changeRedDotVisibility(true);
+                        }
+                            
+                    }else if(MainWorkerController.getInstance() != null){  
+                        if(MainWorkerController.getInstance().getControler() instanceof CandidatureMessagesController){
+                            CandidatureMessagesController candidatureMessagesController = (CandidatureMessagesController) MainWorkerController.getInstance().getControler();
+                            candidatureMessagesController.refreshMessages();
+                        }else{
+                            MainWorkerController.getInstance().changeRedDotVisibility(true);
+                        }
+                    }
                 }else if(response.contains("ServerShoutDown")){
                     JOptionPane.showConfirmDialog(null, "The server had shoutdown, shouting down your aplicattion also");
                     JustWorkApp.closeApp();
                 }
                 
             } catch (IOException ex) {
-                Logger.getLogger(CommunicationThreadUDP.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
+        
+        System.out.println("Fin del hilo");
     }
 }
 

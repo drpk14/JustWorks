@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-nov-2023 18:41:52 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entities.CandidatureStateChangedNotification" table="candidature_state_changed_notification" catalog="justworks">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="candidature" class="entities.Candidature" fetch="select">
+            <column name="candidatureID" unique="true" />
+        </many-to-one>
+        <many-to-one name="notification" class="entities.Notification" fetch="select">
+            <column name="notificationID" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

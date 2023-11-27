@@ -45,7 +45,9 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/justworks?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
+    <mapping resource="entities/NewOfferNotification.hbm.xml"/>
     <mapping resource="entities/Notification.hbm.xml"/>
+    <mapping resource="entities/CandidatureStateChangedNotification.hbm.xml"/>
     <mapping resource="entities/Profile.hbm.xml"/>
     <mapping resource="entities/Knowledge.hbm.xml"/>
     <mapping resource="entities/Message.hbm.xml"/>
@@ -53,13 +55,13 @@ Contributor(s):
     <mapping resource="entities/ProfileLabel.hbm.xml"/>
     <mapping resource="entities/Candidature.hbm.xml"/>
     <mapping resource="entities/Businessman.hbm.xml"/>
-    <mapping resource="entities/WorkerNotification.hbm.xml"/>
-    <mapping resource="entities/BusinessmanNotification.hbm.xml"/>
+    <mapping resource="entities/NewMessageNotification.hbm.xml"/>
     <mapping resource="entities/User.hbm.xml"/>
     <mapping resource="entities/LabelOffer.hbm.xml"/>
     <mapping resource="entities/Worker.hbm.xml"/>
     <mapping resource="entities/Label.hbm.xml"/>
     <mapping resource="entities/LabelKnowledge.hbm.xml"/>
+    <mapping resource="entities/NewCandidatureNotification.hbm.xml"/>
     <mapping resource="entities/Alert.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

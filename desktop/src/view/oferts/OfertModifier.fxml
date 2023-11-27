@@ -64,7 +64,7 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="labelsInfo" layoutX="292.0" layoutY="483.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="252.53668212890625">
+      <Text fx:id="labelsInfo" layoutX="286.0" layoutY="487.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="252.53668212890625">
          <font>
             <Font size="21.0" />
          </font>
@@ -72,26 +72,22 @@
       <AnchorPane id="AnchorPane" fx:id="labelsPane" prefHeight="672.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
          <children>
             <MFXLegacyListView fx:id="labelListView" layoutX="29.0" layoutY="59.0" prefHeight="570.0" prefWidth="278.0" />
-            <Text layoutX="375.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Label:" wrappingWidth="294.93670654296875">
+            <Text layoutX="375.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Label:" wrappingWidth="294.93670654296875">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Text>
-            <Text fx:id="selectedLabelsText" layoutX="359.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.53668212890625">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Text>
-            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="479.0" layoutY="423.0" onAction="#changeToAddLabelPane" text="Add Label">
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="542.0" layoutY="560.0" onAction="#changeToAddLabelPane" text="Add Label">
                <font>
                   <Font size="20.0" />
                </font>
             </MFXButton>
-            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="505.0" layoutY="501.0" onAction="#exitLabelsPane" text="Exit">
+            <MFXButton buttonType="RAISED" depthLevel="LEVEL3" layoutX="401.0" layoutY="560.0" onAction="#exitLabelsPane" text="Exit">
                <font>
                   <Font size="20.0" />
                </font>
             </MFXButton>
+            <MFXLegacyListView fx:id="selectedLabelListView" layoutX="329.0" layoutY="118.0" prefHeight="389.0" prefWidth="386.0" />
          </children>
       </AnchorPane>
       <AnchorPane id="AnchorPane" fx:id="newLabelPane" prefHeight="658.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">

@@ -1,6 +1,8 @@
 package entities;
-// Generated 31-oct-2023 21:04:09 by Hibernate Tools 4.3.1
-
+// Generated 15-nov-2023 18:41:52 by Hibernate Tools 4.3.1
+ 
+import java.sql.Timestamp;
+import java.time.LocalDateTime; 
 
 
 /**
@@ -9,18 +11,20 @@ package entities;
 public class Message  implements java.io.Serializable {
 
 
-     private Integer id;
-     private Candidature candidature;
-     private String content;
-     private Boolean sender;
-
+    private Integer id;
+    private Candidature candidature;
+    private User user;
+    private String content;
+    private Timestamp sendedTime;
+     
     public Message() {
     }
 
-    public Message(Candidature candidature, String content, Boolean sender) {
+    public Message(Candidature candidature, User user, String content) {
        this.candidature = candidature;
+       this.user = user;
        this.content = content;
-       this.sender = sender;
+       this.sendedTime = Timestamp.valueOf(LocalDateTime.now());
     }
    
     public Integer getId() {
@@ -37,6 +41,13 @@ public class Message  implements java.io.Serializable {
     public void setCandidature(Candidature candidature) {
         this.candidature = candidature;
     }
+    public User getUser() {
+        return this.user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
     public String getContent() {
         return this.content;
     }
@@ -44,17 +55,14 @@ public class Message  implements java.io.Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-    public Boolean getSender() {
-        return this.sender;
-    }
-    
-    public void setSender(Boolean sender) {
-        this.sender = sender;
+
+    public Timestamp getSendedTime() {
+        return sendedTime;
     }
 
-
-
-
+    public void setSendedTime(Timestamp sendedTime) {
+        this.sendedTime = sendedTime;
+    } 
 }
 
 

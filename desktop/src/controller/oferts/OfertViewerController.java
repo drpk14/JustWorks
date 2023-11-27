@@ -117,7 +117,7 @@ public class OfertViewerController implements Initializable {
         }else if(MainWorkerController.getInstance() != null){ 
             JustWorkApp.sendMessage(CL_CHECK_IF_CANDIDATURE_IS_ABLE+":"+offerId); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
-            if(processedInput[1].equals("C")){
+            if(processedInput[1].equals("C")){ 
                 JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                 String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                 if(processedInput2[1].equals("C")){
@@ -126,22 +126,18 @@ public class OfertViewerController implements Initializable {
                     JOptionPane.showMessageDialog(null, "You already have one candidature for this offer");
                 }
             }else if(processedInput[1].equals("I")){
-                if(processedInput[2].equals("Some")){
-                    if(JOptionPane.showConfirmDialog(null, "You don't have one knowledge for each label, Do you want to make candidature?") == 0){
+                if(processedInput[2].equals("NonOptionals")){
+                    if(JOptionPane.showConfirmDialog(null, "You don't have one knowledge for each obligatory label, Do you want to make candidature?") == 0){
                         JustWorkApp.sendMessage(CL_ADD_CANDIDATURE+":"+offerId); 
                         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                         if(processedInput2[1].equals("C")){
                             MainWorkerController.getInstance().setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
-                        }else{
-                            JOptionPane.showMessageDialog(null, "You already have one candidature for this offer");
                         }
                     }
-
                 }else{
-                    JOptionPane.showMessageDialog(null, "You don't have any knowledge for any label");
+                    JOptionPane.showMessageDialog(null, "You don't have one knowledge for any label");
                 }
             }
         }
-        
-    } 
+    }
 }

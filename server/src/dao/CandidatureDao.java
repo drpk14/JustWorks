@@ -7,6 +7,7 @@ package dao;
  
 import entities.Candidature;
 import entities.Label;
+import entities.LabelOffer;
 import entities.Offer;
 import entities.User;
 import java.util.ArrayList;
@@ -138,7 +139,7 @@ public class CandidatureDao {
             tx = session.beginTransaction();
             Query query = null;
         
-            query = session.createQuery("FROM Candidature C JOIN C.worker W JOIN W.user U JOIN C.offer O WHERE C.id = :id"); 
+            query = session.createQuery("FROM Candidature C JOIN C.worker W JOIN W.user WU JOIN C.offer O JOIN O.businessman B JOIN B.user BU WHERE C.id = :id"); 
             query.setString("id",id+"");
             
             List<Object[]> queryList = query.list();
@@ -176,10 +177,10 @@ public class CandidatureDao {
             } 
             
             for(Offer offer : offersList){
-               List<Label> labels = LabelOfferDao.getLabelsByOffer(offer);
+               List<LabelOffer> labels = LabelOfferDao.getLabelsByOffer(offer);
                
-               for(Label actualLabel: labels){
-                   if(actualLabel.getName().equals(label.getName())){
+               for(LabelOffer actualLabel: labels){
+                   if(actualLabel.getLabel().getName().equals(label.getName())){
                        return true;
                    }
                }

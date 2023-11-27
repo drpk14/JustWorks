@@ -18,7 +18,7 @@ public class ProfileLabelDao {
         List<Profile> profiles = new ArrayList();
         try{
             tx = session.beginTransaction();
-            Query query = session.createQuery("FROM ProfileLabel PL JOIN PL.label L JOIN PL.profile P WHERE L.name = :name");
+            Query query = session.createQuery("FROM ProfileLabel PL JOIN PL.label L JOIN PL.profile P JOIN P.worker W JOIN W.user U WHERE L.name = :name");
             query.setString("name", name);
             List<Object[]> queryList = query.list();
             for(Object[] actualProfile: queryList){

@@ -8,26 +8,27 @@ package Entities;
  *
  * @author David
  */
-public class WorkerNotification {
+public class NewOfferNotification extends Notification{ 
     
-    private int notificationId;
+    private int newOfferNotificationId;
     private int workerNotificationId;
     private int offerId; 
     private String profileName;   
 
-    public WorkerNotification(int notificationId, int workerNotificationId, int offerId, String profileName) {
-        this.notificationId = notificationId;
+    public NewOfferNotification(int notificationId, int newOfferNotificationId, int workerNotificationId, int offerId, String profileName) {
+        super(notificationId);
+        this.newOfferNotificationId = newOfferNotificationId;
         this.workerNotificationId = workerNotificationId;
         this.offerId = offerId;
         this.profileName = profileName;
     }
 
-    public int getNotificationId() {
-        return notificationId;
+    public int getNewOfferNotificationId() {
+        return newOfferNotificationId;
     }
 
-    public void setNotificationId(int notificationId) {
-        this.notificationId = notificationId;
+    public void setNewOfferNotificationId(int newOfferNotificationId) {
+        this.newOfferNotificationId = newOfferNotificationId;
     }
 
     public int getWorkerNotificationId() {
@@ -53,5 +54,4 @@ public class WorkerNotification {
     public void setProfileName(String profileName) {
         this.profileName = profileName;
     } 
-    
 }

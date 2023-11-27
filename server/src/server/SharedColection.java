@@ -35,4 +35,8 @@ public class SharedColection {
     public synchronized  boolean search(String key){
         return activeThreads.containsKey(key);
     }
+    
+    public synchronized  ServerThread get(String key){
+        return activeThreads.get(key);
+    }
 }

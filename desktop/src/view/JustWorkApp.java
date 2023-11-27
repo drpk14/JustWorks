@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream; 
+import java.net.BindException;
 import java.util.Properties; 
 import javafx.application.Application;
 import static javafx.application.Application.launch; 
@@ -16,7 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.StageStyle; 
 import util.CommunicationThread;
 import util.CommunicationThreadUDP;
 import util.SharedCollection;
@@ -31,8 +32,9 @@ public class JustWorkApp extends Application{
     private static double xOffset=0.0;
     private static double yOffset=0.0; 
     private static Scene scene;
-    private static Stage stage; 
+    private static Stage stage;
     private static SharedCollection sharedCollection;
+    private static CommunicationThreadUDP communicationThreadUDP;
     
     public static void changeScene(Parent root) {
         scene = new Scene(root); 
@@ -53,11 +55,10 @@ public class JustWorkApp extends Application{
      
     @Override
     public void start(Stage stage) throws Exception { 
-        System.out.println("nueva coleccion");
         InputStream is;
         Properties prop = new Properties();
         try {
-            is = new FileInputStream("configuracion.ini");
+            is = new FileInputStream("config.ini");
             prop.load(is);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -66,13 +67,14 @@ public class JustWorkApp extends Application{
         }
 
         String ip = prop.getProperty("host");
-        int port = Integer.valueOf(prop.getProperty("puerto"));
+        int port = Integer.valueOf(prop.getProperty("port"));
+        int udpPortService = Integer.valueOf(prop.getProperty("UDPPort"));
           
         
         sharedCollection = new SharedCollection();
-        
         new CommunicationThread(sharedCollection,ip,port).start();
-        new CommunicationThreadUDP(ip, port).start();
+        communicationThreadUDP = new CommunicationThreadUDP(ip, udpPortService);
+        communicationThreadUDP.start();
         JustWorkApp.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));   
         stage.initStyle(StageStyle.UNDECORATED);
@@ -106,6 +108,8 @@ public class JustWorkApp extends Application{
     }
     
     public static void closeApp(){
+        if(communicationThreadUDP != null)
+            communicationThreadUDP.setFollow(false);
         System.exit(0);
     }
 }

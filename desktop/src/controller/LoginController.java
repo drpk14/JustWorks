@@ -57,9 +57,17 @@ public class LoginController implements Initializable {
             if(processedInput[1].equals("C")){
                 Parent root = null;
                 if(processedInput[2].equals("B")){
-                    root = FXMLLoader.load(this.getClass().getResource("/view/MainBusinessman.fxml"));
+                    if(MainWorkerController.getInstance() != null)
+                        MainWorkerController.resetInstance();
+                    
+                    root = FXMLLoader.load(this.getClass().getResource("/view/MainBusinessman.fxml")); 
+                    
                 }else if(processedInput[2].equals("W")){
+                    if(MainBusinessmanController.getInstance() != null)
+                        MainBusinessmanController.resetInstance();
+                    
                     root = FXMLLoader.load(this.getClass().getResource("/view/MainWorker.fxml"));
+                    
                 }else if(processedInput[2].equals("A")){
                     root = FXMLLoader.load(this.getClass().getResource("/view/MainAdmin.fxml"));
                 }

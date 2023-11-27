@@ -10,13 +10,17 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.io.IOException;
 import java.net.URL; 
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;  
+import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane; 
-import javafx.scene.text.Text;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text; 
 import util.Messages;
 import view.JustWorkApp;
 
@@ -39,6 +43,8 @@ public class MainBusinessmanController implements Initializable {
     
     private static MainBusinessmanController instance;
     
+    
+    
     /**
      * Initializes the controller class.
      */    
@@ -48,24 +54,45 @@ public class MainBusinessmanController implements Initializable {
     public static MainBusinessmanController getInstance() {
         return instance;
     }
+    
+    public static void resetInstance() {
+        instance = null;
+    }
+    
     @FXML
     private MFXButton profileButton;
     @FXML
     private MFXButton notificationButton;
+    @FXML
+    private Circle redDot; 
+    
+    private Object controler;
+
+    public Object getControler() {
+        return controler;
+    }
+    
+    public void changeRedDotVisibility(boolean visibility){
+        redDot.setVisible(visibility);
+    }
 
     public void setMainPane(String paneName, String information) {
         try {
             Pane view = null;
+            FXMLLoader loader = new FXMLLoader();
             URL fileUrl = getClass().getResource(paneName);
-            
-            if(fileUrl == null)
+
+            if (fileUrl == null)
                 throw new java.io.FileNotFoundException("FXML not found");
 
-            
-            view =FXMLLoader.load(fileUrl);
+            loader.setLocation(fileUrl);
+            view = loader.load();
             mainPane.setCenter(view);
+ 
+            controler = loader.getController(); 
+             
             this.changeInformation(information);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -89,16 +116,21 @@ public class MainBusinessmanController implements Initializable {
         }else if(event.getSource() == profileButton){
             this.setMainPane("/view/users/UserViewer.fxml", "My Profile");
         }else if(event.getSource() == notificationButton){  
-            this.setMainPane("/view/notifications/MyBusinessmanNotifications.fxml", "My Notifications");
+            this.setMainPane("/view/notifications/MyNotifications.fxml", "My Notifications");
         }
     }
 
     @FXML
     private void exit(ActionEvent event) {
-        JustWorkApp.sendMessage(Messages.CL_EXIT); 
+        JustWorkApp.sendMessage(Messages.CL_LOGOUT); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":");
-        if(processedInput[1].equals("C")){
-            System.exit(0);
+        if(processedInput[1].equals("C")){ 
+            try {
+                Parent root = FXMLLoader.load(this.getClass().getResource("/view/Login.fxml"));
+                JustWorkApp.changeScene(root);
+            } catch (IOException ex) {
+                Logger.getLogger(MainBusinessmanController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 } 

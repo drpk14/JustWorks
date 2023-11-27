@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="49.0" prefWidth="318.0" style="-fx-border-color: #8a8a8a; -fx-border-width: 4; -fx-border-radius: 5; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.labels.LabelListViewController">
+   <children>
+      <Text fx:id="labelName" layoutX="22.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="177.05467224121094">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <CheckBox fx:id="obligatorityCheckBox" layoutX="217.0" layoutY="15.0" mnemonicParsing="false" onAction="#changeObligatority" prefHeight="17.0" prefWidth="87.0" text="Obligatory" />
+   </children>
+</AnchorPane>

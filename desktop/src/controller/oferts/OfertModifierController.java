@@ -4,19 +4,21 @@
  */
 package controller.oferts;
  
-import Entities.Ofert;
-import controller.MainBusinessmanController; 
+import Entities.Label;
+import Entities.Ofert; 
+import cells.LabelOfferCell;
+import controller.MainBusinessmanController;  
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField; 
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList; 
+import java.util.List; 
 import java.util.ResourceBundle;   
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML; 
-import javafx.fxml.Initializable; 
+import javafx.fxml.Initializable;  
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;  
 import javafx.scene.layout.AnchorPane;
@@ -50,9 +52,7 @@ public class OfertModifierController implements Initializable {
     @FXML
     private MFXButton changeLabelButton;
     @FXML
-    private AnchorPane labelsPane; 
-    @FXML
-    private Text selectedLabelsText;
+    private AnchorPane labelsPane;  
     @FXML
     private Text labelsInfo;
     @FXML
@@ -61,33 +61,43 @@ public class OfertModifierController implements Initializable {
     private AnchorPane newLabelPane;
     @FXML
     private MFXTextField newLabelNameTextField;
-     
+    @FXML
+    private MFXLegacyListView<Label> selectedLabelListView; 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData();
-         
         labelListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        
+        selectedLabelListView.setCellFactory(param -> new LabelOfferCell());  
         labelListView.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<String>() {
             @Override
-            public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
-                if(labelListView.getSelectionModel().getSelectedItems().size() <= 3){
-                    String labelsString = "";
-                    for(int i = 0;i<labelListView.getSelectionModel().getSelectedItems().size();i++){
+            public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) { 
+                List<String> diferenciasEnListaStrings = new ArrayList<>(labelListView.getSelectionModel().getSelectedItems());
+                diferenciasEnListaStrings.removeIf(str -> selectedLabelListView.getItems().stream().anyMatch(obj -> obj.getName().equals(str)));
 
-                        labelsString += labelListView.getSelectionModel().getSelectedItems().get(i);
-                        if(i != labelListView.getSelectionModel().getSelectedItems().size()-1){
-                            labelsString += " , ";
-                        }
+                List<Label> diferenciasEnListaObjetos = new ArrayList<>(selectedLabelListView.getItems());
+                diferenciasEnListaObjetos.removeIf(obj -> labelListView.getSelectionModel().getSelectedItems().contains(obj.getName()));
+
+                // Mostrar las diferencias 
+                for (String diferencia : diferenciasEnListaStrings) {
+                    int respuesta = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Es obligatoria?",
+                    "",
+                    JOptionPane.OK_OPTION
+                    );
+                    Label label = new Label(diferencia);
+                    if (respuesta == JOptionPane.OK_OPTION) {
+                       label.setObligatority(true);
+                    } else {
+                       label.setObligatority(false); 
                     }
-                    selectedLabelsText.setText(labelsString);
-                    labelsInfo.setText(labelsString);
-                }else{
-                    labelListView.getSelectionModel().getSelectedItems().remove(c);
-                    JOptionPane.showMessageDialog(null, "You can't select more than 3 labels");
-                }
-            } 
+                    selectedLabelListView.getItems().add(label);
+                    System.out.println(selectedLabelListView.getItems().size());
+                } 
+                
+                selectedLabelListView.getItems().removeAll(diferenciasEnListaObjetos);  
+            }
         });
     }
     
@@ -98,14 +108,13 @@ public class OfertModifierController implements Initializable {
         if(processedInput[0].equals(Messages.S_MODIFY_OFFER)){
             changeLabelButton.setDisable(true);
             confirmActionButton.setText("Modify");
-            this.addInfo(processedInput);
-            
+            this.addInfo(processedInput); 
         }else{
             confirmActionButton.setText("Add");
         } 
         
         
-    } 
+    }
 
     @FXML
     private void exitWindow(ActionEvent event) { 
@@ -161,7 +170,6 @@ public class OfertModifierController implements Initializable {
             }   
         }
     }
- 
     
     private boolean checkUserInput(){
         
@@ -192,6 +200,20 @@ public class OfertModifierController implements Initializable {
             JOptionPane.showMessageDialog(null, "The salary text field can't contain letters");
             return false;
         }
+        
+        
+        if(selectedLabelListView.getItems().isEmpty()){
+            return false;
+        }
+        boolean oneObligatory = false;
+        for(Label label:selectedLabelListView.getItems()){  
+            if(label.isObligatority()){
+                oneObligatory = true;
+            }
+        }
+        
+        if(!oneObligatory)
+            return false;
             
         return true;
     }
@@ -225,17 +247,14 @@ public class OfertModifierController implements Initializable {
                 for(int j = 1;j<labels.length;j++){
                     labelsList.add(labels[j]);
 
-                    labelsString += labels[j];
-                    
-                     
+                    labelsString += labels[j]; 
                     
                     if(i != labels.length-1){
                         labelsString += " , ";
-                    } 
+                    }
                 }
                 labelsInfo.setText(labelsString);
-                modifyOfert.setLabelsList(labelsList);
-
+                modifyOfert.setLabelsList(labelsList); 
             }
         }
      }
@@ -250,16 +269,17 @@ public class OfertModifierController implements Initializable {
     }
     
     private String getLabelString(){
+          
         String labelsString = "";
-        System.out.println(labelListView.getSelectionModel().getSelectedItems().size());
-        for(int i = 0;i<labelListView.getSelectionModel().getSelectedItems().size();i++){
+        for(Label label:selectedLabelListView.getItems()){
+            labelsString+=label.getName();
+            if(label.isObligatority())
+                labelsString+="/1";
+            else
+                labelsString+="/0";
             
-            labelsString += labelListView.getSelectionModel().getSelectedItems().get(i);
-            if(i != labelListView.getSelectionModel().getSelectedItems().size()-1){
-                labelsString += ",";
-            }
+            labelsString+=",";
         }
-    
         return labelsString;
     }
 
@@ -306,5 +326,5 @@ public class OfertModifierController implements Initializable {
     private void exitAddLabelPane(ActionEvent event) {
         this.labelsPane.setVisible(true);
         this.newLabelPane.setVisible(false); 
-    }
+    } 
 }
