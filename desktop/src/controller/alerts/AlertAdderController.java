@@ -31,6 +31,8 @@ public class AlertAdderController implements Initializable {
     private Text selectedProfileText;
     @FXML
     private MFXLegacyListView<Profile> profileListView;
+    @FXML
+    private Text selectedProfileLabelsText;
      
     
     @Override
@@ -40,6 +42,16 @@ public class AlertAdderController implements Initializable {
             @Override
             public void onChanged(javafx.collections.ListChangeListener.Change<? extends Profile> c) {  
                 selectedProfileText.setText(profileListView.getSelectionModel().getSelectedItem().toString()); 
+            
+                String labelsString = ""; 
+                     
+                    for(int i = 0;i<profileListView.getSelectionModel().getSelectedItem().getLabelList().size();i++){ 
+                        labelsString += profileListView.getSelectionModel().getSelectedItem().getLabelList().get(i);
+                        if(i != profileListView.getSelectionModel().getSelectedItem().getLabelList().size()-1){
+                            labelsString += ",";
+                        }
+                    }
+                selectedProfileLabelsText.setText(labelsString);
             }
         });
     }

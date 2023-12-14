@@ -6,8 +6,7 @@ package controller.candidatures;
    
 import Entities.Candidature;
 import Entities.Knowledge;   
-import Entities.Label;
-import Entities.Ofert; 
+import Entities.Label; 
 import cells.KnowledgeCell;
 import cells.LabelOfferCell;
 import controller.MainBusinessmanController;
@@ -28,8 +27,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;  
 import util.Messages;
-import static util.Messages.CL_MESSAGES_OF_THIS_CANDIDATURE;
-import static util.Messages.S_ADD_MESSAGE;
+import static util.Messages.CL_MESSAGES_OF_THIS_CANDIDATURE; 
 import view.JustWorkApp;
 
 /**
@@ -139,9 +137,9 @@ public class CandidatureViewerController implements Initializable {
                         labelsList.add(new Label(labelInfo[0],false));
                 }
                 candidature.setLabels(labelsList);
-                labelsListView.getItems().addAll(labelsList); 
-                this.changeStateText(candidature.getState());
+                labelsListView.getItems().addAll(labelsList);  
             }
+            this.changeStateText(candidature.getState());
         }
     } 
 

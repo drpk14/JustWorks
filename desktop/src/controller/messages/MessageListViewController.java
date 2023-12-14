@@ -34,10 +34,10 @@ public class MessageListViewController implements Initializable {
     }
     
     public void configurateMessage(Message message){
-        if(message.isMine()) {
-            messagePane.setStyle("-fx-background-color: lightgreen;");
+        if(!message.isMine()) {
+            messagePane.setStyle("-fx-background-color: white;");
         } else {
-            messagePane.setStyle("-fx-background-color: lightblue;"); 
+            messagePane.setStyle("-fx-background-color: lightgreen;");
         }
         messageText.setText(message.getContent());
         textTime.setText(message.getSendedHour()+":"+message.getSendedMinute()); 

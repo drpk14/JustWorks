@@ -4,6 +4,10 @@
  */
 package com.david.justworks.serverCommunication;
  
+import android.util.Log;
+
+import com.david.justworks.login.LoginFragment;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +23,7 @@ import java.util.logging.Logger;
  */ 
 
 public class CommunicationThread extends Thread{
-     
+
     private SharedCollection sharedCollection;
     private PrintWriter out;
     private BufferedReader in;
@@ -31,8 +35,6 @@ public class CommunicationThread extends Thread{
         this.ip = ip;
         this.port = port;
     }
-    
-     
 
     public PrintWriter getOut() {
         return out;
@@ -58,30 +60,38 @@ public class CommunicationThread extends Thread{
 
         try {
             echoSocket = new Socket(ip, port);
+            echoSocket.setReuseAddress(true);
 
             this.setOut(new PrintWriter(echoSocket.getOutputStream(), true));
             this.setIn(new BufferedReader(new InputStreamReader(echoSocket.getInputStream())));
-
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: " + ip);
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + ip);
-            System.exit(1);
-        }
-
-        while(true){
+            LoginFragment.setConnected(true);
             synchronized (sharedCollection) {
-                try {  
-                    sharedCollection.wait();  
-                    this.getOut().println(sharedCollection.recieveMessage()); 
-                    sharedCollection.addResponse(this.getIn().readLine());
-                    
-                } catch (InterruptedException | IOException ex) {
-                    Logger.getLogger(CommunicationThread.class.getName()).log(Level.SEVERE, null, ex);
+                sharedCollection.notify();
+            }
+            while(true){
+                synchronized (sharedCollection) {
+                    try {
+
+                        sharedCollection.wait();
+                        this.getOut().println(sharedCollection.recieveMessage());
+                        sharedCollection.addResponse(this.getIn().readLine());
+
+                    } catch (InterruptedException | IOException ex) {
+                        Logger.getLogger(CommunicationThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+            }
+        } catch (UnknownHostException e) {
+            LoginFragment.setConnected(false);
+            synchronized (sharedCollection) {
+                sharedCollection.notify();
+            }
+
+        } catch (IOException e) {
+            LoginFragment.setConnected(false);
+            synchronized (sharedCollection) {
+                sharedCollection.notify();
             }
         }
     }
 }
-

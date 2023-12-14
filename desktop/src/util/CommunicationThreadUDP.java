@@ -39,48 +39,23 @@ public class CommunicationThreadUDP extends Thread{
         this.port = port;
         try {
             socket = new DatagramSocket(port);
-            //initializeUDPConnection();
-        /*}catch (java.net.BindException ex) {
+        }catch (java.net.BindException ex) {
             JOptionPane.showMessageDialog(null, "Puerto ocupado, apagando la aplicacion");
-            JustWorkApp.closeApp();*/
+            JustWorkApp.closeApp();
         } catch (SocketException ex) {
             Logger.getLogger(CommunicationThreadUDP.class.getName()).log(Level.SEVERE, null, ex);
         } 
-    }
-  
-    /*public void initializeUDPConnection(){
-        byte[] buffer = new byte[1024];
-        try {
-            socket = new DatagramSocket();
-            
-            String mensaje = "Starting the UDP Connection";
-             
-            buffer = mensaje.getBytes();
-             
-            DatagramPacket pregunta = new DatagramPacket(buffer, buffer.length,InetAddress.getByName(ip), port);
-            
-            socket.send(pregunta);  
-            
-        } catch (SocketException ex) {
-            Logger.getLogger(JustWorkApp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(JustWorkApp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(JustWorkApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }*/
- 
+    } 
+    
     @Override
     public void run() {
          
         byte[] receiveData = new byte[1024];
         while(follow){
             try {
-                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-                System.out.println("Esperando al mensaje");
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length); 
                 System.out.println(port);
-                socket.receive(receivePacket); 
-                System.out.println("Despues de recibir el mensaje");
+                socket.receive(receivePacket);  
                 String response = new String(receivePacket.getData());
                 System.out.println(response);
                 if(response.contains("NewOffer")){

@@ -47,7 +47,7 @@ public class MessageDao {
             session.close();
         }
         return messages;
-    } 
+    }
 
     public static Message addMessage(Message message) {
         Message objectCreated = null;
@@ -58,13 +58,15 @@ public class MessageDao {
             
             session.save(message); 
             objectCreated = (Message) session.get(Message.class, message.getId());
+            session.flush();
             tx.commit();
         }catch (HibernateException e) {
+            e.printStackTrace();
             if (tx!=null) tx.rollback();
             
          }finally {
             session.close();
-        } 
+        }  
         return objectCreated;
     }  
 }

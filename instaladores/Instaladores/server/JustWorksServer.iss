@@ -66,3 +66,29 @@ Filename: "C:\xampp\mysql\bin\mysql.exe"; Parameters: "-uroot -hlocalhost -e ""s
 Filename: "C:\xampp\xampp_stop.exe"; WorkingDir:"{tmp}"; StatusMsg:"Starting the database manager";
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Code]
+var
+  Page: TInputQueryWizardPage;
+
+procedure InitializeWizard;
+begin
+  Page := CreateInputQueryPage(wpWelcome, 'Server Configuration', 'Please insert the next information:', ''); 
+  Page.Add('TCPPort:', False);
+  Page.Add('UDPPort:', False);
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  FileName: string;
+  Content: string;
+begin
+  if CurStep = ssPostInstall then
+  begin
+    FileName := ExpandConstant('{app}\config.ini');
+    Content := 'port = ' + Page.Values[0] + #13#10 +
+               'UDPPort = ' + Page.Values[1];
+    SaveStringToFile(FileName, Content, False);
+  end;
+end;
+
+

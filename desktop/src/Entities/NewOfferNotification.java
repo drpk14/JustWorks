@@ -10,15 +10,13 @@ package Entities;
  */
 public class NewOfferNotification extends Notification{ 
     
-    private int newOfferNotificationId;
-    private int workerNotificationId;
+    private int newOfferNotificationId; 
     private int offerId; 
     private String profileName;   
 
-    public NewOfferNotification(int notificationId, int newOfferNotificationId, int workerNotificationId, int offerId, String profileName) {
+    public NewOfferNotification(int notificationId, int newOfferNotificationId, int offerId, String profileName) {
         super(notificationId);
-        this.newOfferNotificationId = newOfferNotificationId;
-        this.workerNotificationId = workerNotificationId;
+        this.newOfferNotificationId = newOfferNotificationId; 
         this.offerId = offerId;
         this.profileName = profileName;
     }
@@ -29,15 +27,7 @@ public class NewOfferNotification extends Notification{
 
     public void setNewOfferNotificationId(int newOfferNotificationId) {
         this.newOfferNotificationId = newOfferNotificationId;
-    }
-
-    public int getWorkerNotificationId() {
-        return workerNotificationId;
-    }
-
-    public void setWorkerNotificationId(int workerNotificationId) {
-        this.workerNotificationId = workerNotificationId;
-    }
+    } 
 
     public int getOfferId() {
         return offerId;

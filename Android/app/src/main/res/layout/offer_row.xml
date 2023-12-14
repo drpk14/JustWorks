@@ -46,7 +46,7 @@
                 android:text="Ubication" />
 
             <TextView
-                android:id="@+id/offerListViewLabelsText"
+                android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20px"

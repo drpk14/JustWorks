@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15sp"
+    android:orientation="vertical"
+    tools:context=".ui.offers.MyNotificationsFragment">
+
+    <TextView
+        android:id="@+id/offerNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2sp"
+        android:fontFamily="sans-serif-black"
+        android:text="Offer Name"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/offerNameTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:hint="Offer Name"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/profileNameTittleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2sp"
+        android:fontFamily="sans-serif-black"
+        android:text="Profile Name:"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/profileNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/profileLabelsTittleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2sp"
+        android:fontFamily="sans-serif-black"
+        android:text="Profile Labels:"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/profileLabelsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10sp"
+        android:textSize="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="410dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3sp"
+            android:layout_marginRight="3sp"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3sp"
+            android:layout_marginRight="3sp"
+            android:layout_weight="1"
+            android:text="Filter" />
+
+        <Button
+            android:id="@+id/cleanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3sp"
+            android:layout_marginRight="3sp"
+            android:layout_weight="1"
+            android:text="Clean" />
+
+    </LinearLayout>
+</LinearLayout>

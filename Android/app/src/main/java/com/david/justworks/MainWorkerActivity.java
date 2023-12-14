@@ -1,10 +1,12 @@
 package com.david.justworks;
 
+import static com.david.justworks.serverCommunication.Messages.CL_LOGOUT;
 import static com.david.justworks.serverCommunication.Messages.CL_USER_DETAILS;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.david.justworks.databinding.ActivityMainBusinessmanBinding;
 import com.david.justworks.databinding.ActivityMainWorkerBinding;
 import com.david.justworks.entities.User;
+import com.david.justworks.login.LoginActivity;
 import com.david.justworks.serverCommunication.CommunicationMethods;
 import com.david.justworks.ui.users.UserViewer;
 import com.google.android.material.navigation.NavigationView;
@@ -51,7 +54,7 @@ public class MainWorkerActivity extends AppCompatActivity {
 
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_my_work_experience,R.id.nav_my_qualification,R.id.nav_welcome,R.id.nav_my_candidatures,R.id.nav_all_offers)
+                R.id.nav_my_work_experience,R.id.nav_my_qualification,R.id.nav_welcome,/*R.id.nav_my_candidatures,*/R.id.nav_all_offers,R.id.nav_my_notifications)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -63,6 +66,19 @@ public class MainWorkerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserViewer.class);
                 startActivity(intent);
+            }
+        });
+        Button logoutButton = navigationView.getHeaderView(0).findViewById(R.id.navHeaderButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommunicationMethods.getInstance().sendMessage(CL_LOGOUT);
+                String[] processedInput = CommunicationMethods.getInstance().recieveMessage().split(":");
+                if(processedInput[1].equals("C")){
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

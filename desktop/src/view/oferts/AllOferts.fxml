@@ -16,10 +16,10 @@
             <Font size="20.0" />
          </font>
       </MFXButton>
-      <AnchorPane id="AnchorPane" fx:id="filterPane" layoutX="10.0" layoutY="10.0" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
+      <AnchorPane id="AnchorPane" fx:id="filterPane" prefHeight="669.0" prefWidth="750.0" style="-fx-background-color: WHITE;" visible="false">
          <children>
             <MFXLegacyListView fx:id="profileListView" layoutX="31.0" layoutY="44.0" prefHeight="570.0" prefWidth="278.0" />
-            <Text fx:id="selectedProfileText" layoutX="362.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
+            <Text fx:id="selectedProfileText" layoutX="362.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
                <font>
                   <Font size="20.0" />
                </font>
@@ -34,17 +34,17 @@
                   <Font size="20.0" />
                </font>
             </MFXButton>
-            <Text layoutX="362.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile name:" wrappingWidth="294.93670654296875">
+            <Text fx:id="selectedProfileTextView" layoutX="362.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile name:" wrappingWidth="294.93670654296875">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Text>
-            <Text layoutX="362.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile labels:" wrappingWidth="294.93670654296875">
+            <Text fx:id="selectedProfileLabelsTextView" layoutX="362.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile labels:" wrappingWidth="294.93670654296875">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Text>
-            <Text fx:id="selectedProfileLabelsText" layoutX="362.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
+            <Text fx:id="selectedProfileLabelsText" layoutX="362.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="294.93670654296875">
                <font>
                   <Font size="20.0" />
                </font>
@@ -54,8 +54,8 @@
                   <Font size="20.0" />
                </font>
             </MFXButton>
-            <MFXTextField fx:id="offerFilterTextField" floatMode="DISABLED" layoutX="362.0" layoutY="376.0" prefHeight="30.0" prefWidth="295.0" textLimit="40" />
-            <Text layoutX="362.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Offer name:" wrappingWidth="294.93670654296875">
+            <MFXTextField fx:id="offerFilterTextField" floatMode="DISABLED" layoutX="362.0" layoutY="108.0" prefHeight="30.0" prefWidth="295.0" textLimit="40" />
+            <Text layoutX="362.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Offer name:" wrappingWidth="294.93670654296875">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>

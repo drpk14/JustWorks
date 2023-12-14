@@ -55,6 +55,37 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent 
- 
+
+[Code]
+var
+  Page: TInputQueryWizardPage;
+
+procedure InitializeWizard;
+begin
+  Page := CreateInputQueryPage(wpWelcome, 'Server Configuration', 'Please insert the next information:', '');
+  Page.Add('IP:', False);
+  Page.Add('TCPPort:', False);
+  Page.Add('UDPPort:', False);
+end;
+
+function FieldsAreNotEmpty: Boolean;
+begin
+  Result := (Trim(Page.Values[0]) <> '') and (Trim(Page.Values[1]) <> '');
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  FileName: string;
+  Content: string;
+begin
+  if CurStep = ssPostInstall then
+  begin
+    FileName := ExpandConstant('{app}\config.ini');
+    Content := 'host = ' + Page.Values[0] + #13#10 +
+               'port = ' + Page.Values[1] + #13#10 +
+               'UDPPort = ' + Page.Values[2];
+    SaveStringToFile(FileName, Content, False);
+  end;
+end;
 
 

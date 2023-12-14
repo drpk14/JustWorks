@@ -1,51 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/logo" />
-
-    <!-- Campo de entrada de correo electrónico -->
-    <EditText
-        android:id="@+id/user"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/logo"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/username"
-        android:inputType="textEmailAddress" />
+        android:theme="@style/Theme.JustWorks.AppBarOverlay">
 
-    <!-- Campo de entrada de contraseña -->
-    <EditText
-        android:id="@+id/password"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/Theme.JustWorks.PopupOverlay" />
 
-    <!-- Botón de inicio de sesión -->
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/password"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:text="@string/log_in" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-</RelativeLayout>
+    <include layout="@layout/content_login" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

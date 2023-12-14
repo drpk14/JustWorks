@@ -224,9 +224,30 @@ public class Protocol {
                     output+="3";
                 }
                 
-                List offerArrayList = new ArrayList();
+                List<Offer> offerArrayList = new ArrayList();
                 offerArrayList.add(offer);
-                output+=this.processListOfOffers(offerArrayList); 
+                for(Offer actualOffer: offerArrayList){
+                    output+=":";
+                    output+=actualOffer.getId()+":";
+                    output+=actualOffer.getBusinessman().getUser().toString()+":"; 
+                    output+=actualOffer.getName()+":";
+                    output+=actualOffer.getDescription()+":";
+                    output+=actualOffer.getUbication()+":";  
+                    output+=actualOffer.getSalary()+":";
+                    output+=actualOffer.getContractType()+":";
+                    output+="Labels,";
+                    if(LabelOfferDao.getLabelsByOffer(actualOffer).size() > 0){
+
+                        for(LabelOffer actualLabel: LabelOfferDao.getLabelsByOffer(actualOffer)){   
+                            output+=actualLabel.getLabel().getName();
+                            if(actualLabel.getObligatory())
+                                output+="/1";
+                            else
+                                output+="/0";
+                            output+=",";
+                        }
+                    }
+                }
                 
             }else if(processedInput[0].equals(CL_MODIFY_OFFER)){
                 //Modify an existing offer
@@ -581,7 +602,9 @@ public class Protocol {
                 
             }else if(processedInput[0].equals(CL_CANDIDATURES_FOR_ONE_OFFER)){
                 output+=S_CANDIDATURES_FOR_ONE_OFFER+":";
-                for(Candidature candidature : CandidatureDao.getCandidaturesForOneOffer(OfferDao.getOfferDetails(Integer.parseInt(processedInput[1])),processedInput[2])){
+                Offer offer = OfferDao.getOfferDetails(Integer.parseInt(processedInput[1]));
+                output+=offer.getId()+":";
+                for(Candidature candidature : CandidatureDao.getCandidaturesForOneOffer(offer,processedInput[2])){
                     output+=candidature.getId()+":";
                     output+=candidature.getOffer().getId()+":";
                     output+=candidature.getWorker().getUser().getId()+":";
@@ -709,7 +732,7 @@ public class Protocol {
 
                         output+="C";
                     }else{
-                        output+="I:You already have one offer with this name";   
+                        output+="I:You already have one knowledge with this name";   
                     }
                 }else{
                     if(processedInput[1].equals("WE"))
@@ -862,17 +885,17 @@ public class Protocol {
             }else if(processedInput[0].equals(CL_ADD_MESSAGE)){
                 output+=S_ADD_MESSAGE+":";
                 Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
-                Message message = MessageDao.addMessage(new Message(candidature,myUser,processedInput[2]));  
+                Message message = MessageDao.addMessage(new Message(candidature,myUser,processedInput[2]));
                 output+=message.getId()+":";
                 output+=message.getContent()+":";   
                 output+=message.getSendedTime().getHours()+"_";
                 output+=message.getSendedTime().getMinutes()+":"; 
                 output+="true"; 
-                if(!NotificationDao.IHaveANotificationForThisCandidatureStageChanged(candidature)){
+                /*if(!NotificationDao.IHaveANotificationForThisCandidatureNewMessages(candidature,myUser)){
                     Notification notification = NotificationDao.addNotification(new Notification(candidature.getWorker().getUser()));
                     NotificationDao.addNotification(new CandidatureStateChangedNotification(candidature,notification));  
-                } 
-                if(checkIfBusinessman(myUser) != null){ 
+                }*/
+                if(checkIfBusinessman(myUser) != null){
                     if(sharedColection.search(candidature.getWorker().getUser().getUser())){
                         sharedColection.get(candidature.getWorker().getUser().getUser()).sendUDPMessage(4);
                     }
@@ -902,7 +925,7 @@ public class Protocol {
                 } catch (InterruptedException e) {
                     System.err.println("Error waiting for xampp to start: " + e.getMessage());
                     output+="I";
-                } 
+                }
                 thread.setAnotherTime(false);
                 Server.setFollow(false);
             }else if(processedInput[0].equals(CL_LOGOUT)){

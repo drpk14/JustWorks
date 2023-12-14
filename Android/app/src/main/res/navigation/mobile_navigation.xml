@@ -5,30 +5,97 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_welcome">
 
-
     <fragment
 
         android:id="@+id/nav_my_offers"
         android:name="com.david.justworks.ui.offers.MyOffersFragment"
         android:label="@string/menu_my_offers"
-        tools:layout="@layout/recycler_view_offers" />
+        tools:layout="@layout/recycler_view_offers" >
+        <action
+            android:id="@+id/action_nav_my_offers_to_nav_offer_viewer"
+            app:destination="@id/nav_offer_viewer">
+            <argument
+                android:name="offerId"
+                app:argType="integer" />
+            </action>
+
+    </fragment>
 
     <fragment
 
+        android:id="@+id/nav_my_notifications"
+        android:name="com.david.justworks.ui.notifications.MyNotificationsFragment"
+        android:label="@string/menu_my_notifications"
+        tools:layout="@layout/fragment_my_notifications" >
+        <action
+            android:id="@+id/action_nav_my_notifications_to_nav_candidature_for_one_offer"
+            app:destination="@id/nav_candidature_for_one_offer" >
+            <argument
+                android:name="offerId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_nav_my_notifications_to_nav_my_candidatures"
+            app:destination="@id/nav_my_candidatures" />
+        <action
+            android:id="@+id/action_nav_my_notifications_to_nav_offer_viewer"
+            app:destination="@id/nav_offer_viewer" >
+            <argument
+                android:name="offerId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_all_offers"
         android:name="com.david.justworks.ui.offers.AllOffersFragment"
         android:label="@string/menu_all_offers"
-        tools:layout="@layout/recycler_view_offers" />
+        tools:layout="@layout/recycler_view_offers" >
+        <action
+            android:id="@+id/action_nav_all_offers_to_nav_offer_viewer"
+            app:destination="@id/nav_offer_viewer" >
+            <argument
+                android:name="offerId"
+                app:argType="integer" />
+        </action>
+        <action
+            android:id="@+id/action_nav_all_offers_to_nav_offers_filter"
+            app:destination="@id/nav_offers_filter" />
+    </fragment>
 
-    <activity
+    <fragment
+        android:id="@+id/nav_offers_filter"
+        android:name="com.david.justworks.ui.offers.OffersFilterFragment"
+        android:label="@string/menu_offers_filter"
+        tools:layout="@layout/fragment_offer_filter" >
+        <action
+            android:id="@+id/action_nav_offers_filter_to_nav_all_offers"
+            app:destination="@id/nav_all_offers" >
+            <argument
+                android:name="offerName"
+                app:argType="string" />
+            <argument
+                android:name="profileId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_offer_viewer"
-        android:name="com.david.justworks.ui.offers.OfferViewer"
+        android:name="com.david.justworks.ui.offers.OfferViewerFragment"
         android:label="@string/menu_offer_viewer"
-        tools:layout="@layout/activity_offer_viewer" />
+        tools:layout="@layout/fragment_offer_viewer" >
+        <action
+            android:id="@+id/action_nav_offer_viewer_to_nav_my_candidatures"
+            app:destination="@id/nav_my_candidatures" />
+        <action
+            android:id="@+id/action_nav_offer_viewer_to_nav_candidature_for_one_offer"
+            app:destination="@id/nav_candidature_for_one_offer" />
+    </fragment>
 
-    <activity
+    <fragment
         android:id="@+id/nav_knowledge_viewer"
-        android:name="com.david.justworks.ui.knowledges.KnowledgeViewer"
+        android:name="com.david.justworks.ui.knowledges.KnowledgeViewerFragment"
         android:label="@string/menu_knowledge_viewer"
         tools:layout="@layout/activity_knowledge_viewer" />
 
@@ -37,14 +104,30 @@
         android:id="@+id/nav_my_work_experience"
         android:name="com.david.justworks.ui.knowledges.MyWorkExperienceFragment"
         android:label="@string/menu_my_work_experience"
-        tools:layout="@layout/recycler_view_knowledge" />
+        tools:layout="@layout/recycler_view_knowledge" >
+        <action
+            android:id="@+id/action_nav_my_work_experience_to_nav_knowledge_viewer"
+            app:destination="@id/nav_knowledge_viewer" >
+            <argument
+                android:name="knowledgeId"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
     <fragment
 
         android:id="@+id/nav_my_qualification"
         android:name="com.david.justworks.ui.knowledges.MyQualificationFragment"
         android:label="@string/menu_my_qualification"
-        tools:layout="@layout/recycler_view_knowledge" />
+        tools:layout="@layout/recycler_view_knowledge" >
+        <action
+            android:id="@+id/action_nav_my_qualification_to_nav_knowledge_viewer"
+            app:destination="@id/nav_knowledge_viewer" >
+            <argument
+                android:name="knowledgeId"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
     <fragment
 
@@ -59,12 +142,29 @@
         android:name="com.david.justworks.ui.candidatures.MyCandidaturesFragment"
         android:label="@string/menu_my_candidatures"
         tools:layout="@layout/recycler_view_candidatures" >
+        <action
+            android:id="@+id/action_nav_my_candidatures_to_nav_candidature_messages"
+            app:destination="@id/nav_candidature_messages" >
+            <argument
+                android:name="candidatureId"
+                app:argType="integer" />
+        </action>
     </fragment>
 
-    <activity
+    <fragment
         android:id="@+id/nav_candidature_for_one_offer"
-        android:name="com.david.justworks.ui.candidatures.CandidaturesForOneOfferActivity"
+        android:name="com.david.justworks.ui.candidatures.CandidaturesForOneOfferFragment"
         android:label="@string/title_activity_candidature_for_one_offer"
-        tools:layout="@layout/recycler_view_candidatures" />
+        tools:layout="@layout/recycler_view_candidatures" >
+        <action
+            android:id="@+id/action_nav_candidature_for_one_offer_to_nav_candidature_messages"
+            app:destination="@id/nav_candidature_messages" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_candidature_messages"
+        android:name="com.david.justworks.ui.candidatures.CandidatureMessagesFragment"
+        android:label="Candidature Messages"
+        tools:layout="@layout/fragment_candidature_messages" />
 
 </navigation>

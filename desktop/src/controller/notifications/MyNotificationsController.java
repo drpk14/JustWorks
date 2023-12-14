@@ -65,7 +65,7 @@ public class MyNotificationsController implements Initializable {
             
             JustWorkApp.sendMessage(CL_MY_CANDIDATURE_STATE_CHANGED_NOTIFICATIONS); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-            for(int i= 1;i<processedInput.length;i=i+5){ 
+            for(int i= 1;i<processedInput.length;i=i+5){
                 notificationsListView.getItems().add(new CandidatureStateChangedNotification(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3],processedInput[i+4]));  
             }
             
@@ -80,18 +80,17 @@ public class MyNotificationsController implements Initializable {
         }else if(event.getSource() == newOfferButton){
             JustWorkApp.sendMessage(CL_MY_NEW_OFFER_NOTIFICATIONS); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");  
-            for(int i= 1;i<processedInput.length;i=i+5){ 
-                notificationsListView.getItems().add(new NewOfferNotification(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),Integer.parseInt(processedInput[i+3]),processedInput[i+4])); 
+            for(int i= 1;i<processedInput.length;i=i+4){ 
+                notificationsListView.getItems().add(new NewOfferNotification(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3])); 
             }
             
-        }else if(event.getSource() == newMessageButton){  
+        }else if(event.getSource() == newMessageButton){
             
             JustWorkApp.sendMessage(CL_MY_NEW_OFFER_NOTIFICATIONS); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");  
             for(int i= 1;i<processedInput.length;i=i+4){ 
                 notificationsListView.getItems().add(new NewMessageNotification(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3])); 
-            }
-            
+            } 
         }
     }
 }

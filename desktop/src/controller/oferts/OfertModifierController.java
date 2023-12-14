@@ -190,10 +190,18 @@ public class OfertModifierController implements Initializable {
             return false;
         }
         
-        if(labelListView.getSelectionModel().getSelectedItems().size() <= 0 && confirmActionButton.getText().equals("Add")){
-            JOptionPane.showMessageDialog(null, "You need to select at least one label");
-            return false;
+        if(confirmActionButton.getText().equals("Add")){
+            boolean obligatority = false;
+            for(Label label : selectedLabelListView.getItems()){
+                if(label.isObligatority())
+                    obligatority = true;
+            }
+            if(!obligatority){
+                JOptionPane.showMessageDialog(null, "You need to select at least one obligatory label");
+                return false;
+            }
         }
+        
         try{
             Integer.valueOf(salaryTextField.getText());
         }catch(NumberFormatException ex){

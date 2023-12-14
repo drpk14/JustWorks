@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.UnknownHostException; 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,10 +32,7 @@ public class CommunicationThread extends Thread{
         this.ip = ip;
         this.port = port;
         initializeConnection();
-    }
-
-    
-    
+    } 
      
 
     public PrintWriter getOut() {
@@ -54,8 +52,7 @@ public class CommunicationThread extends Thread{
     }
      
     
-    public void initializeConnection(){
-        
+    public void initializeConnection(){ 
 
         Socket echoSocket = null; 
 
@@ -66,13 +63,14 @@ public class CommunicationThread extends Thread{
             this.setIn(new BufferedReader(new InputStreamReader(echoSocket.getInputStream())));
             
         } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Couldn't connect to the server, check the config.ini file or if the server is on");
             System.err.println("Don't know about host: " + ip);
             System.exit(1);
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Couldn't connect to the server, check the config.ini file or if the server is on");
             System.err.println("Couldn't get I/O for the connection to " + ip);
             System.exit(1);
-        } 
-    
+        }  
     }
 
      

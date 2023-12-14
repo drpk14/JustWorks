@@ -328,10 +328,9 @@ public class NotificationDao{
             session.close();
         }  
         return false;
-    } 
+    }
     
-    //NO FUNCIONA
-    public static boolean IHaveANotificationForThisCandidatureMessagesStageChanged(Candidature candidature,User myUser) {
+    public static boolean IHaveANotificationForThisCandidatureNewMessages(Candidature candidature,User myUser) {
         Session session = NewHibernateUtil.getSessionFactory().openSession(); 
         Transaction tx = null; 
         

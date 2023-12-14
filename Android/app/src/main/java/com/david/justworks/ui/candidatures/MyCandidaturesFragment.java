@@ -1,5 +1,7 @@
 package com.david.justworks.ui.candidatures;
 
+import static com.david.justworks.serverCommunication.Messages.CL_ADD_MESSAGE;
+import static com.david.justworks.serverCommunication.Messages.CL_MESSAGES_OF_THIS_CANDIDATURE;
 import static com.david.justworks.serverCommunication.Messages.CL_MY_CANDIDATURES;
 
 import android.content.Intent;
@@ -10,14 +12,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.david.justworks.R;
 import com.david.justworks.adapters.CandidatureAdapter;
 import com.david.justworks.databinding.RecyclerViewCandidaturesBinding;
 import com.david.justworks.entities.Candidature;
 import com.david.justworks.serverCommunication.CommunicationMethods;
 import com.david.justworks.ui.knowledges.KnowledgeViewer;
+import com.david.justworks.ui.offers.AllOffersFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +37,7 @@ public class MyCandidaturesFragment extends Fragment implements CandidatureAdapt
         binding = RecyclerViewCandidaturesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        RecyclerView recyclerView = binding.candidatureRecyclerView;
+        RecyclerView recyclerView = binding.messageRecyclerView;
         adapter = new CandidatureAdapter(this.getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -79,9 +84,11 @@ public class MyCandidaturesFragment extends Fragment implements CandidatureAdapt
     @Override
     public void onItemClick(View v, int position) {
         Candidature candidature = adapter.getCandidatureAtPosition(position);
-        Intent intent = new Intent(this.getContext(), KnowledgeViewer.class);
-        intent.putExtra("idCandidature",candidature.getId());
-        startActivity(intent);
+        CommunicationMethods.getInstance().sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId());
+        Bundle bundle = new Bundle();
+        bundle.putInt("candidatureId", candidature.getId());
+        NavHostFragment.findNavController(MyCandidaturesFragment.this)
+                .navigate(R.id.action_nav_my_candidatures_to_nav_candidature_messages,bundle);
     }
 
     private void manageList(String state) {
@@ -103,7 +110,6 @@ public class MyCandidaturesFragment extends Fragment implements CandidatureAdapt
             candidatures.add(candidature);
 
             adapter.setCandidatures(candidatures);
-
 
         }
     }

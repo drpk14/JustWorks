@@ -15,6 +15,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;  
 import cells.OfertCell;
+import controller.MainBusinessmanController;
+import controller.MainWorkerController;
 import java.util.ArrayList; 
 import java.util.List; 
 import javafx.collections.ListChangeListener;
@@ -44,6 +46,10 @@ public class AllOfertsController implements Initializable {
     private MFXTextField offerFilterTextField;
     @FXML
     private AnchorPane filterPane;
+    @FXML
+    private Text selectedProfileTextView;
+    @FXML
+    private Text selectedProfileLabelsTextView;
  
     /**
      * Initializes the controller class.
@@ -68,10 +74,18 @@ public class AllOfertsController implements Initializable {
                         if(i != profileListView.getSelectionModel().getSelectedItem().getLabelList().size()-1){
                             labelsString += ",";
                         }
-                    } 
+                    }
                     selectedProfileLabelsText.setText(labelsString);
                 }
             });
+            
+            if(MainBusinessmanController.getInstance() != null){
+                selectedProfileText.setVisible(false);
+                selectedProfileLabelsText.setVisible(false);
+                selectedProfileTextView.setVisible(false);
+                selectedProfileLabelsTextView.setVisible(false);
+            }
+             
     }
     
     private void initializeData(){

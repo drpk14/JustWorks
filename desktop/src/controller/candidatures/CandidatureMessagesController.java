@@ -66,10 +66,11 @@ public class CandidatureMessagesController implements Initializable {
             for(int i= 1;i<processedInput.length;i=i+4){
                 String[] sendedTime = processedInput[i+2].split("_"); 
                 Message message = new Message(Integer.parseInt(processedInput[i]),processedInput[i+1],Integer.parseInt(sendedTime[0]),Integer.parseInt(sendedTime[1]),Boolean.parseBoolean(processedInput[i+3]));
-                messagesListView.getItems().add(message); 
-                System.out.println(messagesListView.getItems().size());
+                messagesListView.getItems().add(message);  
                 messagesListView.scrollTo(messagesListView.getItems().size() - 1);
             }
+            
+            messageTextField.clear();
         }
     }
     
@@ -88,7 +89,9 @@ public class CandidatureMessagesController implements Initializable {
                     messagesListView.getItems().add(message); 
                     System.out.println(messagesListView.getItems().size());
                 }
+                System.out.println(messagesListView.getItems().size());
                 messagesListView.scrollTo(messagesListView.getItems().size() - 1);
+                
             }
         }); 
     }

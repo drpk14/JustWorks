@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".login.ConnectionFragment">
+
+    <EditText
+        android:id="@+id/ipSettingEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="IP" />
+
+    <EditText
+        android:id="@+id/TPCPortSettingEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="TPC Port" />
+
+    <EditText
+        android:id="@+id/UDPPortSettingEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="UDP Port" />
+
+    <Button
+        android:id="@+id/buttonSaveSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Save Settings" />
+
+    <Button
+        android:id="@+id/buttonBackToLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Back to Login"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60px"
+        android:text="Waiting to connect"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:visibility="visible" />
+
+</LinearLayout>

@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.david.justworks.R;
 import com.david.justworks.adapters.OfferAdapter;
 import com.david.justworks.databinding.RecyclerViewOffersBinding;
 import com.david.justworks.entities.Offer;
@@ -67,8 +69,15 @@ public class MyOffersFragment extends Fragment implements OfferAdapter.ClickList
     @Override
     public void onItemClick(View v, int position) {
         Offer offer = adapter.getOfferAtPosition(position);
+        Bundle bundle = new Bundle();
+        bundle.putInt("offerId", offer.getId());
+        NavHostFragment.findNavController(MyOffersFragment.this)
+                .navigate(R.id.action_nav_my_offers_to_nav_offer_viewer, bundle);
+
+
+        /*Offer offer = adapter.getOfferAtPosition(position);
         Intent intent = new Intent(this.getContext(), OfferViewer.class);
         intent.putExtra("idOffer",offer.getId());
-        startActivity(intent);
+        startActivity(intent);*/
     }
 }

@@ -36,7 +36,6 @@ public class SharedCollection{
     }
     
     public synchronized void addResponse(String message){
-    
         responses.add(message);
         this.notify();
     }

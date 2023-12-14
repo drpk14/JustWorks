@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -84,7 +83,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
             businessmanTextView = itemView.findViewById(R.id.offerListViewBusinessmanText);
             salaryTextView = itemView.findViewById(R.id.offerListViewSalaryText);
             ubicationTextView = itemView.findViewById(R.id.offerListViewUbicationText);
-            labelsTextView = itemView.findViewById(R.id.offerListViewLabelsText);
+            labelsTextView = itemView.findViewById(R.id.profileName);
             itemView.setOnClickListener(this);
         }
 

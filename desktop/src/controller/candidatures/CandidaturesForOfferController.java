@@ -76,7 +76,7 @@ public class CandidaturesForOfferController implements Initializable {
         
         JustWorkApp.sendMessage(Messages.CL_CANDIDATURES_FOR_ONE_OFFER+":"+offerId+":"+state); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
-        for(int i= 1;i<processedInput.length;i=i+7){
+        for(int i= 2;i<processedInput.length;i=i+7){
             Candidature candidature = new Candidature(Integer.parseInt(processedInput[i]),Integer.parseInt(processedInput[i+1]),Integer.parseInt(processedInput[i+2]),processedInput[i+3],processedInput[i+4], processedInput[i+5]);
             String[] labels = processedInput[i+6].split(",");
             List labelsList = new ArrayList(0);

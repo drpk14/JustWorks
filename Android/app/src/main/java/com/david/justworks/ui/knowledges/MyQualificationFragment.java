@@ -1,7 +1,6 @@
 package com.david.justworks.ui.knowledges;
 
 import static com.david.justworks.serverCommunication.Messages.CL_MY_QUALIFICATION;
-import static com.david.justworks.serverCommunication.Messages.CL_MY_WORK_EXPERIENCE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +10,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.david.justworks.R;
 import com.david.justworks.adapters.KnowledgeAdapter;
 import com.david.justworks.databinding.RecyclerViewKnowledgeBinding;
 import com.david.justworks.entities.Knowledge;
@@ -31,9 +32,8 @@ public class MyQualificationFragment extends Fragment implements KnowledgeAdapte
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = RecyclerViewKnowledgeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
-        RecyclerView recyclerView = binding.candidatureRecyclerView;
+        RecyclerView recyclerView = binding.knowledgeRecyclerView;
         adapter = new KnowledgeAdapter(this.getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -57,7 +57,7 @@ public class MyQualificationFragment extends Fragment implements KnowledgeAdapte
         adapter.setOnItemClickListener(this);
         adapter.setKnowledges(knowledges);
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -69,8 +69,11 @@ public class MyQualificationFragment extends Fragment implements KnowledgeAdapte
     @Override
     public void onItemClick(View v, int position) {
         Knowledge knowledge = adapter.getKnowledgeAtPosition(position);
-        Intent intent = new Intent(this.getContext(), KnowledgeViewer.class);
-        intent.putExtra("idKnowledge",knowledge.getId());
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("knowledgeId", knowledge.getId());
+
+        NavHostFragment.findNavController(MyQualificationFragment.this)
+                .navigate(R.id.action_nav_my_qualification_to_nav_knowledge_viewer,bundle);
+        
     }
 }

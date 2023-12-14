@@ -70,11 +70,10 @@ public class SingUpController implements Initializable {
     private void backLogIn(MouseEvent event) throws IOException { 
         JustWorkApp.sendMessage(Messages.CL_LOGIN); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
-        
-        if(processedInput[0].equals("L")){
+         
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml")); 
             JustWorkApp.changeScene(root);
-        } 
+         
     }
 
     @FXML
@@ -103,8 +102,7 @@ public class SingUpController implements Initializable {
         } 
     }
     
-    private boolean checkUserInput(){
-    
+    private boolean checkUserInput(){ 
         if(textFieldName.getText().contains(":") || textFieldName.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
             return false;
@@ -128,13 +126,13 @@ public class SingUpController implements Initializable {
             return false;
         }else if(textFieldEMail.getText().contains(":")|| textFieldEMail.getText().length() <= 0){
             JOptionPane.showMessageDialog(null, "The text fields can't  contain : or can't be empty");
+            userType.getSelectedToggle();
             return false;
-        }else if(!radioButtonBusinessMan.isSelected() && !radioButtonWorker.isSelected()){
+        }else if(userType.getSelectedToggle() == null){
             JOptionPane.showMessageDialog(null, "You must select one button");
             return false;
         } else{
             return true;
-        }  
-    } 
-    
+        }
+    }
 } 

@@ -64,10 +64,15 @@ public class NotificationListViewController implements Initializable {
         JustWorkApp.sendMessage(CL_DELETE_NOTIFICATION+":"+notification.getNotificationId()); 
         String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
         if(processedInput[1].equals("C")){
-            MainWorkerController.getInstance().setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+            if(MainBusinessmanController.getInstance() != null){
+                MainBusinessmanController.getInstance().setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+            }else if(MainWorkerController.getInstance() != null){ 
+                MainWorkerController.getInstance().setMainPane("../view/notifications/MyNotifications.fxml", "My Notifications");
+            }
+            
         }else if(processedInput[1].equals("I")){
             JOptionPane.showMessageDialog(null, processedInput[2]);
-        }  
+        }
     }
 
     @FXML
@@ -98,7 +103,7 @@ public class NotificationListViewController implements Initializable {
                 MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
             }else if(MainWorkerController.getInstance() != null){ 
                 MainWorkerController.getInstance().setMainPane("/view/candidatures/CandidatureViewer.fxml", "Candidature Viewer");
-            }  
-        } 
+            }
+        }
     }
 } 

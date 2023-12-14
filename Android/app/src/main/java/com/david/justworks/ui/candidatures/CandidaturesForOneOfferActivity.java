@@ -32,7 +32,7 @@ public class CandidaturesForOneOfferActivity extends AppCompatActivity implement
         binding = RecyclerViewCandidaturesBinding.inflate(getLayoutInflater());
         offerId = (Integer) getIntent().getExtras().get("offerId");
 
-        RecyclerView recyclerView = binding.candidatureRecyclerView;
+        RecyclerView recyclerView = binding.messageRecyclerView;
         adapter = new CandidatureAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -66,13 +66,14 @@ public class CandidaturesForOneOfferActivity extends AppCompatActivity implement
 
             }
         });
-
         setContentView(binding.getRoot());
     }
 
 
     @Override
     public void onItemClick(View v, int position) {
+
+        //AQUI HAY QUE LLAMAR AL FRAGMENTMANAGER PARA QUE MANDE PARA EL CANDIDATUREMESSAGE
         Candidature candidature = adapter.getCandidatureAtPosition(position);
         Intent intent = new Intent(getApplicationContext(), KnowledgeViewer.class);
         intent.putExtra("idCandidature",candidature.getId());
@@ -99,7 +100,6 @@ public class CandidaturesForOneOfferActivity extends AppCompatActivity implement
             }else{
                 adapter.cleanCandidatures();
             }
-
         }
     }
 }

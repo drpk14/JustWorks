@@ -4,10 +4,13 @@
  */
 package controller.oferts;
 
+import Entities.Label;
 import Entities.Ofert;
+import cells.LabelOfferCell;
 import controller.MainBusinessmanController; 
 import controller.MainWorkerController;
 import io.github.palexdev.materialfx.controls.MFXButton; 
+import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,6 @@ public class OfertViewerController implements Initializable {
     private Text salaryTextField;
     @FXML
     private Text contractTypeTextField;
-    @FXML
     private Text labelTextField;
      
     private int offerId = 0;
@@ -48,9 +50,13 @@ public class OfertViewerController implements Initializable {
     private MFXButton candidateButton;
     @FXML
     private MFXButton exitButton;
+    @FXML
+    private MFXLegacyListView<Label> labelsListView;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeData(); 
+        
+        labelsListView.setCellFactory(param -> new LabelOfferCell());
     }
     
     private void initializeData(){  
@@ -64,21 +70,17 @@ public class OfertViewerController implements Initializable {
             ubicationTextField.setText(newOffer.getUbication());
             salaryTextField.setText(String.valueOf(newOffer.getSalary()));
             contractTypeTextField.setText(newOffer.getContractType());
-            String[] labels = processedInput[8].split(",");
-            String labelsString = "";
+            String[] labels = processedInput[i+7].split(","); 
             if(labels.length >= 2){
                 List labelsList = new ArrayList();
                 for(int j = 1;j<labels.length;j++){
-                    labelsList.add(labels[j]);
-
-                    labelsString += labels[j];
-                    if(i != labels.length-1){
-                        labelsString += " , ";
-                    } 
-                }
-                newOffer.setLabelsList(labelsList);
-                labelTextField.setText(labelsString);
-
+                    String[] labelInfo = labels[j].split("/");
+                    if(labelInfo[1].equals("1")) 
+                        labelsList.add(new Label(labelInfo[0],true));
+                    else
+                        labelsList.add(new Label(labelInfo[0],false));
+                } 
+                labelsListView.getItems().addAll(labelsList);   
             }
             
             int option = Integer.parseInt(processedInput[1]);
@@ -106,15 +108,15 @@ public class OfertViewerController implements Initializable {
         
             MainWorkerController.getInstance().setMainPane("/view/oferts/AllOferts.fxml", "All Oferts");
         }
-    } 
+    }
         
     @FXML
     private void candidate(ActionEvent event) {
         if(MainBusinessmanController.getInstance() != null){
-            JustWorkApp.sendMessage(CL_CANDIDATURE_DETAILS+":"+offerId); 
+            JustWorkApp.sendMessage(CL_CANDIDATURES_FOR_ONE_OFFER+":"+offerId+":"+"Pending"); 
             MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidaturesForOffer.fxml","Candidatures for Offer");
             
-        }else if(MainWorkerController.getInstance() != null){ 
+        }else if(MainWorkerController.getInstance() != null){
             JustWorkApp.sendMessage(CL_CHECK_IF_CANDIDATURE_IS_ABLE+":"+offerId); 
             String[] processedInput = JustWorkApp.recieveMessage().split(":");
             if(processedInput[1].equals("C")){ 
@@ -132,6 +134,8 @@ public class OfertViewerController implements Initializable {
                         String[] processedInput2 = JustWorkApp.recieveMessage().split(":");
                         if(processedInput2[1].equals("C")){
                             MainWorkerController.getInstance().setMainPane("/view/candidatures/MyCandidatures.fxml","My Candidatures");
+                        }else{
+                            JOptionPane.showMessageDialog(null, "You already have one candidature for this offer");
                         }
                     }
                 }else{

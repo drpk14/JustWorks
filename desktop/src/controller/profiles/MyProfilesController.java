@@ -71,7 +71,7 @@ public class MyProfilesController implements Initializable {
         if(event.getSource() == addButton){
             JustWorkApp.sendMessage(CL_ADD_PROFILE);   
             MainWorkerController.getInstance().setMainPane("/view/profiles/ProfileModifier.fxml","My Profiles > Add Profile");
-        }else{ 
+        }else{
             if(listView.getSelectionModel().getSelectedItem() != null){
                 if(event.getSource() == modifyButton){
                     JustWorkApp.sendMessage(CL_MODIFY_PROFILE+":"+listView.getSelectionModel().getSelectedItem().getId());  

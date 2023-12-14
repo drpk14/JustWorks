@@ -58,10 +58,8 @@ public class ProfileModifierController implements Initializable {
             public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) { 
                 String labelsString = "";
                 for(int i = 0;i<labelListView.getSelectionModel().getSelectedItems().size();i++){ 
-                    labelsString += labelListView.getSelectionModel().getSelectedItems().get(i);
-                    if(i != labelListView.getSelectionModel().getSelectedItems().size()-1){
-                        labelsString += " , ";
-                    }
+                    labelsString += labelListView.getSelectionModel().getSelectedItems().get(i); 
+                    labelsString += ","; 
                 }
                 selectedLabelsText.setText(labelsString); 
             } 
@@ -101,13 +99,13 @@ public class ProfileModifierController implements Initializable {
 
     @FXML
     private void exitWindow(ActionEvent event) { 
-        MainWorkerController.getInstance().setMainPane("/view/profile/MyProfiles.fxml","My Profiles"); 
+        MainWorkerController.getInstance().setMainPane("/view/profiles/MyProfiles.fxml","My Profiles"); 
     }
 
     @FXML
     private void confirmAction(ActionEvent event) {
         if(confirmActionButton.getText().equals("Modify")){
-            if(checkUserInput() == true){ 
+            if(checkUserInput() == true){
                 JustWorkApp.sendMessage(CL_MODIFY_PROFILE+":"+
                         modifyProfile.getId()+":"+
                         profileNameTextField.getText()+":"
@@ -121,7 +119,7 @@ public class ProfileModifierController implements Initializable {
                 }
             }
         }else if(confirmActionButton.getText().equals("Add")){
-            if(checkUserInput() == true){  
+            if(checkUserInput() == true){
                 JustWorkApp.sendMessage(CL_ADD_PROFILE+":"+
                                          profileNameTextField.getText()+":"
                                          +selectedLabelsText.getText()); 
@@ -132,7 +130,7 @@ public class ProfileModifierController implements Initializable {
                 } else if(processedInput[1].equals("I")){
                     JOptionPane.showMessageDialog(null, processedInput[2]);
                 }
-            }   
+            }
         }
     } 
     

@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.offers.OfferViewer">
+    tools:context=".ui.knowledges.KnowledgeViewerFragment">
 
     <TextView
-        android:id="@+id/offerViewerNameText"
+        android:id="@+id/knowledgeViewerNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -17,34 +17,43 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/offerViewerBusinessmanText"
+        android:id="@+id/knowledgeViewerPlaceText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/businessman_name"
+        android:text="@string/place"
         android:textAlignment="center"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/offerrViewerSalaryText"
+        android:id="@+id/knowledgeViewerTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/salary"
+        android:text="@string/title"
         android:textAlignment="center"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/offerrViewerUbicationText"
+        android:id="@+id/knowledgeViewerInitDateText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/ubication"
+        android:text="@string/init_date"
         android:textAlignment="center"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/offerViewerLabelsText"
+        android:id="@+id/knowledgeViewerFinishDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/finish_date"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/knowledgeViewerLabelsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -52,13 +61,5 @@
         android:text="@string/labels"
         android:textAlignment="center"
         android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/offerViewerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="100dp"
-        android:text="@string/button" />
 
 </LinearLayout>

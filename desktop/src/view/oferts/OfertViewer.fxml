@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -8,85 +9,81 @@
 
 <AnchorPane id="AnchorPane" prefHeight="669.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.oferts.OfertViewerController">
    <children>
-      <Text layoutX="20.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ubication:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ubication:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salary:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salary:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contract type:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="425.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contract type:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text layoutX="20.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Businessman:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Businessman:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="nameTextField" layoutX="280.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+      <Text fx:id="nameTextField" layoutX="275.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <TextArea fx:id="descriptionTextArea" editable="false" layoutX="280.0" layoutY="180.0" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
+      <TextArea fx:id="descriptionTextArea" editable="false" layoutX="275.0" layoutY="155.0" prefHeight="94.0" prefWidth="375.0" scrollLeft="10.0" scrollTop="10.0" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>
       </TextArea>
-      <Text fx:id="businessmanTextField" layoutX="280.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+      <Text fx:id="businessmanTextField" layoutX="275.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="ubicationTextField" layoutX="280.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+      <Text fx:id="ubicationTextField" layoutX="275.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="salaryTextField" layoutX="280.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+      <Text fx:id="salaryTextField" layoutX="275.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <Text fx:id="contractTypeTextField" layoutX="280.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
+      <Text fx:id="contractTypeTextField" layoutX="275.0" layoutY="425.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="302.0" layoutY="561.0" onAction="#exitWindow" text="Exit">
+      <MFXButton fx:id="exitButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="576.0" layoutY="548.0" onAction="#exitWindow" text="Exit">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
-      <Text layoutX="20.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
+      <Text layoutX="15.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Labels:" textAlignment="RIGHT" wrappingWidth="193.3448486328125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Text fx:id="labelTextField" layoutX="280.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="375.2945556640625">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <MFXButton fx:id="candidateButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="406.0" layoutY="561.0" onAction="#candidate" style="-fx-background-color: #53ff4a;" text="Candidate" textFill="WHITE">
+      <MFXButton fx:id="candidateButton" buttonType="RAISED" depthLevel="LEVEL5" layoutX="546.0" layoutY="478.0" onAction="#candidate" style="-fx-background-color: #53ff4a;" text="Candidate" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </MFXButton>
+      <MFXLegacyListView fx:id="labelsListView" layoutX="263.0" layoutY="453.0" prefHeight="190.0" prefWidth="193.0" thumbColor="WHITE" thumbHoverColor="WHITE" trackColor="BLACK" />
    </children>
 </AnchorPane>

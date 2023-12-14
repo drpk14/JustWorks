@@ -7,7 +7,8 @@
             <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/server/Server.java</file>
             <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/dao/MessageDao.java</file>
             <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/util/Messages.java</file>
-            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/dao/LabelOfferDao.java</file>
+            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/dao/OfferDao.java</file>
+            <file>file:/C:/Users/David/Documents/Proyectos/JustWorks/server/src/dao/CandidatureDao.java</file>
         </group>
     </open-files>
 </project-private>
