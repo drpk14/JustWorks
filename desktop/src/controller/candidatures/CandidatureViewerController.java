@@ -145,7 +145,7 @@ public class CandidatureViewerController implements Initializable {
 
     @FXML
     private void contact(ActionEvent event) {
-        JustWorkApp.sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId());
+        JustWorkApp.sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId()+":0");
         if(MainBusinessmanController.getInstance() != null){
             MainBusinessmanController.getInstance().setMainPane("/view/candidatures/CandidatureMessages.fxml","Candidature > Message"); 
         }else if(MainWorkerController.getInstance() != null){  

@@ -870,7 +870,13 @@ public class Protocol {
                 Candidature candidature = CandidatureDao.getCandidatureDetails(Integer.parseInt(processedInput[1]));
                 output+=candidature.getId()+":";
                 output+=candidature.getOffer().getName()+":";
-                for(Message message : MessageDao.getMessagesForThisCandidature(candidature)){
+                List<Message> messages;
+                if(processedInput[2].equals("1"))
+                     messages = MessageDao.getLastMessageForThisCandidature(candidature);
+                else
+                    messages = MessageDao.getMessagesForThisCandidature(candidature);
+                
+                for(Message message : messages){
                     output+=message.getId()+":";
                     output+=message.getContent()+":";   
                     output+=message.getSendedTime().getHours()+"_";

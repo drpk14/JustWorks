@@ -74,12 +74,11 @@ public class CandidatureMessagesController implements Initializable {
         }
     }
     
-    public void refreshMessages(){
-        messagesListView.getItems().clear();
+    public void refreshMessages(){ 
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 
-                JustWorkApp.sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidatureId);
+                JustWorkApp.sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidatureId+":1");
                 String[] processedInput = JustWorkApp.recieveMessage().split(":"); 
                 candidatureId=Integer.parseInt(processedInput[1]); 
                 offerName.setText(processedInput[2]);

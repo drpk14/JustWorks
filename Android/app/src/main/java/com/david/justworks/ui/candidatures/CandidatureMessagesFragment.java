@@ -92,17 +92,16 @@ public class CandidatureMessagesFragment extends Fragment{
     }
 
     public void refreshMessages(){
-        adapter.cleanMessages();
 
-        CommunicationMethods.getInstance().sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidatureId);
+        CommunicationMethods.getInstance().sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidatureId+":1");
         String[] processedInput = CommunicationMethods.getInstance().recieveMessage().split(":");
-        List<Message> messages = new ArrayList<>();
+        Message message = null;
         for(int i= 3;i<processedInput.length;i=i+4){
             String[] sendedTime = processedInput[i+2].split("_");
-            Message message = new Message(Integer.parseInt(processedInput[i]),processedInput[i+1],Integer.parseInt(sendedTime[0]),Integer.parseInt(sendedTime[1]),Boolean.parseBoolean(processedInput[i+3]));
-            messages.add(message);
+            message = new Message(Integer.parseInt(processedInput[i]),processedInput[i+1],Integer.parseInt(sendedTime[0]),Integer.parseInt(sendedTime[1]),Boolean.parseBoolean(processedInput[i+3]));
+
         }
-        adapter.setMessages(messages);
+        adapter.addMessages(message);
         int lastIndex = adapter.getItemCount() - 1;
         recyclerView.scrollToPosition(lastIndex);
     }

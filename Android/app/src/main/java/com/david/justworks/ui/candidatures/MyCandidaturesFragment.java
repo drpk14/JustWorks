@@ -84,7 +84,7 @@ public class MyCandidaturesFragment extends Fragment implements CandidatureAdapt
     @Override
     public void onItemClick(View v, int position) {
         Candidature candidature = adapter.getCandidatureAtPosition(position);
-        CommunicationMethods.getInstance().sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId());
+        CommunicationMethods.getInstance().sendMessage(CL_MESSAGES_OF_THIS_CANDIDATURE+":"+candidature.getId()+":0");
         Bundle bundle = new Bundle();
         bundle.putInt("candidatureId", candidature.getId());
         NavHostFragment.findNavController(MyCandidaturesFragment.this)

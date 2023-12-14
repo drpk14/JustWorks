@@ -31,8 +31,36 @@ public class MessageDao {
             tx = session.beginTransaction();
             Query query = null;
         
-            query = session.createQuery("FROM Message M JOIN M.candidature C JOIN M.user U  WHERE C.id = :id ORDER BY M.sendedTime"); 
+            query = session.createQuery("FROM Message M JOIN M.candidature C JOIN M.user U  WHERE C.id = :id ORDER BY M.id"); 
             query.setString("id", String.valueOf(candidature.getId()));
+            
+            
+            List<Object[]> queryList = query.list();
+            for(Object[] actualUser: queryList){
+                messages.add((Message) actualUser[0]); 
+            } 
+            tx.commit(); 
+            
+        }catch (HibernateException e) { 
+            if (tx!=null) tx.rollback(); 
+            e.printStackTrace();
+        }finally {
+            session.close();
+        }
+        return messages;
+    }
+    
+    public static List<Message> getLastMessageForThisCandidature(Candidature candidature) { 
+        Session session = NewHibernateUtil.getSessionFactory().openSession(); 
+        Transaction tx = null; 
+        List<Message> messages = new ArrayList();
+        try{
+            tx = session.beginTransaction();
+            Query query = null;
+        
+            query = session.createQuery("FROM Message M JOIN M.candidature C JOIN M.user U  WHERE C.id = :id ORDER BY M.id DESC"); 
+            query.setString("id", String.valueOf(candidature.getId())); 
+                query.setMaxResults(1);
             
             List<Object[]> queryList = query.list();
             for(Object[] actualUser: queryList){

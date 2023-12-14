@@ -64,6 +64,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         notifyDataSetChanged();
     }
 
+    public void addMessages(Entities.Message message){
+        messages.add(message);
+        notifyDataSetChanged();
+    }
+
     public void cleanMessages(){
         this.messages.clear();
         notifyDataSetChanged();
